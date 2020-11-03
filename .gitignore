@@ -15,7 +15,17 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-.idea
-jquery.collection.js
-public/yarn
-jquery.collection.html.twig
+/.idea
+/public/yarn
+/public/yarn/.yarn-integrity
+/templates/jquery.collection.html.twig
+
+# deployment
+/config/deploy.yaml
+
+# backups
+*.sql
+
+# public things managed by other things.
+/public/docs
+/public/images/blog
