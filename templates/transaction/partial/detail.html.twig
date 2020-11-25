@@ -1,0 +1,43 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Value</th>
+            <td>
+                {{ transaction.value }}
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                {{ transaction.description|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Book</th>
+            <td>
+                {% if transaction.book %}
+                    <a href='{{ path("book_show", {"id": transaction.book.id}) }}'>{{ transaction.book }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Parish</th>
+            <td>
+                {% if transaction.parish %}
+                    <a href='{{ path("parish_show", {"id": transaction.parish.id}) }}'>{{ transaction.parish }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ transaction.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ transaction.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

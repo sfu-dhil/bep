@@ -1,0 +1,15 @@
+{% extends 'popup.html.twig' %}
+
+    {% block title %}New Province {% endblock %}
+
+    {% block body %}
+        <h1>New Province</h1>
+
+        {% embed 'province/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

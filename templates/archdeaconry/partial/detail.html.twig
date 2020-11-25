@@ -1,0 +1,28 @@
+{% embed '@NinesUtil/term/partial/show.html.twig' with {'term': archdeaconry} %}
+    {% block callback %}
+        <tr>
+            <th>Diocese</th>
+            <td>
+                {% if archdeaconry.diocese %}
+                    <a href='{{ path("diocese_show", {"id": archdeaconry.diocese.id}) }}'>{{ archdeaconry.diocese }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Parish</th>
+            <td>
+                {% if archdeaconry.parishes|length > 0 %}
+                    <ul>
+                        {% for parish in archdeaconry.parishes %}
+                            <li>
+                                <a href='{{ path("parish_show", {"id":parish.id }) }}'>
+                                    {{ parish }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}

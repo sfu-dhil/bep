@@ -72,9 +72,33 @@ class Builder implements ContainerAwareInterface {
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-//        $browse->addChild('Occupations', [
-//            'route' => 'occupation_index',
-//        ]);
+        $browse->addChild('Books', [
+            'route' => 'book_index',
+        ]);
+
+        $browse->addChild('Parishes', [
+            'route' => 'parish_index',
+        ]);
+
+        $browse->addChild('Towns & Wards', [
+            'route' => 'town_index',
+        ]);
+
+        $browse->addChild('Counties', [
+            'route' => 'county_index',
+        ]);
+
+        $browse->addChild('Archdeaconries', [
+            'route' => 'archdeaconry_index',
+        ]);
+
+        $browse->addChild('Dioceses', [
+            'route' => 'diocese_index',
+        ]);
+
+        $browse->addChild('Provinces', [
+            'route' => 'province_index',
+        ]);
 
         if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
             $divider = $browse->addChild('divider_content', [

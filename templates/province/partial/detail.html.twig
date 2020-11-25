@@ -1,0 +1,20 @@
+{% embed '@NinesUtil/term/partial/index.html.twig' with {'term': province} %}
+    {% block callback %}
+        <tr>
+            <th>Dioceses</th>
+            <td>
+                {% if province.dioceses|length > 0 %}
+                    <ul>
+                        {% for diocese in province.dioceses %}
+                            <li>
+                                <a href='{{ path("diocese_show", {"id":diocese.id }) }}'>
+                                    {{ diocese }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}

@@ -2,20 +2,24 @@
 
 declare(strict_types=1);
 
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use App\Repository\ProvinceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractEntity;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=ProvinceRepository::class)
  */
 class Province extends AbstractTerm {
-
     /**
      * @var Collection|Diocese[]
      * @ORM\OneToMany(targetEntity="App\Entity\Diocese", mappedBy="province")
@@ -30,14 +34,12 @@ class Province extends AbstractTerm {
     /**
      * @return Collection|Diocese[]
      */
-    public function getDioceses(): Collection
-    {
+    public function getDioceses() : Collection {
         return $this->dioceses;
     }
 
-    public function addDiocese(Diocese $diocese): self
-    {
-        if (!$this->dioceses->contains($diocese)) {
+    public function addDiocese(Diocese $diocese) : self {
+        if ( ! $this->dioceses->contains($diocese)) {
             $this->dioceses[] = $diocese;
             $diocese->setProvince($this);
         }
@@ -45,8 +47,7 @@ class Province extends AbstractTerm {
         return $this;
     }
 
-    public function removeDiocese(Diocese $diocese): self
-    {
+    public function removeDiocese(Diocese $diocese) : self {
         if ($this->dioceses->removeElement($diocese)) {
             // set the owning side to null (unless already changed)
             if ($diocese->getProvince() === $this) {
@@ -56,5 +57,4 @@ class Province extends AbstractTerm {
 
         return $this;
     }
-
 }

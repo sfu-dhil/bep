@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Parish List{% endblock %}
+
+{% block pageheader %}
+    <h1>Parish List</h1>
+    <p class="count">
+        Displaying {{ parishes|length }} parishes of {{ parishes.getTotalItemCount }} total.
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <a href="{{ path('parish_new') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> New </a>
+            {% endif %}
+
+            <a href="{{ path('parish_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search </a>
+        </div>
+    </div>
+
+    {% embed 'parish/partial/table.html.twig' %}
+    {% endembed %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(parishes) }}
+    </div>
+
+{% endblock %}

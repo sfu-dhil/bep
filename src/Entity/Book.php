@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use App\Repository\BookRepository;
@@ -14,7 +20,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass=BookRepository::class)
  */
 class Book extends AbstractEntity {
-
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -39,49 +44,49 @@ class Book extends AbstractEntity {
      */
     private $transactions;
 
-    /**
-     * @inheritDoc
-     */
-    public function __toString() : string {
-        // TODO: Implement __toString() method.
-    }
-
     public function __construct() {
         parent::__construct();
         $this->transactions = new ArrayCollection();
     }
 
-    public function getTitle(): ?string
-    {
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString() : string {
+        if($this->title) {
+            return $this->title;
+        }
+        if($this->description) {
+            return $this->description;
+        }
+        return 'No description provided';
+    }
+
+    public function getTitle() : ?string {
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
-    {
+    public function setTitle(?string $title) : self {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getDate(): ?string
-    {
+    public function getDate() : ?string {
         return $this->date;
     }
 
-    public function setDate(?string $date): self
-    {
+    public function setDate(?string $date) : self {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
+    public function getDescription() : ?string {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
-    {
+    public function setDescription(?string $description) : self {
         $this->description = $description;
 
         return $this;
@@ -90,14 +95,12 @@ class Book extends AbstractEntity {
     /**
      * @return Collection|Transaction[]
      */
-    public function getTransactions(): Collection
-    {
+    public function getTransactions() : Collection {
         return $this->transactions;
     }
 
-    public function addTransaction(Transaction $transaction): self
-    {
-        if (!$this->transactions->contains($transaction)) {
+    public function addTransaction(Transaction $transaction) : self {
+        if ( ! $this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
             $transaction->setBook($this);
         }
@@ -105,8 +108,7 @@ class Book extends AbstractEntity {
         return $this;
     }
 
-    public function removeTransaction(Transaction $transaction): self
-    {
+    public function removeTransaction(Transaction $transaction) : self {
         if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
             if ($transaction->getBook() === $this) {
@@ -116,5 +118,4 @@ class Book extends AbstractEntity {
 
         return $this;
     }
-
 }

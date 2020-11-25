@@ -1,0 +1,37 @@
+{% embed '@NinesUtil/term/partial/show.html.twig' with {'term': town} %}
+    {% block callback %}
+        <tr>
+            <th>In London</th>
+            <td>
+                {% if town.inLondon %}Yes{% else %}No{% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <th>County</th>
+            <td>
+                {% if town.county %}
+                    <a href='{{ path("county_show", {"id": town.county.id}) }}'>{{ town.county }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Parish</th>
+            <td>
+                {% if town.parishes|length > 0 %}
+                    <ul>
+                        {% for parish in town.parishes %}
+                            <li>
+                                <a href='{{ path("parish_show", {"id":parish.id }) }}'>
+                                    {{ parish }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}
+
+

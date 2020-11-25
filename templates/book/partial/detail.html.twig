@@ -1,0 +1,49 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Title</th>
+            <td>
+                {{ book.title|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>
+                {{ book.date }}
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                {{ book.description|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Transaction</th>
+            <td>
+                {% if book.transactions|length > 0 %}
+                    <ul>
+                        {% for transaction in book.transactions %}
+                            <li>
+                                <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
+                                    {{ transaction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ book.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ book.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

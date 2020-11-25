@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use App\Repository\TransactionRepository;
@@ -12,7 +18,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  */
 class Transaction extends AbstractEntity {
-
     /**
      * Price of the transaction in pennies.
      *
@@ -20,7 +25,7 @@ class Transaction extends AbstractEntity {
      *
      * 2 * 240 + 3 * 12 + 6 = 522
      *
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $value;
@@ -43,69 +48,62 @@ class Transaction extends AbstractEntity {
      */
     private $parish;
 
-    /**
-     * @inheritDoc
-     */
-    public function __toString() : string {
-        // TODO: Implement __toString() method.
-    }
-
     public function __construct() {
         parent::__construct();
     }
 
-    public function getValue($format = false)
-    {
-        if($format) {
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString() : string {
+        return 'Transaction ' . $this->id;
+    }
+
+    public function getValue($format = false) {
+        if ($format) {
             $l = floor($this->value / 240);
             $s = floor(($this->value - $l * 240) / 12);
             $d = $this->value - $s * 12 - $l * 240;
+
             return "£{$l}. {$s}s. {$d}d";
         }
+
         return $this->value;
     }
 
-    public function setValue(?int $value): self
-    {
+    public function setValue(?int $value) : self {
         $this->value = $value;
 
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
+    public function getDescription() : ?string {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
-    {
+    public function setDescription(?string $description) : self {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getBook(): ?Book
-    {
+    public function getBook() : ?Book {
         return $this->book;
     }
 
-    public function setBook(?Book $book): self
-    {
+    public function setBook(?Book $book) : self {
         $this->book = $book;
 
         return $this;
     }
 
-    public function getParish(): ?Parish
-    {
+    public function getParish() : ?Parish {
         return $this->parish;
     }
 
-    public function setParish(?Parish $parish): self
-    {
+    public function setParish(?Parish $parish) : self {
         $this->parish = $parish;
 
         return $this;
     }
-
 }

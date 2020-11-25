@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Edit Archdeaconry {% endblock %}
+
+    {% block body %}
+        <h1>Edit Archdeaconry</h1>
+
+        {% embed 'archdeaconry/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}
