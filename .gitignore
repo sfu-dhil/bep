@@ -29,3 +29,4 @@
 # public things managed by other things.
 /public/docs
 /public/images/blog
+public/js/jquery.collection.js
