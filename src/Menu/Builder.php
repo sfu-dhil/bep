@@ -76,6 +76,10 @@ class Builder implements ContainerAwareInterface {
             'route' => 'book_index',
         ]);
 
+        $browse->addChild('Transactions', [
+            'route' => 'transaction_index',
+        ]);
+
         $browse->addChild('Parishes', [
             'route' => 'parish_index',
         ]);
@@ -107,6 +111,9 @@ class Builder implements ContainerAwareInterface {
             $divider->setAttributes([
                 'role' => 'separator',
                 'class' => 'divider',
+            ]);
+            $browse->addChild('Transaction Categories', [
+                'route' => 'transaction_category_index',
             ]);
         }
 

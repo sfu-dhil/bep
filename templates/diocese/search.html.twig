@@ -44,8 +44,8 @@
 
     {% if dioceses|length %}
 
-        {% embed '@NinesUtil/term/partial/index.html.twig' with {'terms': dioceses} %}
-        {% endembed %}
+    {% embed 'diocese/partial/table.html.twig' %}
+    {% endembed %}
 
         <div class="navigation">
             {{ knp_pagination_render(dioceses) }}
@@ -53,4 +53,3 @@
     {% endif %}
 
 {% endblock %}
-

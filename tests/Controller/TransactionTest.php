@@ -20,8 +20,6 @@ class TransactionTest extends ControllerBaseCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'transaction';
-
     protected function fixtures() : array {
         return [
             TransactionFixtures::class,
@@ -95,108 +93,6 @@ class TransactionTest extends ControllerBaseCase {
 
     /**
      * @group anon
-     * @group typeahead
-     */
-    public function testAnonTypeahead() : void {
-        $this->client->request('GET', '/transaction/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
-        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
-            // If authentication is required stop here.
-            return;
-        }
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
-    }
-
-    /**
-     * @group user
-     * @group typeahead
-     */
-    public function testUserTypeahead() : void {
-        $this->login('user.user');
-        $this->client->request('GET', '/transaction/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
-    }
-
-    /**
-     * @group admin
-     * @group typeahead
-     */
-    public function testAdminTypeahead() : void {
-        $this->login('user.admin');
-        $this->client->request('GET', '/transaction/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
-    }
-
-    public function testAnonSearch() : void {
-        $repo = $this->createMock(TransactionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
-
-        $crawler = $this->client->request('GET', '/transaction/search');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
-        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
-            // If authentication is required stop here.
-            return;
-        }
-
-        $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'transaction',
-        ]);
-
-        $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testUserSearch() : void {
-        $repo = $this->createMock(TransactionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
-
-        $this->login('user.user');
-        $crawler = $this->client->request('GET', '/transaction/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'transaction',
-        ]);
-
-        $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAdminSearch() : void {
-        $repo = $this->createMock(TransactionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
-
-        $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/transaction/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'transaction',
-        ]);
-
-        $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * @group anon
      * @group edit
      */
     public function testAnonEdit() : void {
@@ -225,7 +121,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'transaction[value]' => 'Updated Value',
+            'transaction[value]' => 200,
             'transaction[description]' => 'Updated Description',
         ]);
 
@@ -233,7 +129,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect('/transaction/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Value")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("£0")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
     }
 
@@ -287,7 +183,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'transaction[value]' => 'New Value',
+            'transaction[value]' => 200,
             'transaction[description]' => 'New Description',
         ]);
 
@@ -295,7 +191,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Value")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("£0")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }
 
@@ -309,7 +205,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'transaction[value]' => 'New Value',
+            'transaction[value]' => 200,
             'transaction[description]' => 'New Description',
         ]);
 
@@ -317,7 +213,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Value")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("£0")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }
 

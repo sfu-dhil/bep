@@ -3,7 +3,7 @@
         <tr>
             <th>Value</th>
             <td>
-                {{ transaction.value }}
+                {{ transaction.value(true) }}
             </td>
         </tr>
         <tr>
@@ -18,6 +18,14 @@
             <td>
                 {% if transaction.book %}
                     <a href='{{ path("book_show", {"id": transaction.book.id}) }}'>{{ transaction.book }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Transaction Category</th>
+            <td>
+                {% if transaction.transactionCategory %}
+                    <a href='{{ path("transaction_category_show", {"id": transaction.transactionCategory.id}) }}'>{{ transaction.transactionCategory }}</a>
                 {% endif %}
             </td>
         </tr>

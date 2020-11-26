@@ -16,6 +16,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
+ * @ORM\Table(name="transact")
  */
 class Transaction extends AbstractEntity {
     /**
@@ -47,6 +48,12 @@ class Transaction extends AbstractEntity {
      * @ORM\ManyToOne(targetEntity="App\Entity\Parish", inversedBy="transactions")
      */
     private $parish;
+
+    /**
+     * @var TransactionCategory
+     * @ORM\ManyToOne(targetEntity="App\Entity\TransactionCategory", inversedBy="transactions")
+     */
+    private $transactionCategory;
 
     public function __construct() {
         parent::__construct();
@@ -103,6 +110,16 @@ class Transaction extends AbstractEntity {
 
     public function setParish(?Parish $parish) : self {
         $this->parish = $parish;
+
+        return $this;
+    }
+
+    public function getTransactionCategory() : ?TransactionCategory {
+        return $this->transactionCategory;
+    }
+
+    public function setTransactionCategory(?TransactionCategory $transactionCategory) : self {
+        $this->transactionCategory = $transactionCategory;
 
         return $this;
     }

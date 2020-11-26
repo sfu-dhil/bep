@@ -1,0 +1,17 @@
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true
+
+    test.App\Repository\ArchdeaconryRepository: '@App\Repository\ArchdeaconryRepository'
+    test.App\Repository\BookRepository: '@App\Repository\BookRepository'
+    test.App\Repository\CountyRepository: '@App\Repository\CountyRepository'
+    test.App\Repository\DioceseRepository: '@App\Repository\DioceseRepository'
+    test.App\Repository\ParishRepository: '@App\Repository\ParishRepository'
+    test.App\Repository\ProvinceRepository: '@App\Repository\ProvinceRepository'
+    test.App\Repository\TownRepository: '@App\Repository\TownRepository'
+    test.App\Repository\TransactionCategoryRepository: '@App\Repository\TransactionCategoryRepository'
+    test.App\Repository\TransactionRepository: '@App\Repository\TransactionRepository'

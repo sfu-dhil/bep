@@ -44,7 +44,7 @@
 
     {% if archdeaconries|length %}
 
-        {% embed '@NinesUtil/term/partial/index.html.twig' with {'terms': archdeaconries} %}
+        {% embed 'archdeaconry/partial/table.html.twig' %}
         {% endembed %}
 
         <div class="navigation">

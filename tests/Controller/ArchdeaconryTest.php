@@ -20,7 +20,7 @@ class ArchdeaconryTest extends ControllerBaseCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'archdeaconry';
+    private const TYPEAHEAD_QUERY = 'label';
 
     protected function fixtures() : array {
         return [
@@ -225,7 +225,6 @@ class ArchdeaconryTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'archdeaconry[name]' => 'Updated Name',
             'archdeaconry[label]' => 'Updated Label',
             'archdeaconry[description]' => 'Updated Description',
         ]);
@@ -234,7 +233,6 @@ class ArchdeaconryTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect('/archdeaconry/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Name")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Label")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
     }
@@ -289,7 +287,6 @@ class ArchdeaconryTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'archdeaconry[name]' => 'New Name',
             'archdeaconry[label]' => 'New Label',
             'archdeaconry[description]' => 'New Description',
         ]);
@@ -298,7 +295,6 @@ class ArchdeaconryTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Name")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Label")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }
@@ -313,7 +309,6 @@ class ArchdeaconryTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'archdeaconry[name]' => 'New Name',
             'archdeaconry[label]' => 'New Label',
             'archdeaconry[description]' => 'New Description',
         ]);
@@ -322,7 +317,6 @@ class ArchdeaconryTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Name")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Label")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }

@@ -20,7 +20,7 @@ class BookTest extends ControllerBaseCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'book';
+    private const TYPEAHEAD_QUERY = 'this is';
 
     protected function fixtures() : array {
         return [

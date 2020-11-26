@@ -53,12 +53,13 @@ class Book extends AbstractEntity {
      * {@inheritdoc}
      */
     public function __toString() : string {
-        if($this->title) {
+        if ($this->title) {
             return $this->title;
         }
-        if($this->description) {
+        if ($this->description) {
             return $this->description;
         }
+
         return 'No description provided';
     }
 

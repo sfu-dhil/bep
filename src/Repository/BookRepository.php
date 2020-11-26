@@ -15,7 +15,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Book find($id, $lockMode = null, $lockVersion = null)
@@ -32,7 +31,11 @@ class BookRepository extends ServiceEntityRepository {
      * @return Query
      */
     public function indexQuery() {
-        return $this->createQueryBuilder('book')->orderBy('book.id')->getQuery();
+        $qb = $this->createQueryBuilder('book');
+        $qb->orderBy('book.title');
+        $qb->addOrderBy('book.id');
+
+        return $qb->getQuery();
     }
 
     /**
@@ -41,11 +44,27 @@ class BookRepository extends ServiceEntityRepository {
      * @return Book[]|Collection
      */
     public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('book');
-        $qb->andWhere('book.column LIKE :q');
-        $qb->orderBy('book.column', 'ASC');
+        $qb->andWhere('book.title LIKE :q');
+        $qb->orderBy('book.title');
+        $qb->addOrderBy('book.id');
         $qb->setParameter('q', "{$q}%");
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param string $q
+     *
+     * @return Book[]|Collection
+     */
+    public function searchQuery($q) {
+        $qb = $this->createQueryBuilder('book');
+        $qb->where('book.title LIKE :q');
+        $qb->orWhere('book.description LIKE :q');
+        $qb->orderBy('book.title');
+        $qb->addOrderBy('book.id');
+        $qb->setParameter('q', "%{$q}%");
 
         return $qb->getQuery()->execute();
     }

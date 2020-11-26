@@ -44,8 +44,8 @@
 
     {% if counties|length %}
 
-        {% embed '@NinesUtil/term/partial/index.html.twig' with {'terms': counties} %}
-        {% endembed %}
+    {% embed 'county/partial/table.html.twig' %}
+    {% endembed %}
 
         <div class="navigation">
             {{ knp_pagination_render(counties) }}
@@ -53,4 +53,3 @@
     {% endif %}
 
 {% endblock %}
-

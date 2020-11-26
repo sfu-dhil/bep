@@ -10,34 +10,20 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Diocese;
-use App\Entity\Province;
+use App\Entity\TransactionCategory;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 /**
- * Diocese form.
+ * TransactionCategory form.
  */
-class DioceseType extends TermType {
+class TransactionCategoryType extends TermType {
     /**
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         parent::buildForm($builder, $options);
-
-        $builder->add('province', Select2EntityType::class, [
-            'label' => 'Province',
-            'class' => Province::class,
-            'remote_route' => 'province_typeahead',
-            'allow_clear' => true,
-            'attr' => [
-                'help_block' => '',
-                'add_path' => 'province_new_popup',
-                'add_label' => 'Add Province',
-            ],
-        ]);
     }
 
     /**
@@ -48,7 +34,7 @@ class DioceseType extends TermType {
      */
     public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => Diocese::class,
+            'data_class' => TransactionCategory::class,
         ]);
     }
 }

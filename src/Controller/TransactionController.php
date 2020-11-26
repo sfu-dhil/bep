@@ -18,7 +18,6 @@ use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,50 +41,6 @@ class TransactionController extends AbstractController implements PaginatorAware
         return [
             'transactions' => $this->paginator->paginate($query, $page, $pageSize),
         ];
-    }
-
-    /**
-     * @Route("/search", name="transaction_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, TransactionRepository $transactionRepository) {
-        $q = $request->query->get('q');
-        if ($q) {
-            $query = $transactionRepository->searchQuery($q);
-            $transactions = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $transactions = [];
-        }
-
-        return [
-            'transactions' => $transactions,
-            'q' => $q,
-        ];
-    }
-
-    /**
-     * @Route("/typeahead", name="transaction_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, TransactionRepository $transactionRepository) {
-        $q = $request->query->get('q');
-        if ( ! $q) {
-            return new JsonResponse([]);
-        }
-        $data = [];
-
-        foreach ($transactionRepository->typeaheadQuery($q) as $result) {
-            $data[] = [
-                'id' => $result->getId(),
-                'text' => (string) $result,
-            ];
-        }
-
-        return new JsonResponse($data);
     }
 
     /**

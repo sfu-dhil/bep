@@ -22,10 +22,11 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
     public function load(ObjectManager $em) : void {
         for ($i = 0; $i < 4; $i++) {
             $fixture = new Transaction();
-            $fixture->setValue(200*($i+1));
+            $fixture->setValue(200 * ($i + 1));
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setBook($this->getReference('book.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
+            $fixture->setTransactionCategory($this->getReference('transactioncategory.' . $i));
             $em->persist($fixture);
             $this->setReference('transaction.' . $i, $fixture);
         }
@@ -39,6 +40,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
         return [
             BookFixtures::class,
             ParishFixtures::class,
+            TransactionCategoryFixtures::class,
         ];
     }
 }

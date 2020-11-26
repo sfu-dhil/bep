@@ -12,10 +12,8 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Transaction find($id, $lockMode = null, $lockVersion = null)
@@ -33,20 +31,5 @@ class TransactionRepository extends ServiceEntityRepository {
      */
     public function indexQuery() {
         return $this->createQueryBuilder('transaction')->orderBy('transaction.id')->getQuery();
-    }
-
-    /**
-     * @param string $q
-     *
-     * @return Collection|Transaction[]
-     */
-    public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
-        $qb = $this->createQueryBuilder('transaction');
-        $qb->andWhere('transaction.column LIKE :q');
-        $qb->orderBy('transaction.column', 'ASC');
-        $qb->setParameter('q', "{$q}%");
-
-        return $qb->getQuery()->execute();
     }
 }
