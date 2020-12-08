@@ -84,11 +84,11 @@ class Transaction extends AbstractEntity {
             $l = floor($this->value / 240);
             $s = floor(($this->value - $l * 240) / 12);
             $d = $this->value - $s * 12 - $l * 240;
-            if($list) {
+            if ($list) {
                 return [$l, $s, $d];
-            } else {
-                return "£{$l}. {$s}s. {$d}d";
             }
+
+            return "£{$l}. {$s}s. {$d}d";
         }
 
         return $this->value;
@@ -146,25 +146,21 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    public function getCopies(): ?int
-    {
+    public function getCopies() : ?int {
         return $this->copies;
     }
 
-    public function setCopies(int $copies): self
-    {
+    public function setCopies(int $copies) : self {
         $this->copies = $copies;
 
         return $this;
     }
 
-    public function getTranscription(): ?string
-    {
+    public function getTranscription() : ?string {
         return $this->transcription;
     }
 
-    public function setTranscription(?string $transcription): self
-    {
+    public function setTranscription(?string $transcription) : self {
         $this->transcription = $transcription;
 
         return $this;

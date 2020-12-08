@@ -25,7 +25,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setValue(200 * ($i + 1));
             $fixture->setTranscription("<p>Ye olde paragraf {$i} with ſongs.</p>");
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $fixture->setCopies($i+1);
+            $fixture->setCopies($i + 1);
             $fixture->setBook($this->getReference('book.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setTransactionCategory($this->getReference('transactioncategory.' . $i));

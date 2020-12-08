@@ -15,13 +15,9 @@ use App\Entity\Parish;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Exception;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
@@ -47,7 +43,7 @@ class TransactionType extends AbstractType {
             'required' => false,
             'mapped' => false,
         ]);
-        $builder->add('d',NumberType::class, [
+        $builder->add('d', NumberType::class, [
             'label' => 'Pence',
             'scale' => 0,
             'required' => false,
@@ -127,5 +123,4 @@ class TransactionType extends AbstractType {
             'data_class' => Transaction::class,
         ]);
     }
-
 }
