@@ -28,7 +28,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Transaction form.
  */
-class TransactionType extends AbstractType implements DataMapperInterface {
+class TransactionType extends AbstractType {
     /**
      * Add form fields to $builder.
      */
@@ -104,7 +104,7 @@ class TransactionType extends AbstractType implements DataMapperInterface {
             ],
         ]);
 
-        $builder->setDataMapper($this);
+        $builder->setDataMapper(new Mapper\LsdMapper());
     }
 
     /**
@@ -119,52 +119,4 @@ class TransactionType extends AbstractType implements DataMapperInterface {
         ]);
     }
 
-    public function mapDataToForms($viewData, $forms) {
-        if($viewData === null) {
-            return;
-        }
-        if( ! $viewData instanceof Transaction) {
-           throw new UnexpectedTypeException($viewData, Transaction::class);
-        }
-
-        [$l, $s, $d] = $viewData->getValue(true, true);
-
-        /** @var FormInterface[] $formData */
-        $formData = iterator_to_array($forms);
-        $formData['l']->setData($l);
-        $formData['s']->setData($s);
-        $formData['d']->setData($d);
-
-        $formData['copies']->setData($viewData->getCopies());
-        $formData['description']->setData($viewData->getDescription());
-        $formData['transactionCategory']->setData($viewData->getTransactionCategory());
-        $formData['book']->setData($viewData->getBook());
-        $formData['parish']->setData($viewData->getParish());
-    }
-
-    /**
-     * @param FormInterface[]|\Traversable $forms
-     * @param Transaction $viewData
-     */
-    public function mapFormsToData($forms, &$viewData) {
-        /** @var FormInterface[] $formData */
-        $formData = iterator_to_array($forms);
-
-        $l = (int)$formData['l']->getData();
-        $s = (int)$formData['s']->getData();
-        $d = (int)$formData['d']->getData();
-
-        if( ! $l && ! $s && ! $d) {
-            $viewData->setValue(null);
-            return;
-        }
-
-        $viewData->setLsd($l, $s, $d);
-
-        $viewData->setCopies((int)$formData['copies']->getData());
-        $viewData->setDescription($formData['description']->getData());
-        $viewData->setTransactionCategory($formData['transactionCategory']->getData());
-        $viewData->setBook($formData['book']->getData());
-        $viewData->setParish($formData['parish']->getData());
-    }
 }
