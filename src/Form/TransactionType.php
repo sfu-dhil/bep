@@ -43,13 +43,20 @@ class TransactionType extends AbstractType implements DataMapperInterface {
         ]);
         $builder->add('s', NumberType::class, [
             'label' => 'Shillings',
+            'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('d',NumberType::class, [
             'label' => 'Pence',
+            'scale' => 0,
             'required' => false,
             'mapped' => false,
+        ]);
+        $builder->add('copies', NumberType::class, [
+            'label' => 'Copies',
+            'required' => true,
+            'empty_data' => 1,
         ]);
 
         $builder->add('description', TextareaType::class, [
@@ -96,6 +103,7 @@ class TransactionType extends AbstractType implements DataMapperInterface {
                 'add_label' => 'Add Parish',
             ],
         ]);
+
         $builder->setDataMapper($this);
     }
 
@@ -127,6 +135,7 @@ class TransactionType extends AbstractType implements DataMapperInterface {
         $formData['s']->setData($s);
         $formData['d']->setData($d);
 
+        $formData['copies']->setData($viewData->getCopies());
         $formData['description']->setData($viewData->getDescription());
         $formData['transactionCategory']->setData($viewData->getTransactionCategory());
         $formData['book']->setData($viewData->getBook());
@@ -152,6 +161,7 @@ class TransactionType extends AbstractType implements DataMapperInterface {
 
         $viewData->setLsd($l, $s, $d);
 
+        $viewData->setCopies((int)$formData['copies']->getData());
         $viewData->setDescription($formData['description']->getData());
         $viewData->setTransactionCategory($formData['transactionCategory']->getData());
         $viewData->setBook($formData['book']->getData());

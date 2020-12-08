@@ -32,6 +32,12 @@ class Transaction extends AbstractEntity {
     private $value;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $copies;
+
+    /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
@@ -57,6 +63,7 @@ class Transaction extends AbstractEntity {
 
     public function __construct() {
         parent::__construct();
+        $this->copies = 1;
     }
 
     /**
@@ -129,6 +136,18 @@ class Transaction extends AbstractEntity {
 
     public function setTransactionCategory(?TransactionCategory $transactionCategory) : self {
         $this->transactionCategory = $transactionCategory;
+
+        return $this;
+    }
+
+    public function getCopies(): ?int
+    {
+        return $this->copies;
+    }
+
+    public function setCopies(int $copies): self
+    {
+        $this->copies = $copies;
 
         return $this;
     }
