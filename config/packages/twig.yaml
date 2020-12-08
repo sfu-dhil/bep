@@ -18,4 +18,4 @@ twig:
         piwik_url: '%dhil.piwik_url%'
         piwik_siteid: '%dhil.piwik_siteid%'
         piwik_domain: '%dhil.piwik_domain%'
-        nines_editor_config: bundles/nineseditor/js/editor-config.js
+        nines_editor_config: js/editor-config.js

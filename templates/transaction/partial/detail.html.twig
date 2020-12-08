@@ -7,6 +7,18 @@
             </td>
         </tr>
         <tr>
+            <th>Copies</th>
+            <td>
+                {{ transaction.copies }}
+            </td>
+        </tr>
+        <tr>
+            <th>Transcription</th>
+            <td>
+                {{ transaction.transcription|raw }}
+            </td>
+        </tr>
+        <tr>
             <th>Description</th>
             <td>
                 {{ transaction.description|raw }}

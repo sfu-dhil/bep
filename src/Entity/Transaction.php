@@ -32,6 +32,18 @@ class Transaction extends AbstractEntity {
     private $value;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false, options={"default": 1})
+     */
+    private $copies;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $transcription;
+
+    /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
@@ -57,6 +69,7 @@ class Transaction extends AbstractEntity {
 
     public function __construct() {
         parent::__construct();
+        $this->copies = 1;
     }
 
     /**
@@ -66,11 +79,14 @@ class Transaction extends AbstractEntity {
         return 'Transaction ' . $this->id;
     }
 
-    public function getValue($format = false) {
+    public function getValue($format = false, $list = false) {
         if ($format) {
             $l = floor($this->value / 240);
             $s = floor(($this->value - $l * 240) / 12);
             $d = $this->value - $s * 12 - $l * 240;
+            if ($list) {
+                return [$l, $s, $d];
+            }
 
             return "£{$l}. {$s}s. {$d}d";
         }
@@ -80,6 +96,12 @@ class Transaction extends AbstractEntity {
 
     public function setValue(?int $value) : self {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function setLsd(int $l, int $s, int $d) : self {
+        $this->value = 240 * $l + 12 * $s + $d;
 
         return $this;
     }
@@ -120,6 +142,26 @@ class Transaction extends AbstractEntity {
 
     public function setTransactionCategory(?TransactionCategory $transactionCategory) : self {
         $this->transactionCategory = $transactionCategory;
+
+        return $this;
+    }
+
+    public function getCopies() : ?int {
+        return $this->copies;
+    }
+
+    public function setCopies(int $copies) : self {
+        $this->copies = $copies;
+
+        return $this;
+    }
+
+    public function getTranscription() : ?string {
+        return $this->transcription;
+    }
+
+    public function setTranscription(?string $transcription) : self {
+        $this->transcription = $transcription;
 
         return $this;
     }
