@@ -33,9 +33,15 @@ class Transaction extends AbstractEntity {
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false, options={"default": 1})
      */
     private $copies;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $transcription;
 
     /**
      * @var string
@@ -148,6 +154,18 @@ class Transaction extends AbstractEntity {
     public function setCopies(int $copies): self
     {
         $this->copies = $copies;
+
+        return $this;
+    }
+
+    public function getTranscription(): ?string
+    {
+        return $this->transcription;
+    }
+
+    public function setTranscription(?string $transcription): self
+    {
+        $this->transcription = $transcription;
 
         return $this;
     }

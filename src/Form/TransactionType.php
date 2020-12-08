@@ -59,11 +59,20 @@ class TransactionType extends AbstractType {
             'empty_data' => 1,
         ]);
 
+        $builder->add('transcription', TextareaType::class, [
+            'label' => 'Transcription',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Copy the transaction text as closely as possible to how it appears',
+                'class' => 'tinymce',
+            ],
+        ]);
+
         $builder->add('description', TextareaType::class, [
             'label' => 'Description',
             'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'Provide a modern-spelling equivalent to the transaction text',
                 'class' => 'tinymce',
             ],
         ]);
