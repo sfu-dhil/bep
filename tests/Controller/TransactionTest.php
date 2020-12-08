@@ -121,7 +121,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'transaction[value]' => 200,
+            'transaction[l]' => 2,
             'transaction[description]' => 'Updated Description',
         ]);
 
@@ -129,7 +129,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertTrue($this->client->getResponse()->isRedirect('/transaction/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("£0")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("£2")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
     }
 

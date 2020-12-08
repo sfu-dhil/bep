@@ -66,13 +66,16 @@ class Transaction extends AbstractEntity {
         return 'Transaction ' . $this->id;
     }
 
-    public function getValue($format = false) {
+    public function getValue($format = false, $list = false) {
         if ($format) {
             $l = floor($this->value / 240);
             $s = floor(($this->value - $l * 240) / 12);
             $d = $this->value - $s * 12 - $l * 240;
-
-            return "£{$l}. {$s}s. {$d}d";
+            if($list) {
+                return [$l, $s, $d];
+            } else {
+                return "£{$l}. {$s}s. {$d}d";
+            }
         }
 
         return $this->value;
@@ -80,6 +83,12 @@ class Transaction extends AbstractEntity {
 
     public function setValue(?int $value) : self {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function setLsd(int $l, int $s, int $d) : self {
+        $this->value = 240 * $l + 12 * $s + $d;
 
         return $this;
     }
