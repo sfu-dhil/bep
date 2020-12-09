@@ -14,6 +14,7 @@ use App\Entity\County;
 use App\Form\CountyType;
 use App\Repository\CountyRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -95,7 +96,7 @@ class CountyController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager) {
         $county = new County();
         $form = $this->createForm(CountyType::class, $county);
         $form->handleRequest($request);
@@ -104,6 +105,10 @@ class CountyController extends AbstractController implements PaginatorAwareInter
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($county);
             $entityManager->flush();
+
+            $linkManager->setLinks($county, $form->get('links')->getData());
+            $entityManager->flush();
+
             $this->addFlash('success', 'The new county has been saved.');
 
             return $this->redirectToRoute('county_show', ['id' => $county->getId()]);
@@ -122,8 +127,8 @@ class CountyController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager) {
+        return $this->new($request, $linkManager);
     }
 
     /**
@@ -146,11 +151,12 @@ class CountyController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, County $county) {
+    public function edit(Request $request, County $county, LinkManager $linkManager) {
         $form = $this->createForm(CountyType::class, $county);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($county, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated county has been saved.');
 

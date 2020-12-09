@@ -16,5 +16,16 @@
                 {% endif %}
             </td>
         </tr>
+        <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig'
+                    with {
+                    'entity': province
+                }
+                %}
+                {% endembed %}
+            </td>
+        </tr>
     {% endblock %}
 {% endembed %}

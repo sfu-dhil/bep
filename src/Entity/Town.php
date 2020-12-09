@@ -15,11 +15,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
+use Nines\MediaBundle\Entity\LinkableInterface;
+use Nines\MediaBundle\Entity\LinkableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=TownRepository::class)
  */
-class Town extends AbstractTerm {
+class Town extends AbstractTerm  implements LinkableInterface {
+
+    use LinkableTrait {
+        LinkableTrait::__construct as linkable_construct;
+    }
     /**
      * @var boolean;
      * @ORM\Column(type="boolean", nullable=false)
@@ -40,6 +46,7 @@ class Town extends AbstractTerm {
 
     public function __construct() {
         parent::__construct();
+        $this->linkable_construct();
         $this->inLondon = false;
         $this->parishes = new ArrayCollection();
     }

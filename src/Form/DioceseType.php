@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Diocese;
 use App\Entity\Province;
+use Nines\MediaBundle\Form\LinkableType;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,6 +39,7 @@ class DioceseType extends TermType {
                 'add_label' => 'Add Province',
             ],
         ]);
+        LinkableType::add($builder, $options);
     }
 
     /**

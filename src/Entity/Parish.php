@@ -14,12 +14,18 @@ use App\Repository\ParishRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Nines\MediaBundle\Entity\LinkableInterface;
+use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=ParishRepository::class)
  */
-class Parish extends AbstractTerm {
+class Parish extends AbstractTerm implements LinkableInterface {
+
+    use LinkableTrait {
+        LinkableTrait::__construct as linkable_construct;
+    }
     /**
      * @var Archdeaconry
      * @ORM\ManyToOne(targetEntity="App\Entity\Archdeaconry", inversedBy="parishes")
@@ -29,7 +35,7 @@ class Parish extends AbstractTerm {
     /**
      * A county outside City of London, or a ward inside London.
      *
-     * @var County
+     * @var Town
      * @ORM\ManyToOne(targetEntity="App\Entity\Town", inversedBy="parishes")
      */
     private $town;
@@ -42,6 +48,7 @@ class Parish extends AbstractTerm {
 
     public function __construct() {
         parent::__construct();
+        $this->linkable_construct();
         $this->transactions = new ArrayCollection();
     }
 

@@ -1,0 +1,12 @@
+nines_media:
+    root: 'data'
+    thumb_width: 450
+    thumb_height: 350
+    routing:
+        - { class: App\Entity\Archdeaconry, route: archdeaconry_show }
+        - { class: App\Entity\Book, route: book_show }
+        - { class: App\Entity\County, route: county_show }
+        - { class: App\Entity\Diocese, route: diocese_show }
+        - { class: App\Entity\Parish, route: parish_show }
+        - { class: App\Entity\Province, route: province_show }
+        - { class: App\Entity\Town, route: town_show }

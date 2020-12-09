@@ -15,11 +15,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
+use Nines\MediaBundle\Entity\LinkableInterface;
+use Nines\MediaBundle\Entity\LinkableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=ProvinceRepository::class)
  */
-class Province extends AbstractTerm {
+class Province extends AbstractTerm  implements LinkableInterface {
+
+    use LinkableTrait {
+        LinkableTrait::__construct as linkable_construct;
+    }
     /**
      * @var Collection|Diocese[]
      * @ORM\OneToMany(targetEntity="App\Entity\Diocese", mappedBy="province")
@@ -28,6 +34,7 @@ class Province extends AbstractTerm {
 
     public function __construct() {
         parent::__construct();
+        $this->linkable_construct();
         $this->dioceses = new ArrayCollection();
     }
 

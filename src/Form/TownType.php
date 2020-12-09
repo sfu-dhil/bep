@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\County;
 use App\Entity\Town;
+use Nines\MediaBundle\Form\LinkableType;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,6 +54,7 @@ class TownType extends TermType {
                 'add_label' => 'Add County',
             ],
         ]);
+        LinkableType::add($builder, $options);
     }
 
     /**

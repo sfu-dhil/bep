@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Archdeaconry;
 use App\Entity\Diocese;
+use Nines\MediaBundle\Form\LinkableType;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,6 +38,7 @@ class ArchdeaconryType extends TermType {
                 'add_label' => 'Add Diocese',
             ],
         ]);
+        LinkableType::add($builder, $options);
     }
 
     /**

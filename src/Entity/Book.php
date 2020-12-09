@@ -15,11 +15,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Nines\MediaBundle\Entity\LinkableInterface;
+use Nines\MediaBundle\Entity\LinkableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  */
-class Book extends AbstractEntity {
+class Book extends AbstractEntity  implements LinkableInterface {
+
+    use LinkableTrait {
+        LinkableTrait::__construct as linkable_construct;
+    }
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -46,6 +52,7 @@ class Book extends AbstractEntity {
 
     public function __construct() {
         parent::__construct();
+        $this->linkable_construct();
         $this->transactions = new ArrayCollection();
     }
 
