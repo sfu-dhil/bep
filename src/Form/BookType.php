@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Book;
+use Nines\MediaBundle\Form\LinkableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,6 +49,7 @@ class BookType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
+        LinkableType::add($builder, $options);
     }
 
     /**

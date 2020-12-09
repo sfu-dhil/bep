@@ -20,7 +20,7 @@
         </tr>
 
         <tr>
-            <th>Transaction</th>
+            <th>Transactions</th>
             <td>
                 {% if book.transactions|length > 0 %}
                     <ul>
@@ -33,6 +33,17 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig'
+                    with {
+                    'entity': book
+                }
+                %}
+                {% endembed %}
             </td>
         </tr>
         <tr>

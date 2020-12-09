@@ -14,6 +14,7 @@ use App\Entity\Parish;
 use App\Form\ParishType;
 use App\Repository\ParishRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -95,7 +96,7 @@ class ParishController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager) {
         $parish = new Parish();
         $form = $this->createForm(ParishType::class, $parish);
         $form->handleRequest($request);
@@ -104,6 +105,10 @@ class ParishController extends AbstractController implements PaginatorAwareInter
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($parish);
             $entityManager->flush();
+
+            $linkManager->setLinks($parish, $form->get('links')->getData());
+            $entityManager->flush();
+
             $this->addFlash('success', 'The new parish has been saved.');
 
             return $this->redirectToRoute('parish_show', ['id' => $parish->getId()]);
@@ -122,8 +127,8 @@ class ParishController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager) {
+        return $this->new($request, $linkManager);
     }
 
     /**
@@ -146,11 +151,12 @@ class ParishController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Parish $parish) {
+    public function edit(Request $request, Parish $parish, LinkManager $linkManager) {
         $form = $this->createForm(ParishType::class, $parish);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($parish, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated parish has been saved.');
 

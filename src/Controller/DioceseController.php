@@ -14,6 +14,7 @@ use App\Entity\Diocese;
 use App\Form\DioceseType;
 use App\Repository\DioceseRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -95,7 +96,7 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager) {
         $diocese = new Diocese();
         $form = $this->createForm(DioceseType::class, $diocese);
         $form->handleRequest($request);
@@ -104,6 +105,11 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($diocese);
             $entityManager->flush();
+
+            $linkManager->setLinks($diocese, $form->get('links')->getData());
+            $entityManager->flush();
+
+
             $this->addFlash('success', 'The new diocese has been saved.');
 
             return $this->redirectToRoute('diocese_show', ['id' => $diocese->getId()]);
@@ -122,8 +128,8 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager) {
+        return $this->new($request, $linkManager);
     }
 
     /**
@@ -146,11 +152,12 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Diocese $diocese) {
+    public function edit(Request $request, Diocese $diocese, LinkManager $linkManager) {
         $form = $this->createForm(DioceseType::class, $diocese);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($diocese, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated diocese has been saved.');
 

@@ -14,12 +14,18 @@ use App\Repository\ArchdeaconryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Nines\MediaBundle\Entity\LinkableInterface;
+use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=ArchdeaconryRepository::class)
  */
-class Archdeaconry extends AbstractTerm {
+class Archdeaconry extends AbstractTerm  implements LinkableInterface {
+
+    use LinkableTrait {
+        LinkableTrait::__construct as linkable_construct;
+    }
     /**
      * @var Diocese
      * @ORM\ManyToOne(targetEntity="App\Entity\Diocese", inversedBy="archdeaconries")
@@ -34,6 +40,7 @@ class Archdeaconry extends AbstractTerm {
 
     public function __construct() {
         parent::__construct();
+        $this->linkable_construct();
         $this->parishes = new ArrayCollection();
     }
 

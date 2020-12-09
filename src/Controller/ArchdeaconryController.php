@@ -14,6 +14,7 @@ use App\Entity\Archdeaconry;
 use App\Form\ArchdeaconryType;
 use App\Repository\ArchdeaconryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -95,7 +96,7 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager) {
         $archdeaconry = new Archdeaconry();
         $form = $this->createForm(ArchdeaconryType::class, $archdeaconry);
         $form->handleRequest($request);
@@ -104,6 +105,10 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($archdeaconry);
             $entityManager->flush();
+
+            $linkManager->setLinks($archdeaconry, $form->get('links')->getData());
+            $entityManager->flush();
+
             $this->addFlash('success', 'The new archdeaconry has been saved.');
 
             return $this->redirectToRoute('archdeaconry_show', ['id' => $archdeaconry->getId()]);
@@ -122,8 +127,8 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager) {
+        return $this->new($request, $linkManager);
     }
 
     /**
@@ -146,11 +151,12 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Archdeaconry $archdeaconry) {
+    public function edit(Request $request, Archdeaconry $archdeaconry, LinkManager $linkManager) {
         $form = $this->createForm(ArchdeaconryType::class, $archdeaconry);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($archdeaconry, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated archdeaconry has been saved.');
 

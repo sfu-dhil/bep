@@ -17,6 +17,17 @@
             </td>
         </tr>
         <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig'
+                    with {
+                        'entity': parish
+                    }
+                %}
+                {% endembed %}
+            </td>
+        </tr>
+        <tr>
             <th>Transactions</th>
             <td>
                 {% if parish.transactions|length > 0 %}

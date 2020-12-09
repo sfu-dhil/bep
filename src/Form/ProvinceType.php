@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Province;
+use Nines\MediaBundle\Form\LinkableType;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,6 +25,7 @@ class ProvinceType extends TermType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         parent::buildForm($builder, $options);
+        LinkableType::add($builder, $options);
     }
 
     /**

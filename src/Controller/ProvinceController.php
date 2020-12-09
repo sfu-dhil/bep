@@ -14,6 +14,7 @@ use App\Entity\Province;
 use App\Form\ProvinceType;
 use App\Repository\ProvinceRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -95,7 +96,7 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager) {
         $province = new Province();
         $form = $this->createForm(ProvinceType::class, $province);
         $form->handleRequest($request);
@@ -104,6 +105,10 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($province);
             $entityManager->flush();
+
+            $linkManager->setLinks($province, $form->get('links')->getData());
+            $entityManager->flush();
+
             $this->addFlash('success', 'The new province has been saved.');
 
             return $this->redirectToRoute('province_show', ['id' => $province->getId()]);
@@ -122,8 +127,8 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager) {
+        return $this->new($request, $linkManager);
     }
 
     /**
@@ -146,11 +151,12 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Province $province) {
+    public function edit(Request $request, Province $province, LinkManager $linkManager) {
         $form = $this->createForm(ProvinceType::class, $province);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($province, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated province has been saved.');
 
