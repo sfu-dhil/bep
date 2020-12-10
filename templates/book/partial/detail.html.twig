@@ -3,7 +3,7 @@
         <tr>
             <th>Title</th>
             <td>
-                {{ book.title|raw }}
+                {{ book.title }}
             </td>
         </tr>
         <tr>
@@ -19,6 +19,14 @@
             </td>
         </tr>
 
+        <tr>
+            <th>Format</th>
+            <td>
+                {% if book.format %}
+                    <a href='{{ path("format_show", {"id": book.format.id}) }}'>{{ book.format }}</a>
+                {% endif %}
+            </td>
+        </tr>
         <tr>
             <th>Transactions</th>
             <td>
@@ -38,11 +46,8 @@
         <tr>
             <th>Links</th>
             <td>
-                {% embed '@NinesMedia/link/partial/list.html.twig'
-                    with {
-                    'entity': book
-                }
-                %}
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': book } %}
                 {% endembed %}
             </td>
         </tr>

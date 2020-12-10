@@ -14,7 +14,6 @@ use App\Entity\Archdeaconry;
 use App\Entity\Parish;
 use App\Entity\Town;
 use Nines\MediaBundle\Form\LinkableType;
-use Nines\MediaBundle\Form\LinkType;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

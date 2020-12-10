@@ -1,0 +1,37 @@
+{% embed '@NinesUtil/term/partial/show.html.twig' with {'term': nation} %}
+    {% block callback %}
+        <tr>
+            <th>Provinces</th>
+            <td>
+                {% if nation.provinces|length > 0 %}
+                    <ul>
+                        {% for province in nation.provinces %}
+                            <li>
+                                <a href='{{ path("province_show", {"id":province.id }) }}'>
+                                    {{ province }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Counties</th>
+            <td>
+                {% if nation.counties|length > 0 %}
+                    <ul>
+                        {% for county in nation.counties %}
+                            <li>
+                                <a href='{{ path("county_show", {"id":county.id }) }}'>
+                                    {{ county }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}
+

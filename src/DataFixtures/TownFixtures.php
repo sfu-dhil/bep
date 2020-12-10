@@ -17,10 +17,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class TownFixtures extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function load(ObjectManager $em) : void {
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $fixture = new Town();
             $fixture->setName('Name ' . $i);
             $fixture->setLabel('Label ' . $i);

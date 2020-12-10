@@ -22,13 +22,14 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Entity(repositoryClass=ParishRepository::class)
  */
 class Parish extends AbstractTerm implements LinkableInterface {
-
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+
     /**
      * @var Archdeaconry
      * @ORM\ManyToOne(targetEntity="App\Entity\Archdeaconry", inversedBy="parishes")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $archdeaconry;
 
@@ -37,6 +38,7 @@ class Parish extends AbstractTerm implements LinkableInterface {
      *
      * @var Town
      * @ORM\ManyToOne(targetEntity="App\Entity\Town", inversedBy="parishes")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $town;
 

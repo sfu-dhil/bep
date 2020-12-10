@@ -3,6 +3,8 @@
         <tr>
             <th>ID</th>
             <th>Value</th>
+            <th>Copies</th>
+            <th>Transcription</th>
             <th>Description</th>
 
         </tr>
@@ -17,6 +19,14 @@
                 </td>
                 <td>
                     {{ transaction.value(true) }}
+                </td>
+
+                <td>
+                    {{ transaction.copies }}
+                </td>
+
+                <td>
+                    {{ transaction.transcription|raw }}
                 </td>
 
                 <td>

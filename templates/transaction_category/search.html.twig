@@ -45,8 +45,8 @@
 
     {% if transaction_categories|length %}
 
-    {% embed 'transaction_category/partial/table.html.twig' %}
-    {% endembed %}
+        {% embed 'transaction_category/partial/table.html.twig' %}
+        {% endembed %}
 
         <div class="navigation">
             {{ knp_pagination_render(transaction_categories) }}
@@ -54,3 +54,4 @@
     {% endif %}
 
 {% endblock %}
+

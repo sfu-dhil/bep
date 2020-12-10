@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}New Injunction {% endblock %}
+
+    {% block body %}
+        <h1>New Injunction</h1>
+
+        {% embed 'injunction/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

@@ -228,6 +228,7 @@ class ProvinceTest extends ControllerBaseCase {
             'province[label]' => 'Updated Label',
             'province[description]' => 'Updated Description',
         ]);
+        $form['province[nation]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/province/1'));
@@ -290,6 +291,7 @@ class ProvinceTest extends ControllerBaseCase {
             'province[label]' => 'New Label',
             'province[description]' => 'New Description',
         ]);
+        $form['province[nation]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -312,6 +314,7 @@ class ProvinceTest extends ControllerBaseCase {
             'province[label]' => 'New Label',
             'province[description]' => 'New Description',
         ]);
+        $form['province[nation]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

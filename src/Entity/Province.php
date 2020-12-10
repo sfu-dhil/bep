@@ -14,18 +14,25 @@ use App\Repository\ProvinceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractTerm;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
+use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=ProvinceRepository::class)
  */
-class Province extends AbstractTerm  implements LinkableInterface {
-
+class Province extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+
+    /**
+     * @var Nation
+     * @ORM\ManyToOne(targetEntity="Nation", inversedBy="provinces")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $nation;
+
     /**
      * @var Collection|Diocese[]
      * @ORM\OneToMany(targetEntity="App\Entity\Diocese", mappedBy="province")
@@ -61,6 +68,16 @@ class Province extends AbstractTerm  implements LinkableInterface {
                 $diocese->setProvince(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNation() : ?Nation {
+        return $this->nation;
+    }
+
+    public function setNation(?Nation $nation) : self {
+        $this->nation = $nation;
 
         return $this;
     }

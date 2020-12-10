@@ -12,21 +12,32 @@ namespace App\DataFixtures;
 
 use App\Entity\Province;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProvinceFixtures extends Fixture {
+class ProvinceFixtures extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function load(ObjectManager $em) : void {
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $fixture = new Province();
             $fixture->setName('Name ' . $i);
             $fixture->setLabel('Label ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
+            $fixture->setNation($this->getReference('nation.' . $i));
             $em->persist($fixture);
             $this->setReference('province.' . $i, $fixture);
         }
         $em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies() {
+        return [
+            NationFixtures::class,
+        ];
     }
 }

@@ -1,0 +1,28 @@
+{% embed '@NinesUtil/term/partial/show.html.twig' with {'term': archive} %}
+    {% block callback %}
+        <tr>
+            <th>Sources</th>
+            <td>
+                {% if archive.sources|length > 0 %}
+                    <ul>
+                        {% for source in archive.sources %}
+                            <li>
+                                <a href='{{ path("source_show", {"id":source.id }) }}'>
+                                    {{ source }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': archive } %}
+                {% endembed %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}

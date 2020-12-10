@@ -228,6 +228,7 @@ class ArchdeaconryTest extends ControllerBaseCase {
             'archdeaconry[label]' => 'Updated Label',
             'archdeaconry[description]' => 'Updated Description',
         ]);
+        $form['archdeaconry[diocese]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/archdeaconry/1'));
@@ -290,6 +291,7 @@ class ArchdeaconryTest extends ControllerBaseCase {
             'archdeaconry[label]' => 'New Label',
             'archdeaconry[description]' => 'New Description',
         ]);
+        $form['archdeaconry[diocese]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -312,6 +314,7 @@ class ArchdeaconryTest extends ControllerBaseCase {
             'archdeaconry[label]' => 'New Label',
             'archdeaconry[description]' => 'New Description',
         ]);
+        $form['archdeaconry[diocese]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

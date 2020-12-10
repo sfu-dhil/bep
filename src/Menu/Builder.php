@@ -72,37 +72,17 @@ class Builder implements ContainerAwareInterface {
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-        $browse->addChild('Books', [
-            'route' => 'book_index',
-        ]);
-
-        $browse->addChild('Transactions', [
-            'route' => 'transaction_index',
-        ]);
-
-        $browse->addChild('Parishes', [
-            'route' => 'parish_index',
-        ]);
-
-        $browse->addChild('Towns & Wards', [
-            'route' => 'town_index',
-        ]);
-
-        $browse->addChild('Counties', [
-            'route' => 'county_index',
-        ]);
-
-        $browse->addChild('Archdeaconries', [
-            'route' => 'archdeaconry_index',
-        ]);
-
-        $browse->addChild('Dioceses', [
-            'route' => 'diocese_index',
-        ]);
-
-        $browse->addChild('Provinces', [
-            'route' => 'province_index',
-        ]);
+        $browse->addChild('Archdeaconries', ['route' => 'archdeaconry_index']);
+        $browse->addChild('Archives', ['route' => 'archive_index']);
+        $browse->addChild('Books', ['route' => 'book_index']);
+        $browse->addChild('Counties', ['route' => 'county_index']);
+        $browse->addChild('Injunctions', ['route' => 'injunction_index']);
+        $browse->addChild('Nations', ['route' => 'nation_index']);
+        $browse->addChild('Parishes', ['route' => 'parish_index']);
+        $browse->addChild('Provinces', ['route' => 'province_index']);
+        $browse->addChild('Sources', ['route' => 'source_index']);
+        $browse->addChild('Towns', ['route' => 'town_index']);
+        $browse->addChild('Transactions', ['route' => 'transaction_index']);
 
         if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
             $divider = $browse->addChild('divider_content', [
@@ -112,9 +92,9 @@ class Builder implements ContainerAwareInterface {
                 'role' => 'separator',
                 'class' => 'divider',
             ]);
-            $browse->addChild('Transaction Categories', [
-                'route' => 'transaction_category_index',
-            ]);
+            $browse->addChild('Formats', ['route' => 'format_index']);
+            $browse->addChild('Source Categories', ['route' => 'source_category_index']);
+            $browse->addChild('Transaction Categories', ['route' => 'transaction_category_index']);
         }
 
         if ($this->hasRole('ROLE_ADMIN')) {

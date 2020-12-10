@@ -33,7 +33,7 @@ class Transaction extends AbstractEntity {
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false, options={"default": 1})
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $copies;
 
@@ -58,14 +58,29 @@ class Transaction extends AbstractEntity {
     /**
      * @var Parish
      * @ORM\ManyToOne(targetEntity="App\Entity\Parish", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $parish;
 
     /**
+     * @var Source
+     * @ORM\ManyToOne(targetEntity="Source", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $source;
+
+    /**
      * @var TransactionCategory
      * @ORM\ManyToOne(targetEntity="App\Entity\TransactionCategory", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $transactionCategory;
+
+    /**
+     * @var Injunction
+     * @ORM\ManyToOne(targetEntity="Injunction", inversedBy="transactions")
+     */
+    private $injunction;
 
     public function __construct() {
         parent::__construct();
@@ -162,6 +177,26 @@ class Transaction extends AbstractEntity {
 
     public function setTranscription(?string $transcription) : self {
         $this->transcription = $transcription;
+
+        return $this;
+    }
+
+    public function getSource() : ?Source {
+        return $this->source;
+    }
+
+    public function setSource(?Source $source) : self {
+        $this->source = $source;
+
+        return $this;
+    }
+
+    public function getInjunction() : ?Injunction {
+        return $this->injunction;
+    }
+
+    public function setInjunction(?Injunction $injunction) : self {
+        $this->injunction = $injunction;
 
         return $this;
     }

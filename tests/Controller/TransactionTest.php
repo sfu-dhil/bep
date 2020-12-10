@@ -125,6 +125,9 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[copies]' => 3,
             'transaction[description]' => 'Updated Description',
         ]);
+        $form['transaction[parish]']->disableValidation()->setValue(1);
+        $form['transaction[source]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/transaction/1'));
@@ -188,6 +191,9 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[copies]' => 1,
             'transaction[description]' => 'New Description',
         ]);
+        $form['transaction[parish]']->disableValidation()->setValue(1);
+        $form['transaction[source]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -211,6 +217,9 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[copies]' => 1,
             'transaction[description]' => 'New Description',
         ]);
+        $form['transaction[parish]']->disableValidation()->setValue(1);
+        $form['transaction[source]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

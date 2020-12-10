@@ -17,18 +17,20 @@ use Doctrine\Persistence\ObjectManager;
 
 class TransactionFixtures extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function load(ObjectManager $em) : void {
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $fixture = new Transaction();
-            $fixture->setValue(200 * ($i + 1));
-            $fixture->setTranscription("<p>Ye olde paragraf {$i} with ſongs.</p>");
+            $fixture->setValue($i);
+            $fixture->setCopies($i);
+            $fixture->setTranscription("<p>This is paragraph {$i}</p>");
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $fixture->setCopies($i + 1);
             $fixture->setBook($this->getReference('book.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
-            $fixture->setTransactionCategory($this->getReference('transactioncategory.' . $i));
+            $fixture->setSource($this->getReference('source.' . $i));
+            $fixture->setTransactioncategory($this->getReference('transactioncategory.' . $i));
+            $fixture->setInjunction($this->getReference('injunction.' . $i));
             $em->persist($fixture);
             $this->setReference('transaction.' . $i, $fixture);
         }
@@ -42,7 +44,9 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
         return [
             BookFixtures::class,
             ParishFixtures::class,
+            SourceFixtures::class,
             TransactionCategoryFixtures::class,
+            InjunctionFixtures::class,
         ];
     }
 }
