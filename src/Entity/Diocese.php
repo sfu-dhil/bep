@@ -14,21 +14,22 @@ use App\Repository\DioceseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractTerm;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
+use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=DioceseRepository::class)
  */
-class Diocese extends AbstractTerm  implements LinkableInterface {
-
+class Diocese extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+
     /**
      * @var Province
      * @ORM\ManyToOne(targetEntity="App\Entity\Province", inversedBy="dioceses")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $province;
 

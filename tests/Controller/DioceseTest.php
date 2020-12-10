@@ -228,6 +228,7 @@ class DioceseTest extends ControllerBaseCase {
             'diocese[label]' => 'Updated Label',
             'diocese[description]' => 'Updated Description',
         ]);
+        $form['diocese[province]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/diocese/1'));
@@ -290,6 +291,7 @@ class DioceseTest extends ControllerBaseCase {
             'diocese[label]' => 'New Label',
             'diocese[description]' => 'New Description',
         ]);
+        $form['diocese[province]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -312,6 +314,7 @@ class DioceseTest extends ControllerBaseCase {
             'diocese[label]' => 'New Label',
             'diocese[description]' => 'New Description',
         ]);
+        $form['diocese[province]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

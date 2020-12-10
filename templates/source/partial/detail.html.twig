@@ -1,0 +1,50 @@
+{% embed '@NinesUtil/term/partial/show.html.twig' with {'term': source} %}
+    {% block callback %}
+        <tr>
+            <th>Call Number</th>
+            <td>
+                {{ source.callNumber }}
+            </td>
+        </tr>
+        <tr>
+            <th>Source Category</th>
+            <td>
+                {% if source.sourceCategory %}
+                    <a href='{{ path("source_category_show", {"id": source.sourceCategory.id}) }}'>{{ source.sourceCategory }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Archive</th>
+            <td>
+                {% if source.archive %}
+                    <a href='{{ path("archive_show", {"id": source.archive.id}) }}'>{{ source.archive }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Transactions</th>
+            <td>
+                {% if source.transactions|length > 0 %}
+                    <ul>
+                        {% for transaction in source.transactions %}
+                            <li>
+                                <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
+                                    {{ transaction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': source } %}
+                {% endembed %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}

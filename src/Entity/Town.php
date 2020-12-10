@@ -14,18 +14,18 @@ use App\Repository\TownRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractTerm;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
+use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=TownRepository::class)
  */
-class Town extends AbstractTerm  implements LinkableInterface {
-
+class Town extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+
     /**
      * @var boolean;
      * @ORM\Column(type="boolean", nullable=false)
@@ -35,6 +35,7 @@ class Town extends AbstractTerm  implements LinkableInterface {
     /**
      * @var County
      * @ORM\ManyToOne(targetEntity="App\Entity\County", inversedBy="towns")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $county;
 

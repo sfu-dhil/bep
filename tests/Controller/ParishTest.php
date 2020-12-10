@@ -228,6 +228,8 @@ class ParishTest extends ControllerBaseCase {
             'parish[label]' => 'Updated Label',
             'parish[description]' => 'Updated Description',
         ]);
+        $form['parish[town]']->disableValidation()->setValue(1);
+        $form['parish[archdeaconry]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/parish/1'));
@@ -290,6 +292,8 @@ class ParishTest extends ControllerBaseCase {
             'parish[label]' => 'New Label',
             'parish[description]' => 'New Description',
         ]);
+        $form['parish[town]']->disableValidation()->setValue(1);
+        $form['parish[archdeaconry]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -312,6 +316,8 @@ class ParishTest extends ControllerBaseCase {
             'parish[label]' => 'New Label',
             'parish[description]' => 'New Description',
         ]);
+        $form['parish[town]']->disableValidation()->setValue(1);
+        $form['parish[archdeaconry]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

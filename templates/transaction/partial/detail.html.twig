@@ -34,6 +34,22 @@
             </td>
         </tr>
         <tr>
+            <th>Parish</th>
+            <td>
+                {% if transaction.parish %}
+                    <a href='{{ path("parish_show", {"id": transaction.parish.id}) }}'>{{ transaction.parish }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Source</th>
+            <td>
+                {% if transaction.source %}
+                    <a href='{{ path("source_show", {"id": transaction.source.id}) }}'>{{ transaction.source }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Transaction Category</th>
             <td>
                 {% if transaction.transactionCategory %}
@@ -42,10 +58,10 @@
             </td>
         </tr>
         <tr>
-            <th>Parish</th>
+            <th>Injunction</th>
             <td>
-                {% if transaction.parish %}
-                    <a href='{{ path("parish_show", {"id": transaction.parish.id}) }}'>{{ transaction.parish }}</a>
+                {% if transaction.injunction %}
+                    <a href='{{ path("injunction_show", {"id": transaction.injunction.id}) }}'>{{ transaction.injunction }}</a>
                 {% endif %}
             </td>
         </tr>

@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Book;
+use App\Entity\Injunction;
 use App\Entity\Parish;
+use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
 use Symfony\Component\Form\AbstractType;
@@ -51,10 +53,11 @@ class TransactionType extends AbstractType {
         ]);
         $builder->add('copies', NumberType::class, [
             'label' => 'Copies',
-            'required' => true,
-            'empty_data' => 1,
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+            ],
         ]);
-
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
             'required' => false,
@@ -63,25 +66,12 @@ class TransactionType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
-
         $builder->add('description', TextareaType::class, [
             'label' => 'Description',
             'required' => false,
             'attr' => [
                 'help_block' => 'Provide a modern-spelling equivalent to the transaction text',
                 'class' => 'tinymce',
-            ],
-        ]);
-
-        $builder->add('transactionCategory', Select2EntityType::class, [
-            'label' => 'Category',
-            'class' => TransactionCategory::class,
-            'remote_route' => 'transaction_category_typeahead',
-            'allow_clear' => true,
-            'attr' => [
-                'help_block' => '',
-                'add_path' => 'transaction_category_new_popup',
-                'add_label' => 'Add Category',
             ],
         ]);
 
@@ -106,6 +96,42 @@ class TransactionType extends AbstractType {
                 'help_block' => '',
                 'add_path' => 'parish_new_popup',
                 'add_label' => 'Add Parish',
+            ],
+        ]);
+
+        $builder->add('source', Select2EntityType::class, [
+            'label' => 'Source',
+            'class' => Source::class,
+            'remote_route' => 'source_typeahead',
+            'allow_clear' => true,
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'source_new_popup',
+                'add_label' => 'Add Source',
+            ],
+        ]);
+
+        $builder->add('transactionCategory', Select2EntityType::class, [
+            'label' => 'TransactionCategory',
+            'class' => TransactionCategory::class,
+            'remote_route' => 'transaction_category_typeahead',
+            'allow_clear' => true,
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'transaction_category_new_popup',
+                'add_label' => 'Add TransactionCategory',
+            ],
+        ]);
+
+        $builder->add('injunction', Select2EntityType::class, [
+            'label' => 'Injunction',
+            'class' => Injunction::class,
+            'remote_route' => 'injunction_typeahead',
+            'allow_clear' => true,
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'injunction_new_popup',
+                'add_label' => 'Add Injunction',
             ],
         ]);
 

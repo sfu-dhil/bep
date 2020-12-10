@@ -9,7 +9,7 @@
             </td>
         </tr>
         <tr>
-            <th>Parish</th>
+            <th>Parishs</th>
             <td>
                 {% if archdeaconry.parishes|length > 0 %}
                     <ul>
@@ -27,11 +27,8 @@
         <tr>
             <th>Links</th>
             <td>
-                {% embed '@NinesMedia/link/partial/list.html.twig'
-                    with {
-                    'entity': archdeaconry
-                }
-                %}
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': archdeaconry } %}
                 {% endembed %}
             </td>
         </tr>

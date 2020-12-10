@@ -1,0 +1,34 @@
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Estc</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for injunction in injunctions %}
+            <tr>
+                <td>
+                    <a href="{{ path('injunction_show', { 'id': injunction.id }) }}">
+                        {{ injunction.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ injunction.title }}
+                </td>
+
+                <td>
+                    {{ injunction.description|raw }}
+                </td>
+
+                <td>
+                    {{ injunction.estc }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

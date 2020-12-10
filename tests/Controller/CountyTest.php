@@ -228,6 +228,7 @@ class CountyTest extends ControllerBaseCase {
             'county[label]' => 'Updated Label',
             'county[description]' => 'Updated Description',
         ]);
+        $form['county[nation]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/county/1'));
@@ -290,6 +291,7 @@ class CountyTest extends ControllerBaseCase {
             'county[label]' => 'New Label',
             'county[description]' => 'New Description',
         ]);
+        $form['county[nation]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -312,6 +314,7 @@ class CountyTest extends ControllerBaseCase {
             'county[label]' => 'New Label',
             'county[description]' => 'New Description',
         ]);
+        $form['county[nation]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

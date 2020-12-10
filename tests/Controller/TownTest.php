@@ -229,6 +229,7 @@ class TownTest extends ControllerBaseCase {
             'town[description]' => 'Updated Description',
             'town[inLondon]' => 0,
         ]);
+        $form['town[county]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/town/1'));
@@ -292,6 +293,7 @@ class TownTest extends ControllerBaseCase {
             'town[description]' => 'New Description',
             'town[inLondon]' => 1,
         ]);
+        $form['town[county]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -315,6 +317,7 @@ class TownTest extends ControllerBaseCase {
             'town[description]' => 'New Description',
             'town[inLondon]' => 0,
         ]);
+        $form['town[county]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

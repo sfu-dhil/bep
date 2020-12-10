@@ -14,18 +14,18 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractEntity;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
+use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  */
-class Book extends AbstractEntity  implements LinkableInterface {
-
+class Book extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -43,6 +43,12 @@ class Book extends AbstractEntity  implements LinkableInterface {
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @var Format
+     * @ORM\ManyToOne(targetEntity="Format", inversedBy="books")
+     */
+    private $format;
 
     /**
      * @var Collection|Transaction[]
@@ -123,6 +129,16 @@ class Book extends AbstractEntity  implements LinkableInterface {
                 $transaction->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFormat() : ?Format {
+        return $this->format;
+    }
+
+    public function setFormat(?Format $format) : self {
+        $this->format = $format;
 
         return $this;
     }

@@ -12,21 +12,32 @@ namespace App\DataFixtures;
 
 use App\Entity\Book;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class BookFixtures extends Fixture {
+class BookFixtures extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function load(ObjectManager $em) : void {
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $fixture = new Book();
-            $fixture->setTitle("This is paragrah {$i}");
-            $fixture->setDate('1600-01-0' . $i);
+            $fixture->setTitle("This is paragraph {$i}");
+            $fixture->setDate('Date ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
+            $fixture->setFormat($this->getReference('format.' . $i));
             $em->persist($fixture);
             $this->setReference('book.' . $i, $fixture);
         }
         $em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies() {
+        return [
+            FormatFixtures::class,
+        ];
     }
 }

@@ -11,12 +11,14 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Book;
-use Nines\MediaBundle\Form\LinkableType;
+use App\Entity\Format;
+    use Nines\MediaBundle\Form\LinkableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 /**
  * Book form.
@@ -31,7 +33,7 @@ class BookType extends AbstractType {
             'required' => false,
             'attr' => [
                 'help_block' => '',
-                'class' => 'tinymce',
+                'class' => '',
             ],
         ]);
         $builder->add('date', TextType::class, [
@@ -47,6 +49,17 @@ class BookType extends AbstractType {
             'attr' => [
                 'help_block' => '',
                 'class' => 'tinymce',
+            ],
+        ]);
+        $builder->add('format', Select2EntityType::class, [
+            'label' => 'Format',
+            'class' => Format::class,
+            'remote_route' => 'format_typeahead',
+            'allow_clear' => true,
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'format_new_popup',
+                'add_label' => 'Add Format',
             ],
         ]);
         LinkableType::add($builder, $options);

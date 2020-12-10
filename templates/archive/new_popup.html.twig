@@ -1,0 +1,15 @@
+{% extends 'popup.html.twig' %}
+
+    {% block title %}New Archive {% endblock %}
+
+    {% block body %}
+        <h1>New Archive</h1>
+
+        {% embed 'archive/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

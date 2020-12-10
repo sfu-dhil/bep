@@ -14,18 +14,25 @@ use App\Repository\CountyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractTerm;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
+use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * @ORM\Entity(repositoryClass=CountyRepository::class)
  */
-class County extends AbstractTerm  implements LinkableInterface {
-
+class County extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+
+    /**
+     * @var Nation
+     * @ORM\ManyToOne(targetEntity="Nation", inversedBy="counties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $nation;
+
     /**
      * @var Collection|Parish[]
      * @ORM\OneToMany(targetEntity="App\Entity\Town", mappedBy="county")
@@ -61,6 +68,16 @@ class County extends AbstractTerm  implements LinkableInterface {
                 $town->setCounty(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNation() : ?Nation {
+        return $this->nation;
+    }
+
+    public function setNation(?Nation $nation) : self {
+        $this->nation = $nation;
 
         return $this;
     }

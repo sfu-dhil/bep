@@ -1,0 +1,15 @@
+{% extends 'popup.html.twig' %}
+
+    {% block title %}New Source {% endblock %}
+
+    {% block body %}
+        <h1>New Source</h1>
+
+        {% embed 'source/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

@@ -56,7 +56,6 @@ class TransactionController extends AbstractController implements PaginatorAware
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $transaction->setLsd((int) $form->get('l')->getData(), (int) $form->get('s')->getData(), (int) $form->get('d')->getData());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($transaction);
             $entityManager->flush();
