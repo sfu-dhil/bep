@@ -76,6 +76,7 @@ class Builder implements ContainerAwareInterface {
         $browse->addChild('Archives', ['route' => 'archive_index']);
         $browse->addChild('Books', ['route' => 'book_index']);
         $browse->addChild('Counties', ['route' => 'county_index']);
+        $browse->addChild('Dioceses', ['route' => 'diocese_index']);
         $browse->addChild('Injunctions', ['route' => 'injunction_index']);
         $browse->addChild('Nations', ['route' => 'nation_index']);
         $browse->addChild('Parishes', ['route' => 'parish_index']);
