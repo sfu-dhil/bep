@@ -34,6 +34,12 @@ class LsdMapper extends PropertyPathMapper implements DataMapperInterface {
         $formData['l']->setData($l);
         $formData['s']->setData($s);
         $formData['d']->setData($d);
+
+        list($sl, $ss, $sd) = $viewData->getShippingValue(true, true);
+
+        $formData['sl']->setData($sl);
+        $formData['ss']->setData($ss);
+        $formData['sd']->setData($sd);
     }
 
     /**
@@ -52,10 +58,19 @@ class LsdMapper extends PropertyPathMapper implements DataMapperInterface {
 
         if ( ! $l && ! $s && ! $d) {
             $viewData->setValue(null);
-
-            return;
+        } else {
+            $viewData->setLsd($l, $s, $d);
         }
 
-        $viewData->setLsd($l, $s, $d);
+        $sl = (int) $formData['sl']->getData();
+        $ss = (int) $formData['ss']->getData();
+        $sd = (int) $formData['sd']->getData();
+
+        if ( ! $sl && ! $ss && ! $sd) {
+            $viewData->setShippingValue(null);
+        } else {
+            $viewData->setShippingLsd($sl, $ss, $sd);
+        }
+
     }
 }

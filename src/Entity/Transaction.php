@@ -35,6 +35,12 @@ class Transaction extends AbstractEntity {
      * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
+    private $shipping;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
     private $copies;
 
     /**
@@ -200,4 +206,31 @@ class Transaction extends AbstractEntity {
 
         return $this;
     }
+    public function getShippingValue($format = false, $list = false) {
+        if ($format) {
+            $l = floor($this->shipping / 240);
+            $s = floor(($this->shipping - $l * 240) / 12);
+            $d = $this->shipping - $s * 12 - $l * 240;
+            if ($list) {
+                return [$l, $s, $d];
+            }
+
+            return "£{$l}. {$s}s. {$d}d";
+        }
+
+        return $this->shipping;
+    }
+
+    public function setShippingValue(?int $shipping) : self {
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function setShippingLsd(int $l, int $s, int $d) : self {
+        $this->shipping = 240 * $l + 12 * $s + $d;
+
+        return $this;
+    }
+
 }

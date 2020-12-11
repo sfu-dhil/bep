@@ -34,23 +34,43 @@ class TransactionType extends AbstractType {
         /** @var Transaction $transaction */
         $transaction = $options['data'];
         $builder->add('l', NumberType::class, [
-            'label' => 'Pounds',
+            'label' => 'Cost Pounds',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('s', NumberType::class, [
-            'label' => 'Shillings',
+            'label' => 'Cost Shillings',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('d', NumberType::class, [
-            'label' => 'Pence',
+            'label' => 'Cost Pence',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
+
+        $builder->add('sl', NumberType::class, [
+            'label' => 'Shipping Pounds',
+            'scale' => 0,
+            'required' => false,
+            'mapped' => false,
+        ]);
+        $builder->add('ss', NumberType::class, [
+            'label' => 'Shipping Shillings',
+            'scale' => 0,
+            'required' => false,
+            'mapped' => false,
+        ]);
+        $builder->add('sd', NumberType::class, [
+            'label' => 'Shipping Pence',
+            'scale' => 0,
+            'required' => false,
+            'mapped' => false,
+        ]);
+
         $builder->add('copies', NumberType::class, [
             'label' => 'Copies',
             'required' => false,

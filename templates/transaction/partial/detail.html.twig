@@ -7,6 +7,12 @@
             </td>
         </tr>
         <tr>
+            <th>Shipping</th>
+            <td>
+                {{ transaction.shippingValue(true) }}
+            </td>
+        </tr>
+        <tr>
             <th>Copies</th>
             <td>
                 {{ transaction.copies }}
