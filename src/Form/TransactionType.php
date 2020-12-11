@@ -19,6 +19,7 @@ use App\Entity\TransactionCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -34,23 +35,43 @@ class TransactionType extends AbstractType {
         /** @var Transaction $transaction */
         $transaction = $options['data'];
         $builder->add('l', NumberType::class, [
-            'label' => 'Pounds',
+            'label' => 'Cost Pounds',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('s', NumberType::class, [
-            'label' => 'Shillings',
+            'label' => 'Cost Shillings',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('d', NumberType::class, [
-            'label' => 'Pence',
+            'label' => 'Cost Pence',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
+
+        $builder->add('sl', NumberType::class, [
+            'label' => 'Shipping Pounds',
+            'scale' => 0,
+            'required' => false,
+            'mapped' => false,
+        ]);
+        $builder->add('ss', NumberType::class, [
+            'label' => 'Shipping Shillings',
+            'scale' => 0,
+            'required' => false,
+            'mapped' => false,
+        ]);
+        $builder->add('sd', NumberType::class, [
+            'label' => 'Shipping Pence',
+            'scale' => 0,
+            'required' => false,
+            'mapped' => false,
+        ]);
+
         $builder->add('copies', NumberType::class, [
             'label' => 'Copies',
             'required' => false,
@@ -58,6 +79,7 @@ class TransactionType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
+
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
             'required' => false,
@@ -110,9 +132,16 @@ class TransactionType extends AbstractType {
                 'add_label' => 'Add Source',
             ],
         ]);
+        $builder->add('page', TextType::class, [
+            'label' => 'Page',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Enter a page number (p. 5) or folio location (f. 5 r. col. a)',
+            ],
+        ]);
 
         $builder->add('transactionCategory', Select2EntityType::class, [
-            'label' => 'TransactionCategory',
+            'label' => 'Transaction Category',
             'class' => TransactionCategory::class,
             'remote_route' => 'transaction_category_typeahead',
             'allow_clear' => true,

@@ -124,6 +124,8 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[l]' => 2,
             'transaction[copies]' => 3,
             'transaction[description]' => 'Updated Description',
+            'transaction[sl]' => 3,
+            'transaction[page]' => 'p. 6',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
@@ -134,6 +136,8 @@ class TransactionTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("£2")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("£3")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("p. 6")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
     }
 
@@ -190,6 +194,8 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[l]' => 1,
             'transaction[copies]' => 1,
             'transaction[description]' => 'New Description',
+            'transaction[sl]' => 3,
+            'transaction[page]' => 'p. 6',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
@@ -201,6 +207,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("£1")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("p. 6")')->count());
     }
 
     /**
@@ -216,6 +223,8 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[l]' => 1,
             'transaction[copies]' => 1,
             'transaction[description]' => 'New Description',
+            'transaction[sl]' => 3,
+            'transaction[page]' => 'p. 6',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
@@ -227,6 +236,7 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("£1")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("p. 6")')->count());
     }
 
     /**

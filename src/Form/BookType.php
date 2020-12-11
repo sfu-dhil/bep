@@ -14,6 +14,7 @@ use App\Entity\Book;
 use App\Entity\Format;
     use Nines\MediaBundle\Form\LinkableType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,8 +33,24 @@ class BookType extends AbstractType {
             'label' => 'Title',
             'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'A modern-spelling title',
                 'class' => '',
+            ],
+        ]);
+        $builder->add('variants', CollectionType::class, [
+            'label' => 'Variant Titles',
+            'required' => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'delete_empty' => true,
+            'entry_type' => TextType::class,
+            'entry_options' => [
+                'label' => false,
+            ],
+
+            'attr' => [
+                'help_block' => 'Original spelling title and any variants of it',
+                'class' => 'collection collection-simple',
             ],
         ]);
         $builder->add('date', TextType::class, [

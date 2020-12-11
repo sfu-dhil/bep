@@ -23,6 +23,8 @@ class BookFixtures extends Fixture implements DependentFixtureInterface {
         for ($i = 1; $i <= 4; $i++) {
             $fixture = new Book();
             $fixture->setTitle("This is paragraph {$i}");
+            $fixture->setVariants(["Variant {$i}"]);
+            $fixture->addVariant("Other variant {$i}");
             $fixture->setDate('Date ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setFormat($this->getReference('format.' . $i));

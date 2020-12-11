@@ -226,6 +226,7 @@ class BookTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'book[title]' => 'Updated Title',
+            'book[variants][0]' => 'Updated Variant',
             'book[date]' => 'Updated Date',
             'book[description]' => 'Updated Description',
         ]);
@@ -237,6 +238,7 @@ class BookTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Title")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Variant")')->count());
     }
 
     /**
@@ -293,14 +295,18 @@ class BookTest extends ControllerBaseCase {
             'book[date]' => 'New Date',
             'book[description]' => 'New Description',
         ]);
+        $values = $form->getPhpValues();
+        $values['book']['variants'][0] = 'New Variant';
 
-        $this->client->submit($form);
+        $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Variant")')->count());
     }
 
     /**
@@ -318,13 +324,17 @@ class BookTest extends ControllerBaseCase {
             'book[description]' => 'New Description',
         ]);
 
-        $this->client->submit($form);
+        $values = $form->getPhpValues();
+        $values['book']['variants'][0] = 'New Variant';
+        $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Variant")')->count());
     }
 
     /**

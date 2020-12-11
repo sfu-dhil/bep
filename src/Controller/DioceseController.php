@@ -109,7 +109,6 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
             $linkManager->setLinks($diocese, $form->get('links')->getData());
             $entityManager->flush();
 
-
             $this->addFlash('success', 'The new diocese has been saved.');
 
             return $this->redirectToRoute('diocese_show', ['id' => $diocese->getId()]);

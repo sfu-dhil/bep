@@ -25,6 +25,7 @@ class Archive extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
     }
+
     /**
      * @var Collection|Source[]
      * @ORM\OneToMany(targetEntity="Source", mappedBy="archive")
