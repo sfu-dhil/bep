@@ -141,7 +141,7 @@ class TransactionType extends AbstractType {
         ]);
 
         $builder->add('transactionCategory', Select2EntityType::class, [
-            'label' => 'TransactionCategory',
+            'label' => 'Transaction Category',
             'class' => TransactionCategory::class,
             'remote_route' => 'transaction_category_typeahead',
             'allow_clear' => true,

@@ -34,6 +34,12 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
+     * @ORM\Column(type="array")
+     */
+    private $variants;
+
+    /**
+     * @var string
      * @ORM\Column(type="string", length=12, nullable=true)
      */
     private $date;
@@ -60,6 +66,7 @@ class Book extends AbstractEntity implements LinkableInterface {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
+        $this->variants = [];
     }
 
     /**
@@ -139,6 +146,26 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     public function setFormat(?Format $format) : self {
         $this->format = $format;
+
+        return $this;
+    }
+
+    public function getVariants(): ?array
+    {
+        return $this->variants;
+    }
+
+    public function addVariant(string $variant) : self {
+        if( ! in_array($variant, $this->variants)) {
+            $this->variants[] = $variant;
+        }
+
+        return $this;
+    }
+
+    public function setVariants(array $variants): self
+    {
+        $this->variants = $variants;
 
         return $this;
     }

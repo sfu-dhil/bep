@@ -7,6 +7,14 @@
             </td>
         </tr>
         <tr>
+            <th>Variant Titles</th>
+            <td>
+                {% for title in book.variants %}
+                    {{ title }}{% if not loop.last %}<br>{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <th>Date</th>
             <td>
                 {{ book.date }}
