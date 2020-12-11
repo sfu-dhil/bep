@@ -23,12 +23,14 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
         for ($i = 1; $i <= 4; $i++) {
             $fixture = new Transaction();
             $fixture->setValue($i);
+            $fixture->setShippingValue($i * 2);
             $fixture->setCopies($i);
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setBook($this->getReference('book.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setSource($this->getReference('source.' . $i));
+            $fixture->setPage("p. {$i}");
             $fixture->setTransactioncategory($this->getReference('transactioncategory.' . $i));
             $fixture->setInjunction($this->getReference('injunction.' . $i));
             $em->persist($fixture);

@@ -45,6 +45,12 @@ class Transaction extends AbstractEntity {
 
     /**
      * @var string
+     * @ORM\Column(type="string", length=24, nullable=true)
+     */
+    private $page;
+
+    /**
+     * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     private $transcription;
@@ -229,6 +235,18 @@ class Transaction extends AbstractEntity {
 
     public function setShippingLsd(int $l, int $s, int $d) : self {
         $this->shipping = 240 * $l + 12 * $s + $d;
+
+        return $this;
+    }
+
+    public function getPage(): ?string
+    {
+        return $this->page;
+    }
+
+    public function setPage(?string $page): self
+    {
+        $this->page = $page;
 
         return $this;
     }

@@ -19,6 +19,7 @@ use App\Entity\TransactionCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -78,6 +79,7 @@ class TransactionType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
+
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
             'required' => false,
@@ -129,6 +131,13 @@ class TransactionType extends AbstractType {
                 'add_path' => 'source_new_popup',
                 'add_label' => 'Add Source',
             ],
+        ]);
+        $builder->add('page', TextType::class, [
+            'label' => 'Page',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Enter a page number (p. 5) or folio location (f. 5 r. col. a)'
+            ]
         ]);
 
         $builder->add('transactionCategory', Select2EntityType::class, [

@@ -53,6 +53,7 @@
                 {% if transaction.source %}
                     <a href='{{ path("source_show", {"id": transaction.source.id}) }}'>{{ transaction.source }}</a>
                 {% endif %}
+                {{ transaction.page }}
             </td>
         </tr>
         <tr>
