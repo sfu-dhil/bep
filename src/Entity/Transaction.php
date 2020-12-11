@@ -212,6 +212,7 @@ class Transaction extends AbstractEntity {
 
         return $this;
     }
+
     public function getShippingValue($format = false, $list = false) {
         if ($format) {
             $l = floor($this->shipping / 240);
@@ -239,16 +240,13 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    public function getPage(): ?string
-    {
+    public function getPage() : ?string {
         return $this->page;
     }
 
-    public function setPage(?string $page): self
-    {
+    public function setPage(?string $page) : self {
         $this->page = $page;
 
         return $this;
     }
-
 }

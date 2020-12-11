@@ -150,21 +150,19 @@ class Book extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function getVariants(): ?array
-    {
+    public function getVariants() : ?array {
         return $this->variants;
     }
 
     public function addVariant(string $variant) : self {
-        if( ! in_array($variant, $this->variants)) {
+        if ( ! in_array($variant, $this->variants, true)) {
             $this->variants[] = $variant;
         }
 
         return $this;
     }
 
-    public function setVariants(array $variants): self
-    {
+    public function setVariants(array $variants) : self {
         $this->variants = $variants;
 
         return $this;

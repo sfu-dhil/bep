@@ -327,7 +327,7 @@ class BookTest extends ControllerBaseCase {
         $values = $form->getPhpValues();
         $values['book']['variants'][0] = 'New Variant';
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
-        
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

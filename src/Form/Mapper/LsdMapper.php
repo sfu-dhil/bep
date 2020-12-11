@@ -71,6 +71,5 @@ class LsdMapper extends PropertyPathMapper implements DataMapperInterface {
         } else {
             $viewData->setShippingLsd($sl, $ss, $sd);
         }
-
     }
 }
