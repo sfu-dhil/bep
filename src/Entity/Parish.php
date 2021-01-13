@@ -38,7 +38,7 @@ class Parish extends AbstractTerm implements LinkableInterface {
      *
      * @var Town
      * @ORM\ManyToOne(targetEntity="App\Entity\Town", inversedBy="parishes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $town;
 

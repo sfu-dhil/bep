@@ -46,8 +46,9 @@ class ParishType extends TermType {
             'class' => Town::class,
             'remote_route' => 'town_typeahead',
             'allow_clear' => true,
+            'required' => false,
             'attr' => [
-                'help_block' => 'Town or Ward if in London',
+                'help_block' => 'Town or Ward if in London or blank for a rural parish',
                 'add_path' => 'town_new_popup',
                 'add_label' => 'Add Town',
             ],
