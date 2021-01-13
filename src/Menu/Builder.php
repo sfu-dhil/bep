@@ -72,7 +72,7 @@ class Builder implements ContainerAwareInterface {
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-        $browse->addChild('Archdeaconries', ['route' => 'archdeaconry_index']);
+        $browse->addChild('Archdeaconries & Courts', ['route' => 'archdeaconry_index']);
         $browse->addChild('Archives', ['route' => 'archive_index']);
         $browse->addChild('Books', ['route' => 'book_index']);
         $browse->addChild('Counties', ['route' => 'county_index']);

@@ -1,7 +1,7 @@
 {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': parish} %}
     {% block callback %}
         <tr>
-            <th>Archdeaconry</th>
+            <th>Archdeaconry or Peculiar Court</th>
             <td>
                 {% if parish.archdeaconry %}
                     <a href='{{ path("archdeaconry_show", {"id": parish.archdeaconry.id}) }}'>{{ parish.archdeaconry }}</a>
