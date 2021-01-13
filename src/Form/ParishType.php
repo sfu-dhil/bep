@@ -15,6 +15,8 @@ use App\Entity\Parish;
 use App\Entity\Town;
 use Nines\MediaBundle\Form\LinkableType;
 use Nines\UtilBundle\Form\TermType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -28,6 +30,37 @@ class ParishType extends TermType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         parent::buildForm($builder, $options);
+
+        $builder->add('latitude', NumberType::class, [
+            'label' => 'Latitude',
+            'html5' => true,
+            'input' => 'number',
+            'scale' => 8,
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+                'step' => 'any',
+            ],
+        ]);
+        $builder->add('longitude', NumberType::class, [
+            'label' => 'Longitude',
+            'html5' => true,
+            'input' => 'number',
+            'scale' => 8,
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+                'step' => 'any',
+            ],
+        ]);
+
+        $builder->add('address', TextareaType::class, [
+            'label' => 'Address',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Enter a street address of the parish church, if known',
+            ],
+        ]);
 
         $builder->add('archdeaconry', Select2EntityType::class, [
             'label' => 'Archdeaconry',

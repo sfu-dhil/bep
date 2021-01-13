@@ -1,6 +1,26 @@
 {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': parish} %}
     {% block callback %}
         <tr>
+            <th>Geocoordinates</th>
+            <td>
+                {% if parish.latitude %}
+                    {{ parish.latitude }}, {{ parish.longitude }} <br>
+                    <a href="https://maps.google.com/?q={{ parish.latitude }},{{ parish.longitude }}">Google Maps</a><br>
+                    <a href='https://www.openstreetmap.org/?mlat={{ parish.latitude }}&mlon={{ parish.longitude }}&zoom=15'>Open Street Map</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Street Address</th>
+            <td>
+                {% if parish.address %}
+                    {{ parish.address }} <br/>
+                    <a href="https://maps.google.com/?q={{ parish.address }}">Google Maps</a><br>
+                    <a href='https://www.openstreetmap.org/search?query={{ parish.address }}'>Open Street Map</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Archdeaconry or Peculiar Court</th>
             <td>
                 {% if parish.archdeaconry %}

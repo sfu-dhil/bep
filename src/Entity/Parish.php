@@ -27,6 +27,27 @@ class Parish extends AbstractTerm implements LinkableInterface {
     }
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $address;
+
+    /**
      * @var Archdeaconry
      * @ORM\ManyToOne(targetEntity="App\Entity\Archdeaconry", inversedBy="parishes")
      * @ORM\JoinColumn(nullable=false)
@@ -97,6 +118,42 @@ class Parish extends AbstractTerm implements LinkableInterface {
                 $transaction->setParish(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
