@@ -84,15 +84,15 @@ class TransactionType extends AbstractType {
             'label' => 'Transcription',
             'required' => false,
             'attr' => [
-                'help_block' => 'Copy the transaction text as closely as possible to how it appears',
+                'help_block' => 'Provide a semi-diplomatic transcript of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
         $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
+            'label' => 'Modern English',
             'required' => false,
             'attr' => [
-                'help_block' => 'Provide a modern-spelling equivalent to the transaction text',
+                'help_block' => 'Provide a modern English equivalent of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
