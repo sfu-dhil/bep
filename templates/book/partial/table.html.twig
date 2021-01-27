@@ -1,11 +1,11 @@
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Title</th>
+            <th>Uniform Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
             <th>Date</th>
-            <th>Description</th>
-
         </tr>
     </thead>
     <tbody>
@@ -13,21 +13,24 @@
             <tr>
                 <td>
                     <a href="{{ path('book_show', { 'id': book.id }) }}">
-                        {{ book.id }}
+                        {{ book.title }}
                     </a>
                 </td>
                 <td>
-                    {{ book.title }}
+                    {{ book.uniformTitle }}
+                </td>
+
+                <td>
+                    {{ book.author }}
+                </td>
+
+                <td>
+                    {{ book.publisher }}
                 </td>
 
                 <td>
                     {{ book.date }}
                 </td>
-
-                <td>
-                    {{ book.description|raw }}
-                </td>
-
             </tr>
         {% endfor %}
     </tbody>

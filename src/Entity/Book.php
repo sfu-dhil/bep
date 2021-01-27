@@ -34,9 +34,27 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $uniformTitle;
+
+    /**
+     * @var string
      * @ORM\Column(type="array")
      */
-    private $variants;
+    private $variantTitles;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $author;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $publisher;
 
     /**
      * @var string
@@ -66,7 +84,7 @@ class Book extends AbstractEntity implements LinkableInterface {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
-        $this->variants = [];
+        $this->variantTitles = [];
     }
 
     /**
@@ -150,20 +168,50 @@ class Book extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function getVariants() : ?array {
-        return $this->variants;
+    public function getVariantTitles() : ?array {
+        return $this->variantTitles;
     }
 
     public function addVariant(string $variant) : self {
-        if ( ! in_array($variant, $this->variants, true)) {
-            $this->variants[] = $variant;
+        if ( ! in_array($variant, $this->variantTitles, true)) {
+            $this->variantTitles[] = $variant;
         }
 
         return $this;
     }
 
-    public function setVariants(array $variants) : self {
-        $this->variants = $variants;
+    public function setVariantTitles(array $variantTitles) : self {
+        $this->variantTitles = $variantTitles;
+
+        return $this;
+    }
+
+    public function getUniformTitle() : ?string {
+        return $this->uniformTitle;
+    }
+
+    public function setUniformTitle(?string $uniformTitle) : self {
+        $this->uniformTitle = $uniformTitle;
+
+        return $this;
+    }
+
+    public function getAuthor() : ?string {
+        return $this->author;
+    }
+
+    public function setAuthor(?string $author) : self {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getPublisher() : ?string {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?string $publisher) : self {
+        $this->publisher = $publisher;
 
         return $this;
     }

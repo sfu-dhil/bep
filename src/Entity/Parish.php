@@ -122,37 +122,31 @@ class Parish extends AbstractTerm implements LinkableInterface {
         return $this;
     }
 
-    public function getLatitude(): ?string
-    {
+    public function getLatitude() : ?string {
         return $this->latitude;
     }
 
-    public function setLatitude(?string $latitude): self
-    {
+    public function setLatitude(?string $latitude) : self {
         $this->latitude = $latitude;
 
         return $this;
     }
 
-    public function getLongitude(): ?string
-    {
+    public function getLongitude() : ?string {
         return $this->longitude;
     }
 
-    public function setLongitude(?string $longitude): self
-    {
+    public function setLongitude(?string $longitude) : self {
         $this->longitude = $longitude;
 
         return $this;
     }
 
-    public function getAddress(): ?string
-    {
+    public function getAddress() : ?string {
         return $this->address;
     }
 
-    public function setAddress(?string $address): self
-    {
+    public function setAddress(?string $address) : self {
         $this->address = $address;
 
         return $this;
