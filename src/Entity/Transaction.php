@@ -19,7 +19,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="transact")
  */
 class Transaction extends AbstractEntity {
-
     use DatedTrait;
 
     /**
@@ -45,6 +44,12 @@ class Transaction extends AbstractEntity {
      * @ORM\Column(type="integer", nullable=true)
      */
     private $copies;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $location;
 
     /**
      * @var string
@@ -249,6 +254,16 @@ class Transaction extends AbstractEntity {
 
     public function setPage(?string $page) : self {
         $this->page = $page;
+
+        return $this;
+    }
+
+    public function getLocation() : ?string {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location) : self {
+        $this->location = $location;
 
         return $this;
     }

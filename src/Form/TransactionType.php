@@ -82,6 +82,14 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
+        $builder->add('location', TextType::class, [
+            'label' => 'Location',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Enter the location of the transaction, if known. Optionally include details of the location in the Description field.',
+            ],
+        ]);
+
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
             'required' => false,
