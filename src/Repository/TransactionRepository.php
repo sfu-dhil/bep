@@ -34,6 +34,7 @@ class TransactionRepository extends ServiceEntityRepository {
             ->orderBy('transaction.startDate')
             ->addOrderBy('transaction.endDate')
             ->addOrderBy('transaction.id')
-            ->getQuery();
+            ->getQuery()
+        ;
     }
 }
