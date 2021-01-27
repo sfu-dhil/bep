@@ -19,6 +19,12 @@
             </td>
         </tr>
         <tr>
+            <th>Date</th>
+            <td>
+                {% include 'partial/long-date.html.twig' with {'entity': transaction} %}
+            </td>
+        </tr>
+        <tr>
             <th>Transcription</th>
             <td>
                 {{ transaction.transcription|raw }}

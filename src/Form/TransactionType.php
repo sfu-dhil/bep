@@ -72,6 +72,8 @@ class TransactionType extends AbstractType {
             'mapped' => false,
         ]);
 
+        DatedType::buildForm($builder, $options);
+
         $builder->add('copies', NumberType::class, [
             'label' => 'Copies',
             'required' => false,
@@ -113,7 +115,8 @@ class TransactionType extends AbstractType {
             'label' => 'Parish',
             'class' => Parish::class,
             'remote_route' => 'parish_typeahead',
-            'allow_clear' => true,
+            'allow_clear' => false,
+            'required' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'parish_new_popup',
@@ -125,7 +128,8 @@ class TransactionType extends AbstractType {
             'label' => 'Source',
             'class' => Source::class,
             'remote_route' => 'source_typeahead',
-            'allow_clear' => true,
+            'allow_clear' => false,
+            'required' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'source_new_popup',
@@ -144,7 +148,8 @@ class TransactionType extends AbstractType {
             'label' => 'Transaction Category',
             'class' => TransactionCategory::class,
             'remote_route' => 'transaction_category_typeahead',
-            'allow_clear' => true,
+            'allow_clear' => false,
+            'required' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'transaction_category_new_popup',

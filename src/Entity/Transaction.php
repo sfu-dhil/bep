@@ -19,6 +19,9 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="transact")
  */
 class Transaction extends AbstractEntity {
+
+    use DatedTrait;
+
     /**
      * Price of the transaction in pennies.
      *

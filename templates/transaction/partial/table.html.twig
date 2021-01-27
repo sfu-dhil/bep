@@ -1,7 +1,7 @@
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Date</th>
             <th>Value</th>
             <th>Copies</th>
             <th>Transcription</th>
@@ -14,7 +14,7 @@
             <tr>
                 <td>
                     <a href="{{ path('transaction_show', { 'id': transaction.id }) }}">
-                        {{ transaction.id }}
+                        {% include 'partial/short-date.html.twig' with {'entity': transaction} %}
                     </a>
                 </td>
                 <td>
