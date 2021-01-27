@@ -7,11 +7,29 @@
             </td>
         </tr>
         <tr>
+            <th>Uniform Title</th>
+            <td>
+                {{ book.uniformTitle }}
+            </td>
+        </tr>
+        <tr>
             <th>Variant Titles</th>
             <td>
-                {% for title in book.variants %}
+                {% for title in book.variantTitles %}
                     {{ title }}{% if not loop.last %}<br>{% endif %}
                 {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td>
+                {{ book.author }}
+            </td>
+        </tr>
+        <tr>
+            <th>Publisher</th>
+            <td>
+                {{ book.publisher }}
             </td>
         </tr>
         <tr>
@@ -36,7 +54,7 @@
             </td>
         </tr>
         <tr>
-            <th>Transactions</th>
+            <th>Transaction</th>
             <td>
                 {% if book.transactions|length > 0 %}
                     <ul>

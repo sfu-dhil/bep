@@ -12,7 +12,7 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Format;
-    use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\LinkableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -37,7 +37,15 @@ class BookType extends AbstractType {
                 'class' => '',
             ],
         ]);
-        $builder->add('variants', CollectionType::class, [
+        $builder->add('uniformTitle', TextareaType::class, [
+            'label' => 'Uniform Title',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+                'class' => '',
+            ],
+        ]);
+        $builder->add('variantTitles', CollectionType::class, [
             'label' => 'Variant Titles',
             'required' => false,
             'allow_add' => true,
@@ -49,8 +57,22 @@ class BookType extends AbstractType {
             ],
 
             'attr' => [
-                'help_block' => 'Original spelling title and any variants of it',
                 'class' => 'collection collection-simple',
+                'help_block' => 'Original spelling title and any variants of it',
+            ],
+        ]);
+        $builder->add('author', TextType::class, [
+            'label' => 'Author',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+            ],
+        ]);
+        $builder->add('publisher', TextType::class, [
+            'label' => 'Publisher',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
             ],
         ]);
         $builder->add('date', TextType::class, [
@@ -68,6 +90,7 @@ class BookType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
+
         $builder->add('format', Select2EntityType::class, [
             'label' => 'Format',
             'class' => Format::class,

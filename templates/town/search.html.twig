@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Town Search{% endblock %}
+{% block title %}Town and London Ward Search{% endblock %}
 
  {% block pageheader %}
-     <h1>Town Search</h1>
+     <h1>Town or London Ward Search</h1>
      {% if towns|length %}
          <p class="count">
              Displaying {{ towns|length }} towns of {{ towns.getTotalItemCount }} total.
