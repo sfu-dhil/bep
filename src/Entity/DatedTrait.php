@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 trait DatedTrait {
@@ -30,28 +29,28 @@ trait DatedTrait {
     /**
      * @return DateTime
      */
-    public function getStartDate() : ?DateTimeImmutable {
+    public function getStartDate() : ?DateTime {
         return $this->startDate;
     }
 
     /**
      * @param DateTime $startDate
      */
-    public function setStartDate(?DateTimeImmutable $startDate) : void {
+    public function setStartDate(?DateTime $startDate) : void {
         $this->startDate = $startDate;
     }
 
     /**
      * @return DateTime
      */
-    public function getEndDate() : ?DateTimeImmutable {
+    public function getEndDate() : ?DateTime {
         return $this->endDate;
     }
 
     /**
      * @param DateTime $endDate
      */
-    public function setEndDate(?DateTimeImmutable $endDate) : void {
+    public function setEndDate(?DateTime $endDate) : void {
         $this->endDate = $endDate;
     }
 }
