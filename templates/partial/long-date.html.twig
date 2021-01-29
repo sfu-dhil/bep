@@ -1,7 +1,7 @@
 {% if entity.startDate and entity.endDate %}
-    Between {{ entity.startDate|date(date_format) }} and {{ entity.endDate|date(date_format) }}
+    Between {{ entity.startDate }} and {{ entity.endDate }}
 {% elseif entity.startDate %}
-    {{ entity.startDate|date(date_format) }}
+    {{ entity.startDate }}
 {% else %}
     No date given
 {% endif %}

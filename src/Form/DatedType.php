@@ -10,26 +10,24 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DatedType {
     public static function buildForm(FormBuilderInterface $builder, array $options) : void {
-        $builder->add('startDate', DateType::class, [
+        $builder->add('startDate', TextType::class, [
             'label' => 'Start Date',
             'required' => true,
-            'widget' => 'single_text',
-            'format' => 'yyyy-MM-dd',
             'attr' => [
+                'placeholder' => 'yyyy-mm-dd',
                 'help_block' => 'Enter the date or earliest possible date.',
             ],
         ]);
-        $builder->add('endDate', DateType::class, [
+        $builder->add('endDate', TextType::class, [
             'label' => 'End Date',
             'required' => false,
-            'widget' => 'single_text',
-            'format' => 'yyyy-MM-dd',
             'attr' => [
+                'placeholder' => 'yyyy-mm-dd',
                 'help_block' => 'Enter the latest possible date if the date is uncertain.',
             ],
         ]);
