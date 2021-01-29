@@ -1,0 +1,15 @@
+{% extends 'popup.html.twig' %}
+
+    {% block title %}New Inventory {% endblock %}
+
+    {% block body %}
+        <h1>New Inventory</h1>
+
+        {% embed 'inventory/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

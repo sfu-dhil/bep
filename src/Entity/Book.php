@@ -80,17 +80,34 @@ class Book extends AbstractEntity implements LinkableInterface {
      */
     private $transactions;
 
+    /**
+     * @var Collection|Inventory[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="book")
+     */
+    private $inventories;
+
+    /**
+     * @var Collection|Holding[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Holding", mappedBy="book")
+     */
+    private $holdings;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
         $this->variantTitles = [];
+        $this->inventories = new ArrayCollection();
+        $this->holdings = new ArrayCollection();
     }
 
     /**
      * {@inheritdoc}
      */
     public function __toString() : string {
+        if ($this->uniformTitle) {
+            return $this->uniformTitle;
+        }
         if ($this->title) {
             return $this->title;
         }
@@ -212,6 +229,60 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     public function setPublisher(?string $publisher) : self {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inventory[]
+     */
+    public function getInventories() : Collection {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory) : self {
+        if ( ! $this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory) : self {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getBook() === $this) {
+                $inventory->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Holding[]
+     */
+    public function getHoldings() : Collection {
+        return $this->holdings;
+    }
+
+    public function addHolding(Holding $holding) : self {
+        if ( ! $this->holdings->contains($holding)) {
+            $this->holdings[] = $holding;
+            $holding->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHolding(Holding $holding) : self {
+        if ($this->holdings->removeElement($holding)) {
+            // set the owning side to null (unless already changed)
+            if ($holding->getBook() === $this) {
+                $holding->setBook(null);
+            }
+        }
 
         return $this;
     }

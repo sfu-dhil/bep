@@ -44,8 +44,8 @@
 
     {% if towns|length %}
 
-    {% embed 'town/partial/table.html.twig' %}
-    {% endembed %}
+        {% embed 'town/partial/table.html.twig' %}
+        {% endembed %}
 
         <div class="navigation">
             {{ knp_pagination_render(towns) }}
