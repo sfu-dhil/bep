@@ -52,10 +52,17 @@ class Source extends AbstractTerm implements LinkableInterface {
      */
     private $transactions;
 
+    /**
+     * @var Collection|Inventory[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="source")
+     */
+    private $inventories;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
+        $this->inventories = new ArrayCollection();
     }
 
     public function getCallNumber() : ?string {
@@ -109,6 +116,33 @@ class Source extends AbstractTerm implements LinkableInterface {
             // set the owning side to null (unless already changed)
             if ($transaction->getSource() === $this) {
                 $transaction->setSource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inventory[]
+     */
+    public function getInventories() : Collection {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory) : self {
+        if ( ! $this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setSource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory) : self {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getSource() === $this) {
+                $inventory->setSource(null);
             }
         }
 

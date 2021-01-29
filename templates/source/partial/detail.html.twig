@@ -7,7 +7,7 @@
             </td>
         </tr>
         <tr>
-            <th>Source Category</th>
+            <th>SourceCategory</th>
             <td>
                 {% if source.sourceCategory %}
                     <a href='{{ path("source_category_show", {"id": source.sourceCategory.id}) }}'>{{ source.sourceCategory }}</a>
@@ -39,12 +39,36 @@
             </td>
         </tr>
         <tr>
+            <th>Inventory</th>
+            <td>
+                {% if source.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in source.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                    {{ inventory }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Links</th>
             <td>
                 {% embed '@NinesMedia/link/partial/list.html.twig' with {
                     'entity': source } %}
                 {% endembed %}
             </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ source.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ source.updated|date }}</td>
         </tr>
     {% endblock %}
 {% endembed %}

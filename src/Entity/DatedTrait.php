@@ -10,48 +10,49 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait DatedTrait {
     /**
-     * @var DateTime
-     * @ORM\Column(type="date", nullable=true)
+     * @var string
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Date(message="{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.")
      */
     private $startDate;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="date", nullable=true)
+     * @var string
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Date(message="{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.")
      */
     private $endDate;
 
     /**
-     * @return DateTime
+     * @return string
      */
-    public function getStartDate() : ?DateTimeImmutable {
+    public function getStartDate() : ?string {
         return $this->startDate;
     }
 
     /**
-     * @param DateTime $startDate
+     * @param string $startDate
      */
-    public function setStartDate(?DateTimeImmutable $startDate) : void {
+    public function setStartDate(?string $startDate) : void {
         $this->startDate = $startDate;
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
-    public function getEndDate() : ?DateTimeImmutable {
+    public function getEndDate() : ?string {
         return $this->endDate;
     }
 
     /**
-     * @param DateTime $endDate
+     * @param string $endDate
      */
-    public function setEndDate(?DateTimeImmutable $endDate) : void {
+    public function setEndDate(?string $endDate) : void {
         $this->endDate = $endDate;
     }
 }

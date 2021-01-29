@@ -1,0 +1,49 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Description</th>
+            <td>
+                {{ holding.description|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Start Date</th>
+            <td>
+                {{ holding.startDate }}
+            </td>
+        </tr>
+        <tr>
+            <th>End Date</th>
+            <td>
+                {{ holding.endDate }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Parish</th>
+            <td>
+                {% if holding.parish %}
+                    <a href='{{ path("parish_show", {"id": holding.parish.id}) }}'>{{ holding.parish }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Book</th>
+            <td>
+                {% if holding.book %}
+                    <a href='{{ path("book_show", {"id": holding.book.id}) }}'>{{ holding.book }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ holding.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ holding.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

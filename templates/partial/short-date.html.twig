@@ -1,7 +1,7 @@
 {% if entity.startDate and entity.endDate %}
-    {{ entity.startDate|date(date_format) }}-{{ entity.endDate|date(date_format) }}
+    {{ entity.startDate }}-{{ entity.endDate }}
 {% elseif entity.startDate %}
-    {{ entity.startDate|date(date_format) }}
+    {{ entity.startDate }}
 {% else %}
     No date
 {% endif %}

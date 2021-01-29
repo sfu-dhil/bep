@@ -20,3 +20,5 @@ services:
     test.App\Repository\TownRepository: '@App\Repository\TownRepository'
     test.App\Repository\TransactionCategoryRepository: '@App\Repository\TransactionCategoryRepository'
     test.App\Repository\TransactionRepository: '@App\Repository\TransactionRepository'
+    test.App\Repository\HoldingRepository: '@App\Repository\HoldingRepository'
+    test.App\Repository\InventoryRepository: '@App\Repository\InventoryRepository'

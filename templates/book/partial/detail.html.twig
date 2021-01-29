@@ -70,6 +70,38 @@
             </td>
         </tr>
         <tr>
+            <th>Inventory</th>
+            <td>
+                {% if book.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in book.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                    {% include 'partial/short-date.html.twig' with {'entity': inventory} %} {{ inventory.parish }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Holding</th>
+            <td>
+                {% if book.holdings|length > 0 %}
+                    <ul>
+                        {% for holding in book.holdings %}
+                            <li>
+                                <a href='{{ path("holding_show", {"id":holding.id }) }}'>
+                                    {% include 'partial/short-date.html.twig' with {'entity': holding} %} {{ holding.parish }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Links</th>
             <td>
                 {% embed '@NinesMedia/link/partial/list.html.twig' with {
