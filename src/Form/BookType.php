@@ -68,7 +68,7 @@ class BookType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        $builder->add('publisher', TextType::class, [
+        $builder->add('publisher', TextareaType::class, [
             'label' => 'Publisher',
             'required' => false,
             'attr' => [
