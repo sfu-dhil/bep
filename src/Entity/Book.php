@@ -52,7 +52,7 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=160, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $publisher;
 
