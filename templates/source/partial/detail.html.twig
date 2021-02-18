@@ -39,14 +39,14 @@
             </td>
         </tr>
         <tr>
-            <th>Inventory</th>
+            <th>Inventories</th>
             <td>
                 {% if source.inventories|length > 0 %}
                     <ul>
                         {% for inventory in source.inventories %}
                             <li>
                                 <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
-                                    {{ inventory }}
+                                    {{ inventory|raw }}
                                 </a>
                             </li>
                         {% endfor %}
@@ -61,14 +61,6 @@
                     'entity': source } %}
                 {% endembed %}
             </td>
-        </tr>
-        <tr>
-            <th>Created</th>
-            <td>{{ source.created|date }}</td>
-        </tr>
-        <tr>
-            <th>Updated</th>
-            <td>{{ source.updated|date }}</td>
         </tr>
     {% endblock %}
 {% endembed %}

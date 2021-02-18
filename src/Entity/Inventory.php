@@ -67,7 +67,7 @@ class Inventory extends AbstractEntity {
      * {@inheritDoc}
      */
     public function __toString() : string {
-        // TODO: Implement __toString() method.
+        return (string)$this->book;
     }
 
     public function getTranscription() : ?string {
