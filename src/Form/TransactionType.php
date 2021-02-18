@@ -107,6 +107,15 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
+        $builder->add('notes', TextareaType::class, [
+            'label' => 'Notes',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Any additional notes about the transcription',
+                'class' => 'tinymce',
+            ],
+        ]);
+
         $builder->add('book', Select2EntityType::class, [
             'label' => 'Book',
             'class' => Book::class,
