@@ -54,19 +54,19 @@ class TransactionType extends AbstractType {
         ]);
 
         $builder->add('sl', NumberType::class, [
-            'label' => 'Shipping Pounds',
+            'label' => 'Carriage Pounds',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('ss', NumberType::class, [
-            'label' => 'Shipping Shillings',
+            'label' => 'Carriage Shillings',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('sd', NumberType::class, [
-            'label' => 'Shipping Pence',
+            'label' => 'Carriage Pence',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
