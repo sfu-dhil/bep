@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TransactionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
@@ -76,10 +78,10 @@ class Transaction extends AbstractEntity {
     private $notes;
 
     /**
-     * @var Book
-     * @ORM\ManyToOne(targetEntity="App\Entity\Book", inversedBy="transactions")
+     * @var Collection|Book[]
+     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="transactions")
      */
-    private $book;
+    private $books;
 
     /**
      * @var Parish
@@ -111,6 +113,7 @@ class Transaction extends AbstractEntity {
     public function __construct() {
         parent::__construct();
         $this->copies = 1;
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -153,16 +156,6 @@ class Transaction extends AbstractEntity {
 
     public function setDescription(?string $description) : self {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getBook() : ?Book {
-        return $this->book;
-    }
-
-    public function setBook(?Book $book) : self {
-        $this->book = $book;
 
         return $this;
     }
@@ -280,6 +273,42 @@ class Transaction extends AbstractEntity {
 
     public function setNotes(?string $notes) : self {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getShipping(): ?int
+    {
+        return $this->shipping;
+    }
+
+    public function setShipping(?int $shipping): self
+    {
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        $this->books->removeElement($book);
 
         return $this;
     }

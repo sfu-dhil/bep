@@ -116,10 +116,12 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
-        $builder->add('book', Select2EntityType::class, [
-            'label' => 'Book',
-            'class' => Book::class,
+        $builder->add('books', Select2EntityType::class, [
+            'label' => 'Books',
+            'multiple' => true,
             'remote_route' => 'book_typeahead',
+            'class' => Book::class,
+            'page_limit' => 10,
             'allow_clear' => true,
             'attr' => [
                 'help_block' => '',
