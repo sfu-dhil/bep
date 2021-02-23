@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\InventoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
@@ -53,21 +55,21 @@ class Inventory extends AbstractEntity {
     private $parish;
 
     /**
-     * @var Book
-     * @ORM\ManyToOne(targetEntity="App\Entity\Book", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=false)
+     * @var Collection|Book[]
+     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="inventories")
      */
-    private $book;
+    private $books;
 
     public function __construct() {
         parent::__construct();
+        $this->books = new ArrayCollection();
     }
 
     /**
      * {@inheritDoc}
      */
     public function __toString() : string {
-        return (string) $this->book;
+        return mb_substr(strip_tags($this->transcription), 0, 50);
     }
 
     public function getTranscription() : ?string {
@@ -120,13 +122,28 @@ class Inventory extends AbstractEntity {
         return $this;
     }
 
-    public function getBook() : ?Book {
-        return $this->book;
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
     }
 
-    public function setBook(?Book $book) : self {
-        $this->book = $book;
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+        }
 
         return $this;
     }
+
+    public function removeBook(Book $book): self
+    {
+        $this->books->removeElement($book);
+
+        return $this;
+    }
+
 }

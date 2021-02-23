@@ -48,10 +48,16 @@
             </td>
         </tr>
         <tr>
-            <th>Book</th>
+            <th>Books</th>
             <td>
-                {% if inventory.book %}
-                    <a href='{{ path("book_show", {"id": inventory.book.id}) }}'>{{ inventory.book }}</a>
+                {% if inventory.books|length > 0 %}
+                <ul>
+                    {% for book in inventory.books %}
+                        <li>
+                            <a href='{{ path("book_show", {"id": book.id}) }}'>{{ book }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
                 {% endif %}
             </td>
         </tr>

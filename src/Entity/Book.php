@@ -82,7 +82,7 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var Collection|Inventory[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="book")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Inventory", mappedBy="books")
      */
     private $inventories;
 

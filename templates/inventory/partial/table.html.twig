@@ -4,7 +4,7 @@
             <th>Date</th>
             <th>Parish</th>
             <th>Source</th>
-            <th>Book</th>
+            <th>Books</th>
         </tr>
     </thead>
     <tbody>
@@ -26,9 +26,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href='{{ path('book_show', {'id': inventory.book.id}) }}'>
-                        {{ inventory.book }}
-                    </a>
+                    {{ inventory.books|length }}
                 </td>
             </tr>
         {% endfor %}
