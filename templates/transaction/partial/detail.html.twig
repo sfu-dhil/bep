@@ -47,10 +47,16 @@
             </td>
         </tr>
         <tr>
-            <th>Book</th>
+            <th>Books</th>
             <td>
-                {% if transaction.book %}
-                    <a href='{{ path("book_show", {"id": transaction.book.id}) }}'>{{ transaction.book }}</a>
+                {% if transaction.books|length > 0 %}
+                    <ul>
+                        {% for book in transaction.books %}
+                            <li>
+                                <a href='{{ path("book_show", {"id": book.id}) }}'>{{ book }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </td>
         </tr>

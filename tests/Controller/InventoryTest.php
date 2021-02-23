@@ -127,7 +127,7 @@ class InventoryTest extends ControllerBaseCase {
             'inventory[startDate]' => '1020-01-02',
         ]);
         $form['inventory[parish]']->disableValidation()->setValue(1);
-        $form['inventory[book]']->disableValidation()->setValue(1);
+        $form['inventory[books]']->disableValidation()->setValue([1]);
         $form['inventory[source]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
@@ -196,7 +196,7 @@ class InventoryTest extends ControllerBaseCase {
             'inventory[startDate]' => '1020-01-02',
         ]);
         $form['inventory[parish]']->disableValidation()->setValue(1);
-        $form['inventory[book]']->disableValidation()->setValue(1);
+        $form['inventory[books]']->disableValidation()->setValue([1]);
         $form['inventory[source]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);
@@ -225,7 +225,7 @@ class InventoryTest extends ControllerBaseCase {
             'inventory[startDate]' => '1020-01-02',
         ]);
         $form['inventory[parish]']->disableValidation()->setValue(1);
-        $form['inventory[book]']->disableValidation()->setValue(1);
+        $form['inventory[books]']->disableValidation()->setValue([1]);
         $form['inventory[source]']->disableValidation()->setValue(1);
 
         $this->client->submit($form);

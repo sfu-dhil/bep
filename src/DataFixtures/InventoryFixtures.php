@@ -30,7 +30,7 @@ class InventoryFixtures extends Fixture implements DependentFixtureInterface {
 
             $fixture->setSource($this->getReference('source.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
-            $fixture->setBook($this->getReference('book.' . $i));
+            $fixture->addBook($this->getReference('book.' . $i));
             $em->persist($fixture);
             $this->setReference('inventory.' . $i, $fixture);
         }

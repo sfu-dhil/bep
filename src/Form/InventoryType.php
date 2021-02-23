@@ -51,17 +51,20 @@ class InventoryType extends AbstractType {
             ],
         ]);
 
-        $builder->add('book', Select2EntityType::class, [
-            'label' => 'Book',
-            'required' => true,
-            'class' => Book::class,
+        $builder->add('books', Select2EntityType::class, [
+            'label' => 'Books',
+            'multiple' => true,
             'remote_route' => 'book_typeahead',
+            'class' => Book::class,
+            'page_limit' => 10,
+            'allow_clear' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'book_new_popup',
                 'add_label' => 'Add Book',
             ],
         ]);
+
         DatedType::buildForm($builder, $options);
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
