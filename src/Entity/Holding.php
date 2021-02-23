@@ -40,6 +40,12 @@ class Holding extends AbstractEntity {
      */
     private $book;
 
+    /**
+     * @var Archive
+     * @ORM\ManyToOne(targetEntity="App\Entity\Archive", inversedBy="holdings")
+     */
+    private $archive;
+
     public function __construct() {
         parent::__construct();
     }
@@ -77,6 +83,18 @@ class Holding extends AbstractEntity {
 
     public function setBook(?Book $book) : self {
         $this->book = $book;
+
+        return $this;
+    }
+
+    public function getArchive(): ?Archive
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(?Archive $archive): self
+    {
+        $this->archive = $archive;
 
         return $this;
     }

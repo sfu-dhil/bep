@@ -59,7 +59,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($holding);
             $entityManager->flush();
-            $this->addFlash('success', 'The new holding has been saved.');
+            $this->addFlash('success', 'The new surviving text has been saved.');
 
             return $this->redirectToRoute('holding_show', ['id' => $holding->getId()]);
         }
@@ -107,7 +107,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', 'The updated holding has been saved.');
+            $this->addFlash('success', 'The updated surviving text has been saved.');
 
             return $this->redirectToRoute('holding_show', ['id' => $holding->getId()]);
         }
@@ -129,7 +129,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($holding);
             $entityManager->flush();
-            $this->addFlash('success', 'The holding has been deleted.');
+            $this->addFlash('success', 'The surviving text has been deleted.');
         }
 
         return $this->redirectToRoute('holding_index');

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\Archive;
 use App\Entity\Book;
     use App\Entity\Holding;
     use App\Entity\Parish;
@@ -36,6 +37,17 @@ class HoldingType extends AbstractType {
                 'help_block' => '',
                 'add_path' => 'parish_new_popup',
                 'add_label' => 'Add Parish',
+            ],
+        ]);
+        $builder->add('archive', Select2EntityType::class, [
+            'label' => 'Archive',
+            'required' => true,
+            'class' => Archive::class,
+            'remote_route' => 'archive_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'archive_new_popup',
+                'add_label' => 'Add Archive',
             ],
         ]);
 
