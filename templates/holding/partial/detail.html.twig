@@ -28,6 +28,14 @@
             </td>
         </tr>
         <tr>
+            <th>Archive</th>
+            <td>
+                {% if holding.archive %}
+                    <a href='{{ path('archive_show', {'id': holding.archive.id}) }}'>{{ holding.archive }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Book</th>
             <td>
                 {% if holding.book %}

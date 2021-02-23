@@ -84,7 +84,7 @@ class Builder implements ContainerAwareInterface {
         $browse->addChild('Sources', ['route' => 'source_index']);
         $browse->addChild('Towns', ['route' => 'town_index']);
         $browse->addChild('Transactions', ['route' => 'transaction_index']);
-        $browse->addChild('Holdings', ['route' => 'holding_index']);
+        $browse->addChild('Surviving Texts', ['route' => 'holding_index']);
         $browse->addChild('Inventories', ['route' => 'inventory_index']);
 
         if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
