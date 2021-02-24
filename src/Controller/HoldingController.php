@@ -14,10 +14,13 @@ use App\Entity\Holding;
 use App\Form\HoldingType;
 use App\Repository\HoldingRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Controller\AbstractImageController;
+use Nines\MediaBundle\Entity\Image;
+use Nines\MediaBundle\Service\ImageManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,13 +28,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/holding")
  */
-class HoldingController extends AbstractController implements PaginatorAwareInterface {
+class HoldingController extends AbstractImageController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * @Route("/", name="holding_index", methods={"GET"})
      *
-     * @Template
+     * @Template(template="holding/index.html.twig")
      */
     public function index(Request $request, HoldingRepository $holdingRepository) : array {
         $query = $holdingRepository->indexQuery();
@@ -45,7 +48,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
 
     /**
      * @Route("/new", name="holding_new", methods={"GET", "POST"})
-     * @Template
+     * @Template(template="holding/new.html.twig")
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -72,7 +75,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
 
     /**
      * @Route("/new_popup", name="holding_new_popup", methods={"GET", "POST"})
-     * @Template
+     * @Template(template="holding/new_popup.html.twig")
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -83,7 +86,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
 
     /**
      * @Route("/{id}", name="holding_show", methods={"GET"})
-     * @Template
+     * @Template(template="holding/show.html.twig")
      *
      * @return array
      */
@@ -97,7 +100,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}/edit", name="holding_edit", methods={"GET", "POST"})
      *
-     * @Template
+     * @Template(template="holding/edit.html.twig")
      *
      * @return array|RedirectResponse
      */
@@ -133,5 +136,35 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
         }
 
         return $this->redirectToRoute('holding_index');
+    }
+
+    /**
+     * @Route("/{id}/new_image", name="holding_new_image", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @Template(template="@NinesMedia/image/new.html.twig")
+     */
+    public function newImage(Request $request, Holding $holding) {
+        return parent::newImageAction($request, $holding, 'holding_show');
+    }
+
+    /**
+     * @Route("/{id}/edit_image/{image_id}", name="holding_edit_image", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("image", options={"id": "image_id"})
+     *
+     * @Template(template="@NinesMedia/image/edit.html.twig")
+     */
+    public function editImage(Request $request, Holding $holding, Image $image) {
+        return parent::editImageAction($request, $holding, $image, 'holding_show');
+    }
+
+    /**
+     * @Route("/{id}/delete_image/{image_id}", name="holding_delete_image", methods={"DELETE"})
+     * @ParamConverter("image", options={"id": "image_id"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     */
+    public function deleteImage(Request $request, Holding $holding, Image $image) {
+        return parent::deleteImageAction($request, $holding, $image, 'holding_show');
     }
 }
