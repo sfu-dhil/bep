@@ -10,3 +10,4 @@ nines_media:
         - { class: App\Entity\Parish, route: parish_show }
         - { class: App\Entity\Province, route: province_show }
         - { class: App\Entity\Town, route: town_show }
+        - { class: App\Entity\Holding, route: holding_show }

@@ -12,12 +12,17 @@ namespace App\Entity;
 
 use App\Repository\HoldingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Nines\MediaBundle\Entity\ImageContainerInterface;
+use Nines\MediaBundle\Entity\ImageContainerTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity(repositoryClass=HoldingRepository::class)
  */
-class Holding extends AbstractEntity {
+class Holding extends AbstractEntity implements ImageContainerInterface {
+    use ImageContainerTrait {
+        ImageContainerTrait::__construct as protected trait_constructor;
+    }
     use DatedTrait;
 
     /**
@@ -48,6 +53,7 @@ class Holding extends AbstractEntity {
 
     public function __construct() {
         parent::__construct();
+        $this->trait_constructor();
     }
 
     /**
