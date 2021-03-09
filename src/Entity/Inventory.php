@@ -55,7 +55,7 @@ class Inventory extends AbstractEntity {
     private $parish;
 
     /**
-     * @var Collection|Book[]
+     * @var Book[]|Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="inventories")
      */
     private $books;
@@ -123,27 +123,23 @@ class Inventory extends AbstractEntity {
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Book[]|Collection
      */
-    public function getBooks(): Collection
-    {
+    public function getBooks() : Collection {
         return $this->books;
     }
 
-    public function addBook(Book $book): self
-    {
-        if (!$this->books->contains($book)) {
+    public function addBook(Book $book) : self {
+        if ( ! $this->books->contains($book)) {
             $this->books[] = $book;
         }
 
         return $this;
     }
 
-    public function removeBook(Book $book): self
-    {
+    public function removeBook(Book $book) : self {
         $this->books->removeElement($book);
 
         return $this;
     }
-
 }

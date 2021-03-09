@@ -78,7 +78,7 @@ class Transaction extends AbstractEntity {
     private $notes;
 
     /**
-     * @var Collection|Book[]
+     * @var Book[]|Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="transactions")
      */
     private $books;
@@ -277,37 +277,32 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    public function getShipping(): ?int
-    {
+    public function getShipping() : ?int {
         return $this->shipping;
     }
 
-    public function setShipping(?int $shipping): self
-    {
+    public function setShipping(?int $shipping) : self {
         $this->shipping = $shipping;
 
         return $this;
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Book[]|Collection
      */
-    public function getBooks(): Collection
-    {
+    public function getBooks() : Collection {
         return $this->books;
     }
 
-    public function addBook(Book $book): self
-    {
-        if (!$this->books->contains($book)) {
+    public function addBook(Book $book) : self {
+        if ( ! $this->books->contains($book)) {
             $this->books[] = $book;
         }
 
         return $this;
     }
 
-    public function removeBook(Book $book): self
-    {
+    public function removeBook(Book $book) : self {
         $this->books->removeElement($book);
 
         return $this;

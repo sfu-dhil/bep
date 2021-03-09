@@ -75,14 +75,12 @@ class Archive extends AbstractTerm implements LinkableInterface {
     /**
      * @return Collection|Holding[]
      */
-    public function getHoldings(): Collection
-    {
+    public function getHoldings() : Collection {
         return $this->holdings;
     }
 
-    public function addHolding(Holding $holding): self
-    {
-        if (!$this->holdings->contains($holding)) {
+    public function addHolding(Holding $holding) : self {
+        if ( ! $this->holdings->contains($holding)) {
             $this->holdings[] = $holding;
             $holding->setArchive($this);
         }
@@ -90,8 +88,7 @@ class Archive extends AbstractTerm implements LinkableInterface {
         return $this;
     }
 
-    public function removeHolding(Holding $holding): self
-    {
+    public function removeHolding(Holding $holding) : self {
         if ($this->holdings->removeElement($holding)) {
             // set the owning side to null (unless already changed)
             if ($holding->getArchive() === $this) {

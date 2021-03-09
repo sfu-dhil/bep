@@ -16,7 +16,6 @@ use App\Repository\HoldingRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\AbstractImageController;
 use Nines\MediaBundle\Entity\Image;
-use Nines\MediaBundle\Service\ImageManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

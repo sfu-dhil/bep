@@ -93,13 +93,11 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
         return $this;
     }
 
-    public function getArchive(): ?Archive
-    {
+    public function getArchive() : ?Archive {
         return $this->archive;
     }
 
-    public function setArchive(?Archive $archive): self
-    {
+    public function setArchive(?Archive $archive) : self {
         $this->archive = $archive;
 
         return $this;
