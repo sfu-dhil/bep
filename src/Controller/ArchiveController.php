@@ -27,7 +27,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/archive")
  */
-class ArchiveController extends AbstractController implements PaginatorAwareInterface {
+class ArchiveController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

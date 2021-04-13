@@ -21,7 +21,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * County form.
  */
-class CountyType extends TermType {
+class CountyType extends TermType
+{
     /**
      * Add form fields to $builder.
      */

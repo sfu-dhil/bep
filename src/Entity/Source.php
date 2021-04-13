@@ -21,14 +21,15 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 /**
  * @ORM\Entity(repositoryClass=SourceRepository::class)
  */
-class Source extends AbstractTerm implements LinkableInterface {
+class Source extends AbstractTerm implements LinkableInterface
+{
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=24, nullable=true)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $callNumber;
 

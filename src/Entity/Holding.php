@@ -19,7 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=HoldingRepository::class)
  */
-class Holding extends AbstractEntity implements ImageContainerInterface {
+class Holding extends AbstractEntity implements ImageContainerInterface
+{
     use ImageContainerTrait {
         ImageContainerTrait::__construct as protected trait_constructor;
     }

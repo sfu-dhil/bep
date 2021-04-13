@@ -17,7 +17,8 @@ use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
 use Symfony\Component\Form\FormInterface;
 use Traversable;
 
-class LsdMapper extends PropertyPathMapper implements DataMapperInterface {
+class LsdMapper extends PropertyPathMapper implements DataMapperInterface
+{
     public function mapDataToForms($viewData, $forms) : void {
         if (null === $viewData) {
             return;

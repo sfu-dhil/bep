@@ -20,7 +20,8 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method Archdeaconry[]    findAll()
  * @method Archdeaconry[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ArchdeaconryRepository extends TermRepository {
+class ArchdeaconryRepository extends TermRepository
+{
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Archdeaconry::class);
     }

@@ -27,7 +27,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/archdeaconry")
  */
-class ArchdeaconryController extends AbstractController implements PaginatorAwareInterface {
+class ArchdeaconryController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

@@ -14,7 +14,8 @@ use App\Entity\Archive;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class ArchiveFixtures extends Fixture {
+class ArchiveFixtures extends Fixture
+{
     /**
      * {@inheritDoc}
      */

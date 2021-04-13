@@ -14,7 +14,8 @@ use App\Entity\TransactionCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class TransactionCategoryFixtures extends Fixture {
+class TransactionCategoryFixtures extends Fixture
+{
     /**
      * {@inheritDoc}
      */

@@ -21,7 +21,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Diocese form.
  */
-class DioceseType extends TermType {
+class DioceseType extends TermType
+{
     /**
      * Add form fields to $builder.
      */

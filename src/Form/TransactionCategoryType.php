@@ -18,7 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * TransactionCategory form.
  */
-class TransactionCategoryType extends TermType {
+class TransactionCategoryType extends TermType
+{
     /**
      * Add form fields to $builder.
      */

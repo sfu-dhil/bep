@@ -25,7 +25,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/inventory")
  */
-class InventoryController extends AbstractController implements PaginatorAwareInterface {
+class InventoryController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

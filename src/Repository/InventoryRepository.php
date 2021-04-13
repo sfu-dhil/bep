@@ -21,7 +21,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Inventory[]    findAll()
  * @method Inventory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class InventoryRepository extends ServiceEntityRepository {
+class InventoryRepository extends ServiceEntityRepository
+{
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Inventory::class);
     }
