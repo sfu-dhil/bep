@@ -24,7 +24,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Parish form.
  */
-class ParishType extends TermType {
+class ParishType extends TermType
+{
     /**
      * Add form fields to $builder.
      */

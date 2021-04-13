@@ -20,7 +20,8 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method Parish[]    findAll()
  * @method Parish[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParishRepository extends TermRepository {
+class ParishRepository extends TermRepository
+{
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Parish::class);
     }

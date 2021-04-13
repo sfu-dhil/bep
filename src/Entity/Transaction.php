@@ -20,7 +20,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  * @ORM\Table(name="transact")
  */
-class Transaction extends AbstractEntity {
+class Transaction extends AbstractEntity
+{
     use DatedTrait;
 
     /**

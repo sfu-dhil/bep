@@ -18,7 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Nation form.
  */
-class NationType extends TermType {
+class NationType extends TermType
+{
     /**
      * Add form fields to $builder.
      */

@@ -20,7 +20,8 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method Province[]    findAll()
  * @method Province[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProvinceRepository extends TermRepository {
+class ProvinceRepository extends TermRepository
+{
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Province::class);
     }

@@ -20,7 +20,8 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method Archive[]    findAll()
  * @method Archive[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ArchiveRepository extends TermRepository {
+class ArchiveRepository extends TermRepository
+{
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Archive::class);
     }

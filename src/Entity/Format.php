@@ -19,7 +19,8 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 /**
  * @ORM\Entity(repositoryClass=FormatRepository::class)
  */
-class Format extends AbstractTerm {
+class Format extends AbstractTerm
+{
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Book", mappedBy="format")

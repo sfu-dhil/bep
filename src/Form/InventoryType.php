@@ -23,7 +23,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Inventory form.
  */
-class InventoryType extends AbstractType {
+class InventoryType extends AbstractType
+{
     /**
      * Add form fields to $builder.
      */

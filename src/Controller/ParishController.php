@@ -27,7 +27,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/parish")
  */
-class ParishController extends AbstractController implements PaginatorAwareInterface {
+class ParishController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

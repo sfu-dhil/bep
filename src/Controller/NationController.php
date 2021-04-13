@@ -26,7 +26,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/nation")
  */
-class NationController extends AbstractController implements PaginatorAwareInterface {
+class NationController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

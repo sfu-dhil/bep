@@ -19,7 +19,8 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 /**
  * @ORM\Entity(repositoryClass=SourceCategoryRepository::class)
  */
-class SourceCategory extends AbstractTerm {
+class SourceCategory extends AbstractTerm
+{
     /**
      * @var Collection|Source[]
      * @ORM\OneToMany(targetEntity="Source", mappedBy="sourceCategory")
