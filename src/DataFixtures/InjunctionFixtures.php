@@ -14,8 +14,7 @@ use App\Entity\Injunction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class InjunctionFixtures extends Fixture
-{
+class InjunctionFixtures extends Fixture {
     /**
      * {@inheritDoc}
      */

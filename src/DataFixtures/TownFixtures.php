@@ -15,8 +15,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class TownFixtures extends Fixture implements DependentFixtureInterface
-{
+class TownFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritDoc}
      */

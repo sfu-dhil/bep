@@ -20,8 +20,7 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method Format[]    findAll()
  * @method Format[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FormatRepository extends TermRepository
-{
+class FormatRepository extends TermRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Format::class);
     }

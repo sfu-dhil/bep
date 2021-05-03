@@ -23,8 +23,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Source form.
  */
-class SourceType extends TermType
-{
+class SourceType extends TermType {
     /**
      * Add form fields to $builder.
      */

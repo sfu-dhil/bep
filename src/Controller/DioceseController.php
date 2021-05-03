@@ -27,8 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/diocese")
  */
-class DioceseController extends AbstractController implements PaginatorAwareInterface
-{
+class DioceseController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

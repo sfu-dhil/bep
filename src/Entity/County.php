@@ -21,8 +21,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 /**
  * @ORM\Entity(repositoryClass=CountyRepository::class)
  */
-class County extends AbstractTerm implements LinkableInterface
-{
+class County extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }

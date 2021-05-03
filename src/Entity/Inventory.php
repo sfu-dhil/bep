@@ -19,8 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=InventoryRepository::class)
  */
-class Inventory extends AbstractEntity
-{
+class Inventory extends AbstractEntity {
     use DatedTrait;
 
     /**

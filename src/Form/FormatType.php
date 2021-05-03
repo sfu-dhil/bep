@@ -18,8 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Format form.
  */
-class FormatType extends TermType
-{
+class FormatType extends TermType {
     /**
      * Add form fields to $builder.
      */

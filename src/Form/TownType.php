@@ -22,8 +22,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Town form.
  */
-class TownType extends TermType
-{
+class TownType extends TermType {
     /**
      * Add form fields to $builder.
      */
