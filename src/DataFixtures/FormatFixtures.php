@@ -14,8 +14,7 @@ use App\Entity\Format;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class FormatFixtures extends Fixture
-{
+class FormatFixtures extends Fixture {
     /**
      * {@inheritDoc}
      */

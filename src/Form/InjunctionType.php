@@ -22,8 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Injunction form.
  */
-class InjunctionType extends AbstractType
-{
+class InjunctionType extends AbstractType {
     /**
      * Add form fields to $builder.
      */

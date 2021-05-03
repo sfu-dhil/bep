@@ -14,8 +14,7 @@ use App\Entity\Nation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class NationFixtures extends Fixture
-{
+class NationFixtures extends Fixture {
     /**
      * {@inheritDoc}
      */

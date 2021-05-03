@@ -19,8 +19,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 /**
  * @ORM\Entity(repositoryClass=NationRepository::class)
  */
-class Nation extends AbstractTerm
-{
+class Nation extends AbstractTerm {
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="Province", mappedBy="nation")

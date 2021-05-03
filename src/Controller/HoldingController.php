@@ -27,8 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/holding")
  */
-class HoldingController extends AbstractImageController implements PaginatorAwareInterface
-{
+class HoldingController extends AbstractImageController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

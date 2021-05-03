@@ -13,8 +13,7 @@ namespace App\Form;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class DatedType
-{
+class DatedType {
     public static function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('startDate', TextType::class, [
             'label' => 'Start Date',

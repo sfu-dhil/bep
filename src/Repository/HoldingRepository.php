@@ -21,8 +21,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Holding[]    findAll()
  * @method Holding[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class HoldingRepository extends ServiceEntityRepository
-{
+class HoldingRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Holding::class);
     }

@@ -19,8 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Archive form.
  */
-class ArchiveType extends TermType
-{
+class ArchiveType extends TermType {
     /**
      * Add form fields to $builder.
      */

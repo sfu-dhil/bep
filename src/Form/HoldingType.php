@@ -23,8 +23,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Holding form.
  */
-class HoldingType extends AbstractType
-{
+class HoldingType extends AbstractType {
     /**
      * Add form fields to $builder.
      */

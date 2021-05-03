@@ -27,8 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/injunction")
  */
-class InjunctionController extends AbstractController implements PaginatorAwareInterface
-{
+class InjunctionController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

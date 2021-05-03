@@ -15,8 +15,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class InventoryFixtures extends Fixture implements DependentFixtureInterface
-{
+class InventoryFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritDoc}
      */

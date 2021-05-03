@@ -20,8 +20,7 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method TransactionCategory[]    findAll()
  * @method TransactionCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransactionCategoryRepository extends TermRepository
-{
+class TransactionCategoryRepository extends TermRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, TransactionCategory::class);
     }
