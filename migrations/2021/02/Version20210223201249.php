@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/*
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -10,15 +16,12 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210223201249 extends AbstractMigration
-{
-    public function getDescription() : string
-    {
+final class Version20210223201249 extends AbstractMigration {
+    public function getDescription() : string {
         return '';
     }
 
-    public function up(Schema $schema) : void
-    {
+    public function up(Schema $schema) : void {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE inventory_book (inventory_id INT NOT NULL, book_id INT NOT NULL, INDEX IDX_81436C1F9EEA759 (inventory_id), INDEX IDX_81436C1F16A2B381 (book_id), PRIMARY KEY(inventory_id, book_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE inventory_book ADD CONSTRAINT FK_81436C1F9EEA759 FOREIGN KEY (inventory_id) REFERENCES inventory (id) ON DELETE CASCADE');
@@ -29,8 +32,7 @@ final class Version20210223201249 extends AbstractMigration
         $this->addSql('ALTER TABLE inventory DROP book_id');
     }
 
-    public function down(Schema $schema) : void
-    {
+    public function down(Schema $schema) : void {
         $this->throwIrreversibleMigrationException();
     }
 }
