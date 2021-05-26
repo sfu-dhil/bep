@@ -1,6 +1,12 @@
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
+            <th>ID</th>
+            <td>
+                {{ transaction }}
+            </td>
+        </tr>
+        <tr>
             <th>Value</th>
             <td>
                 {{ transaction.value(true) }}

@@ -120,7 +120,7 @@ class Transaction extends AbstractEntity {
      * {@inheritdoc}
      */
     public function __toString() : string {
-        return 'Transaction ' . $this->id;
+        return sprintf('%05d', $this->id);
     }
 
     public function getValue($format = false, $list = false) {
