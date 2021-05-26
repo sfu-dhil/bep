@@ -24,6 +24,7 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
         ImageContainerTrait::__construct as protected trait_constructor;
     }
     use DatedTrait;
+    use NotesTrait;
 
     /**
      * @var string

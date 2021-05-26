@@ -22,6 +22,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  */
 class Transaction extends AbstractEntity {
     use DatedTrait;
+    use NotesTrait;
 
     /**
      * Price of the transaction in pennies.
@@ -72,12 +73,6 @@ class Transaction extends AbstractEntity {
     private $description;
 
     /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $notes;
-
-    /**
      * @var Book[]|Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="transactions")
      */
@@ -120,7 +115,7 @@ class Transaction extends AbstractEntity {
      * {@inheritdoc}
      */
     public function __toString() : string {
-        return 'Transaction ' . $this->id;
+        return sprintf('%05d', $this->id);
     }
 
     public function getValue($format = false, $list = false) {
@@ -263,16 +258,6 @@ class Transaction extends AbstractEntity {
 
     public function setLocation(?string $location) : self {
         $this->location = $location;
-
-        return $this;
-    }
-
-    public function getNotes() : ?string {
-        return $this->notes;
-    }
-
-    public function setNotes(?string $notes) : self {
-        $this->notes = $notes;
 
         return $this;
     }

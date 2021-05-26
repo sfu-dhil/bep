@@ -12,12 +12,7 @@
                 {{ inventory.modifications|raw }}
             </td>
         </tr>
-        <tr>
-            <th>Notes</th>
-            <td>
-                {{ inventory.description|raw }}
-            </td>
-        </tr>
+        {% include 'partial/notes.html.twig' with {'item': inventory} %}
         <tr>
             <th>Start Date</th>
             <td>

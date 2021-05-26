@@ -14,6 +14,7 @@ use App\Entity\Archive;
 use App\Entity\Book;
     use App\Entity\Holding;
     use App\Entity\Parish;
+use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -71,6 +72,7 @@ class HoldingType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
+        NotesType::add($builder, $options);
         DatedType::buildForm($builder, $options);
     }
 

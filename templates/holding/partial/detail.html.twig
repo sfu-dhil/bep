@@ -6,6 +6,7 @@
                 {{ holding.description|raw }}
             </td>
         </tr>
+        {% include 'partial/notes.html.twig' with {'item': holding} %}
         <tr>
             <th>Start Date</th>
             <td>

@@ -44,7 +44,7 @@
                 {{ book.description|raw }}
             </td>
         </tr>
-
+        {% include 'partial/notes.html.twig' with {'item': book} %}
         <tr>
             <th>Format</th>
             <td>
