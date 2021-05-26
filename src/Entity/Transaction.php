@@ -22,6 +22,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  */
 class Transaction extends AbstractEntity {
     use DatedTrait;
+    use NotesTrait;
 
     /**
      * Price of the transaction in pennies.
@@ -70,12 +71,6 @@ class Transaction extends AbstractEntity {
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $notes;
 
     /**
      * @var Book[]|Collection
@@ -263,16 +258,6 @@ class Transaction extends AbstractEntity {
 
     public function setLocation(?string $location) : self {
         $this->location = $location;
-
-        return $this;
-    }
-
-    public function getNotes() : ?string {
-        return $this->notes;
-    }
-
-    public function setNotes(?string $notes) : self {
-        $this->notes = $notes;
 
         return $this;
     }

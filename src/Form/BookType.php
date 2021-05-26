@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Format;
+use App\Form\Partial\NotesType;
 use Nines\MediaBundle\Form\LinkableType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -86,10 +87,11 @@ class BookType extends AbstractType {
             'label' => 'Description',
             'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'Public description of the item.',
                 'class' => 'tinymce',
             ],
         ]);
+        NotesType::add($builder, $options);
 
         $builder->add('format', Select2EntityType::class, [
             'label' => 'Format',

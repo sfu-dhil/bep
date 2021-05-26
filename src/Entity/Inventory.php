@@ -21,6 +21,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  */
 class Inventory extends AbstractEntity {
     use DatedTrait;
+    use NotesTrait;
 
     /**
      * @var string

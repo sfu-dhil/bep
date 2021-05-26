@@ -46,12 +46,7 @@
                 {{ transaction.description|raw }}
             </td>
         </tr>
-        <tr>
-            <th>Notes</th>
-            <td>
-                {{ transaction.notes|raw }}
-            </td>
-        </tr>
+        {% include 'partial/notes.html.twig' with {'item': transaction} %}
         <tr>
             <th>Books</th>
             <td>

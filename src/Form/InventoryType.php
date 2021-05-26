@@ -14,6 +14,7 @@ use App\Entity\Book;
 use App\Entity\Inventory;
 use App\Entity\Parish;
 use App\Entity\Source;
+use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -89,6 +90,7 @@ class InventoryType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
+        NotesType::add($builder, $options);
     }
 
     /**

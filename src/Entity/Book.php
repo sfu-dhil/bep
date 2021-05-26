@@ -25,6 +25,7 @@ class Book extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
+    use NotesTrait;
 
     /**
      * @var string
