@@ -16,6 +16,7 @@ use App\Entity\Parish;
 use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
+use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
