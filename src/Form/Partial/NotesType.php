@@ -11,13 +11,9 @@ declare(strict_types=1);
 namespace App\Form\Partial;
 
 use App\Entity\Archdeaconry;
-use App\Entity\Diocese;
-use Nines\MediaBundle\Form\LinkableType;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 /**
  * Archdeaconry form.
@@ -36,5 +32,4 @@ class NotesType extends TermType {
             ],
         ]);
     }
-
 }

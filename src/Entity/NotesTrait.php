@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Entity;
-
 
 trait NotesTrait {
     /**
@@ -11,16 +17,11 @@ trait NotesTrait {
      */
     private $notes;
 
-    /**
-     * @return string|null
-     */
     public function getNotes() : ?string {
         return $this->notes;
     }
 
     /**
-     * @param string|null $notes
-     *
      * @return $this
      */
     public function setNotes(?string $notes) : self {
@@ -28,5 +29,4 @@ trait NotesTrait {
 
         return $this;
     }
-
 }
