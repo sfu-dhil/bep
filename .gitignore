@@ -31,3 +31,8 @@
 /public/images/blog
 public/js/jquery.collection.js
 data
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
