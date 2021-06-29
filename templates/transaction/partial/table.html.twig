@@ -5,7 +5,7 @@
             <th>Date</th>
             <th>Value</th>
             <th>Books</th>
-            <th>Transcription</th>
+            <th>Parish</th>
             <th>Description</th>
 
         </tr>
@@ -32,7 +32,9 @@
                 </td>
 
                 <td>
-                    {{ transaction.transcription|raw }}
+                    {% if transaction.parish %}
+                        {% include 'parish/partial/location.html.twig' with {'parish': transaction.parish } %}
+                    {% endif %}
                 </td>
 
                 <td>

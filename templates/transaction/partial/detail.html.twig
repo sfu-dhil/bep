@@ -69,7 +69,7 @@
             <th>Parish</th>
             <td>
                 {% if transaction.parish %}
-                    <a href='{{ path("parish_show", {"id": transaction.parish.id}) }}'>{{ transaction.parish }}</a>
+                    {% include 'parish/partial/location.html.twig' with {'parish': transaction.parish } %}
                 {% endif %}
             </td>
         </tr>
