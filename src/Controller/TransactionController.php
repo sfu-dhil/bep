@@ -12,6 +12,7 @@ namespace App\Controller;
 
 use App\Entity\Transaction;
 use App\Form\TransactionType;
+use App\Repository\BookRepository;
 use App\Repository\TransactionRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
@@ -40,6 +41,28 @@ class TransactionController extends AbstractController implements PaginatorAware
 
         return [
             'transactions' => $this->paginator->paginate($query, $page, $pageSize),
+        ];
+    }
+
+    /**
+     * @Route("/search", name="transaction_search", methods={"GET"})
+     *
+     * @Template
+     *
+     * @return array
+     */
+    public function search(Request $request, TransactionRepository $transactionRepository) {
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $transactionRepository->searchQuery($q);
+            $transactions = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
+        } else {
+            $transactions = [];
+        }
+
+        return [
+            'transactions' => $transactions,
+            'q' => $q,
         ];
     }
 

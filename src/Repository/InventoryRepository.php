@@ -12,8 +12,10 @@ namespace App\Repository;
 
 use App\Entity\Inventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use RuntimeException;
 
 /**
  * @method null|Inventory find($id, $lockMode = null, $lockVersion = null)
@@ -35,4 +37,18 @@ class InventoryRepository extends ServiceEntityRepository {
             ->getQuery()
         ;
     }
-}
+
+    /**
+     * @param string $q
+     *
+     * @return Collection|Inventory[]|Query
+     */
+    public function searchQuery($q) {
+        $qb = $this->createQueryBuilder('inventory');
+        $qb->addSelect('MATCH (inventory.transcription, inventory.modifications, inventory.description, inventory.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
+    }}
