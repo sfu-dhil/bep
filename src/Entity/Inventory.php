@@ -37,7 +37,7 @@ class Inventory extends AbstractEntity {
 
     /**
      * @var string
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
@@ -97,7 +97,7 @@ class Inventory extends AbstractEntity {
         return $this->description;
     }
 
-    public function setDescription(string $description) : self {
+    public function setDescription(?string $description) : self {
         $this->description = $description;
 
         return $this;
