@@ -33,8 +33,6 @@ class TransactionType extends AbstractType {
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        /** @var Transaction $transaction */
-        $transaction = $options['data'];
         $builder->add('l', NumberType::class, [
             'label' => 'Cost Pounds',
             'scale' => 0,
