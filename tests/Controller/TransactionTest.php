@@ -129,7 +129,7 @@ class TransactionTest extends ControllerBaseCase {
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/transaction/1'));
@@ -199,7 +199,7 @@ class TransactionTest extends ControllerBaseCase {
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -228,7 +228,7 @@ class TransactionTest extends ControllerBaseCase {
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

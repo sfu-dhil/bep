@@ -17,7 +17,11 @@ use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
 use App\Form\Partial\NotesType;
+use App\Repository\TransactionCategoryRepository;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -154,16 +158,16 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
-        $builder->add('transactionCategory', Select2EntityType::class, [
-            'label' => 'Transaction Category',
+        $builder->add('transactionCategories', EntityType::class, [
+            'label' => 'Transaction Categories',
+            'expanded' => false,
+            'multiple' => true,
             'class' => TransactionCategory::class,
-            'remote_route' => 'transaction_category_typeahead',
-            'allow_clear' => false,
-            'required' => true,
+            'choice_label' => 'label',
+            'query_builder' => fn(EntityRepository $r) => $r->createQueryBuilder('c')->orderBy('c.label'),
+
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'transaction_category_new_popup',
-                'add_label' => 'Add TransactionCategory',
+                'help_block' => 'Select categories by holding the Ctrl, Command, or Shift keys depending on your operating system.',
             ],
         ]);
 

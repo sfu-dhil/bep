@@ -94,10 +94,10 @@ class Transaction extends AbstractEntity {
 
     /**
      * @var TransactionCategory
-     * @ORM\ManyToOne(targetEntity="App\Entity\TransactionCategory", inversedBy="transactions")
+     * @ORM\ManyToMany(targetEntity="App\Entity\TransactionCategory", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $transactionCategory;
+    private $transactionCategories;
 
     /**
      * @var Injunction
@@ -109,6 +109,7 @@ class Transaction extends AbstractEntity {
         parent::__construct();
         $this->copies = 1;
         $this->books = new ArrayCollection();
+        $this->transactionCategories = new ArrayCollection();
     }
 
     /**
@@ -161,16 +162,6 @@ class Transaction extends AbstractEntity {
 
     public function setParish(?Parish $parish) : self {
         $this->parish = $parish;
-
-        return $this;
-    }
-
-    public function getTransactionCategory() : ?TransactionCategory {
-        return $this->transactionCategory;
-    }
-
-    public function setTransactionCategory(?TransactionCategory $transactionCategory) : self {
-        $this->transactionCategory = $transactionCategory;
 
         return $this;
     }
@@ -289,6 +280,27 @@ class Transaction extends AbstractEntity {
 
     public function removeBook(Book $book) : self {
         $this->books->removeElement($book);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TransactionCategory[]
+     */
+    public function getTransactionCategories() : Collection {
+        return $this->transactionCategories;
+    }
+
+    public function addTransactionCategory(TransactionCategory $transactionCategory) : self {
+        if ( ! $this->transactionCategories->contains($transactionCategory)) {
+            $this->transactionCategories[] = $transactionCategory;
+        }
+
+        return $this;
+    }
+
+    public function removeTransactionCategory(TransactionCategory $transactionCategory) : self {
+        $this->transactionCategories->removeElement($transactionCategory);
 
         return $this;
     }
