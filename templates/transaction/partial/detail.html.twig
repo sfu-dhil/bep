@@ -21,7 +21,11 @@
         <tr>
             <th>Copies</th>
             <td>
-                {{ transaction.copies }}
+                {% if transaction.copies is not null %}
+                    {{ transaction.copies }}
+                {% else %}
+                    <i>unknown</i>
+                {% endif %}
             </td>
         </tr>
         <tr>

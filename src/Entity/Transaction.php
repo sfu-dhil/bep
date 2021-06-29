@@ -179,7 +179,7 @@ class Transaction extends AbstractEntity {
         return $this->copies;
     }
 
-    public function setCopies(int $copies) : self {
+    public function setCopies(?int $copies) : self {
         $this->copies = $copies;
 
         return $this;
