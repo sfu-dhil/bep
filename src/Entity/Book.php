@@ -21,7 +21,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  * @ORM\Table(indexes={
- *   @ORM\Index(name="book_ft", columns={"title","uniform_title","variant_titles","description","author","publisher","notes"}, flags={"fulltext"})
+ *     @ORM\Index(name="book_ft", columns={"title", "uniform_title", "variant_titles", "description", "author", "publisher", "notes"}, flags={"fulltext"})
  * })
  */
 class Book extends AbstractEntity implements LinkableInterface {

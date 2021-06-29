@@ -54,7 +54,7 @@ class InjunctionRepository extends ServiceEntityRepository {
     /**
      * @param string $q
      *
-     * @return Query|Collection|Injunction[]
+     * @return Collection|Injunction[]|Query
      */
     public function searchQuery($q) {
         $qb = $this->createQueryBuilder('injunction');

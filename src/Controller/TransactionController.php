@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\Entity\Transaction;
 use App\Form\TransactionType;
-use App\Repository\BookRepository;
 use App\Repository\TransactionRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;

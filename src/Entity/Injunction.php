@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=InjunctionRepository::class)
  * @ORM\Table(indexes={
- *   @ORM\Index(name="injunction_ft", columns={"title","description","estc"}, flags={"fulltext"})
+ *     @ORM\Index(name="injunction_ft", columns={"title", "description", "estc"}, flags={"fulltext"})
  * })
  */
 class Injunction extends AbstractEntity implements LinkableInterface {
