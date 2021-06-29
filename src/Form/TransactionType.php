@@ -150,7 +150,7 @@ class TransactionType extends AbstractType {
             'label' => 'Page',
             'required' => false,
             'attr' => [
-                'help_block' => 'Enter a page number (p. 5) or folio location (f. 5 r. col. a)',
+                'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
             ],
         ]);
 
