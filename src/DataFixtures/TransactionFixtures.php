@@ -31,7 +31,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setSource($this->getReference('source.' . $i));
             $fixture->setPage("p. {$i}");
-            $fixture->setTransactioncategory($this->getReference('transactioncategory.' . $i));
+            $fixture->addTransactionCategory($this->getReference('transactioncategory.' . $i));
             $fixture->setInjunction($this->getReference('injunction.' . $i));
             $em->persist($fixture);
             $this->setReference('transaction.' . $i, $fixture);

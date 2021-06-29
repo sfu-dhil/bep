@@ -84,9 +84,9 @@ class InventoryType extends AbstractType {
         ]);
         $builder->add('description', TextareaType::class, [
             'label' => 'Notes',
-            'required' => true,
+            'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'Public notes about the item.',
                 'class' => 'tinymce',
             ],
         ]);

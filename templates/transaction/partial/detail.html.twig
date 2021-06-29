@@ -21,7 +21,11 @@
         <tr>
             <th>Copies</th>
             <td>
-                {{ transaction.copies }}
+                {% if transaction.copies is not null %}
+                    {{ transaction.copies }}
+                {% else %}
+                    <i>unknown</i>
+                {% endif %}
             </td>
         </tr>
         <tr>
@@ -79,11 +83,12 @@
             </td>
         </tr>
         <tr>
-            <th>Transaction Category</th>
+            <th>Transaction Categories</th>
             <td>
-                {% if transaction.transactionCategory %}
-                    <a href='{{ path("transaction_category_show", {"id": transaction.transactionCategory.id}) }}'>{{ transaction.transactionCategory }}</a>
-                {% endif %}
+                {% for category in transaction.transactionCategories %}
+                <a href='{{ path("transaction_category_show", {"id": category.id}) }}'>{{ category }}</a>
+                {%- if not loop.last %}, {% endif %}
+                {% endfor %}
             </td>
         </tr>
         <tr>

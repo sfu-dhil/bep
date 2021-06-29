@@ -17,7 +17,11 @@ use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
 use App\Form\Partial\NotesType;
+use App\Repository\TransactionCategoryRepository;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,8 +37,6 @@ class TransactionType extends AbstractType {
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        /** @var Transaction $transaction */
-        $transaction = $options['data'];
         $builder->add('l', NumberType::class, [
             'label' => 'Cost Pounds',
             'scale' => 0,
@@ -152,20 +154,20 @@ class TransactionType extends AbstractType {
             'label' => 'Page',
             'required' => false,
             'attr' => [
-                'help_block' => 'Enter a page number (p. 5) or folio location (f. 5 r. col. a)',
+                'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
             ],
         ]);
 
-        $builder->add('transactionCategory', Select2EntityType::class, [
-            'label' => 'Transaction Category',
+        $builder->add('transactionCategories', EntityType::class, [
+            'label' => 'Transaction Categories',
+            'expanded' => false,
+            'multiple' => true,
             'class' => TransactionCategory::class,
-            'remote_route' => 'transaction_category_typeahead',
-            'allow_clear' => false,
-            'required' => true,
+            'choice_label' => 'label',
+            'query_builder' => fn(EntityRepository $r) => $r->createQueryBuilder('c')->orderBy('c.label'),
+
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'transaction_category_new_popup',
-                'add_label' => 'Add TransactionCategory',
+                'help_block' => 'Select categories by holding the Ctrl, Command, or Shift keys depending on your operating system.',
             ],
         ]);
 
