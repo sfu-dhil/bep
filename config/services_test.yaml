@@ -22,3 +22,4 @@ services:
     test.App\Repository\TransactionRepository: '@App\Repository\TransactionRepository'
     test.App\Repository\HoldingRepository: '@App\Repository\HoldingRepository'
     test.App\Repository\InventoryRepository: '@App\Repository\InventoryRepository'
+    test.App\Repository\InjunctionRepository: '@App\Repository\InjunctionRepository'
