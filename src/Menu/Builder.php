@@ -78,6 +78,7 @@ class Builder implements ContainerAwareInterface {
         $browse->addChild('Counties', ['route' => 'county_index']);
         $browse->addChild('Dioceses', ['route' => 'diocese_index']);
         $browse->addChild('Injunctions', ['route' => 'injunction_index']);
+        $browse->addChild('Inventories', ['route' => 'inventory_index']);
         $browse->addChild('Nations', ['route' => 'nation_index']);
         $browse->addChild('Parishes', ['route' => 'parish_index']);
         $browse->addChild('Provinces', ['route' => 'province_index']);
@@ -85,7 +86,6 @@ class Builder implements ContainerAwareInterface {
         $browse->addChild('Towns', ['route' => 'town_index']);
         $browse->addChild('Transactions', ['route' => 'transaction_index']);
         $browse->addChild('Surviving Texts', ['route' => 'holding_index']);
-        $browse->addChild('Inventories', ['route' => 'inventory_index']);
 
         if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
             $divider = $browse->addChild('divider_content', [

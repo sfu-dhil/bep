@@ -12,8 +12,10 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use RuntimeException;
 
 /**
  * @method null|Transaction find($id, $lockMode = null, $lockVersion = null)
@@ -37,4 +39,20 @@ class TransactionRepository extends ServiceEntityRepository {
             ->getQuery()
         ;
     }
+
+    /**
+     * @param string $q
+     *
+     * @return Collection|Query|Transaction[]
+     */
+    public function searchQuery($q) {
+        $qb = $this->createQueryBuilder('transaction');
+        $qb->addSelect('MATCH (transaction.transcription, transaction.description, transaction.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
+    }
+
 }

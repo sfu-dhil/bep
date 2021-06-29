@@ -12,6 +12,7 @@ namespace App\Controller;
 
 use App\Entity\Inventory;
 use App\Form\InventoryType;
+use App\Repository\BookRepository;
 use App\Repository\InventoryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
@@ -40,6 +41,28 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
 
         return [
             'inventories' => $this->paginator->paginate($query, $page, $pageSize),
+        ];
+    }
+
+    /**
+     * @Route("/search", name="inventory_search", methods={"GET"})
+     *
+     * @Template
+     *
+     * @return array
+     */
+    public function search(Request $request, InventoryRepository $inventoryRepository) {
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $inventoryRepository->searchQuery($q);
+            $inventories = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
+        } else {
+            $inventories = [];
+        }
+
+        return [
+            'inventories' => $inventories,
+            'q' => $q,
         ];
     }
 

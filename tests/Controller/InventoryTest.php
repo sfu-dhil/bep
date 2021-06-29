@@ -91,6 +91,63 @@ class InventoryTest extends ControllerBaseCase {
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
 
+    public function testAnonSearch() : void {
+        $repo = $this->createMock(InventoryRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('inventory.1')]);
+        $this->client->disableReboot();
+        $this->client->getContainer()->set('test.' . InventoryRepository::class, $repo);
+
+        $crawler = $this->client->request('GET', '/inventory/search');
+        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
+            // If authentication is required stop here.
+            return;
+        }
+
+        $form = $crawler->selectButton('btn-search')->form([
+            'q' => 'inventory',
+        ]);
+
+        $responseCrawler = $this->client->submit($form);
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testUserSearch() : void {
+        $repo = $this->createMock(InventoryRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('inventory.1')]);
+        $this->client->disableReboot();
+        $this->client->getContainer()->set('test.' . InventoryRepository::class, $repo);
+
+        $this->login('user.user');
+        $crawler = $this->client->request('GET', '/inventory/search');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $form = $crawler->selectButton('btn-search')->form([
+            'q' => 'inventory',
+        ]);
+
+        $responseCrawler = $this->client->submit($form);
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testAdminSearch() : void {
+        $repo = $this->createMock(InventoryRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('inventory.1')]);
+        $this->client->disableReboot();
+        $this->client->getContainer()->set('test.' . InventoryRepository::class, $repo);
+
+        $this->login('user.admin');
+        $crawler = $this->client->request('GET', '/inventory/search');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $form = $crawler->selectButton('btn-search')->form([
+            'q' => 'inventory',
+        ]);
+
+        $responseCrawler = $this->client->submit($form);
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
     /**
      * @group anon
      * @group edit
