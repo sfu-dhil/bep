@@ -16,6 +16,7 @@ use App\Entity\Parish;
 use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
+use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

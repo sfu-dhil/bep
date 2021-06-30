@@ -8,7 +8,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace App\Form;
+namespace App\Form\Partial;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,6 +29,14 @@ class DatedType {
             'attr' => [
                 'placeholder' => 'yyyy-mm-dd',
                 'help_block' => 'Enter the latest possible date if the date is uncertain.',
+            ],
+        ]);
+        $builder->add('writtenDate', TextType::class, [
+            'label' => 'Written Date',
+            'required' => false,
+            'attr' => [
+                'placeholder' => '',
+                'help_block' => 'Transcribe the date as written.',
             ],
         ]);
     }

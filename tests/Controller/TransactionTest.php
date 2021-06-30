@@ -183,6 +183,7 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[description]' => 'Updated Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
+            'transaction[writtenDate]' => 'In the year of swans',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
@@ -253,6 +254,7 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[description]' => 'New Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
+            'transaction[writtenDate]' => 'In the year of swans',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
@@ -282,6 +284,7 @@ class TransactionTest extends ControllerBaseCase {
             'transaction[description]' => 'New Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
+            'transaction[writtenDate]' => 'In the year of swans',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);

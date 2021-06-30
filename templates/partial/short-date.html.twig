@@ -1,7 +1,11 @@
-{% if entity.startDate and entity.endDate %}
-    {{ entity.startDate }}-{{ entity.endDate }}
-{% elseif entity.startDate %}
-    {{ entity.startDate }}
-{% else %}
-    No date
-{% endif %}
+{% apply spaceless %}
+    {% if entity.writtenDate %}
+        {{ entity.writtenDate }}
+    {% elseif entity.startDate and entity.endDate %}
+        {{ entity.startDate }}&ndash;{{ entity.endDate }}
+    {% elseif entity.startDate %}
+        {{ entity.startDate }}
+    {% else %}
+        No date
+    {% endif %}
+{% endapply %}

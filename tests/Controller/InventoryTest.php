@@ -182,6 +182,7 @@ class InventoryTest extends ControllerBaseCase {
             'inventory[modifications]' => 'Updated Modifications',
             'inventory[description]' => 'Updated Description',
             'inventory[startDate]' => '1020-01-02',
+            'inventory[writtenDate]' => 'In the year of swans',
         ]);
         $form['inventory[parish]']->disableValidation()->setValue(1);
         $form['inventory[books]']->disableValidation()->setValue([1]);
@@ -194,7 +195,6 @@ class InventoryTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Transcription")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Modifications")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("1020-01-02")')->count());
     }
 
     /**
@@ -251,6 +251,7 @@ class InventoryTest extends ControllerBaseCase {
             'inventory[modifications]' => 'New Modifications',
             'inventory[description]' => 'New Description',
             'inventory[startDate]' => '1020-01-02',
+            'inventory[writtenDate]' => 'In the year of swans',
         ]);
         $form['inventory[parish]']->disableValidation()->setValue(1);
         $form['inventory[books]']->disableValidation()->setValue([1]);
@@ -263,7 +264,6 @@ class InventoryTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Transcription")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Modifications")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("1020-01-02")')->count());
     }
 
     /**
@@ -280,6 +280,7 @@ class InventoryTest extends ControllerBaseCase {
             'inventory[modifications]' => 'New Modifications',
             'inventory[description]' => 'New Description',
             'inventory[startDate]' => '1020-01-02',
+            'inventory[writtenDate]' => 'In the year of swans',
         ]);
         $form['inventory[parish]']->disableValidation()->setValue(1);
         $form['inventory[books]']->disableValidation()->setValue([1]);
@@ -292,7 +293,6 @@ class InventoryTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Transcription")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Modifications")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("1020-01-02")')->count());
     }
 
     /**
