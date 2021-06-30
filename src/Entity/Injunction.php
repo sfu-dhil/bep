@@ -50,6 +50,12 @@ class Injunction extends AbstractEntity implements LinkableInterface {
     private $estc;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
+
+    /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="injunction")
      */
@@ -121,6 +127,24 @@ class Injunction extends AbstractEntity implements LinkableInterface {
                 $transaction->setInjunction(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getYear() {
+        return $this->year;
+    }
+
+    /**
+     * @param ?int $year
+     *
+     * @return $this
+     */
+    public function setYear($year) : self {
+        $this->year = $year;
 
         return $this;
     }

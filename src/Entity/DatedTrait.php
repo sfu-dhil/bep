@@ -75,5 +75,4 @@ trait DatedTrait {
     public function setWrittenDate(?string $writtenDate) : void {
         $this->writtenDate = $writtenDate;
     }
-
 }
