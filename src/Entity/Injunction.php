@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=InjunctionRepository::class)
  * @ORM\Table(indexes={
- *   @ORM\Index(name="injunction_ft", columns={"title","description","estc"}, flags={"fulltext"})
+ *     @ORM\Index(name="injunction_ft", columns={"title", "description", "estc"}, flags={"fulltext"})
  * })
  */
 class Injunction extends AbstractEntity implements LinkableInterface {
@@ -48,6 +48,12 @@ class Injunction extends AbstractEntity implements LinkableInterface {
      * @ORM\Column(type="string", nullable=true)
      */
     private $estc;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
 
     /**
      * @var Collection
@@ -121,6 +127,24 @@ class Injunction extends AbstractEntity implements LinkableInterface {
                 $transaction->setInjunction(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getYear() {
+        return $this->year;
+    }
+
+    /**
+     * @param ?int $year
+     *
+     * @return $this
+     */
+    public function setYear($year) : self {
+        $this->year = $year;
 
         return $this;
     }

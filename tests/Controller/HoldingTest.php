@@ -123,6 +123,7 @@ class HoldingTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'holding[description]' => 'Updated Description',
             'holding[startDate]' => '1000-01-01',
+            'holding[writtenDate]' => 'In the year of swans',
             'holding[parish]' => 1,
         ]);
 
@@ -131,7 +132,6 @@ class HoldingTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("1000-01-01")')->count());
     }
 
     /**
@@ -186,6 +186,7 @@ class HoldingTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'holding[description]' => 'New Description',
             'holding[startDate]' => '1000-01-01',
+            'holding[writtenDate]' => 'In the year of swans',
         ]);
         $form['holding[parish]']->disableValidation()->setValue(1);
         $form['holding[book]']->disableValidation()->setValue(1);
@@ -195,7 +196,6 @@ class HoldingTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("1000-01-01")')->count());
     }
 
     /**
@@ -210,6 +210,7 @@ class HoldingTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'holding[description]' => 'New Description',
             'holding[startDate]' => '1000-01-01',
+            'holding[writtenDate]' => 'In the year of swans',
         ]);
         $form['holding[parish]']->disableValidation()->setValue(1);
         $form['holding[book]']->disableValidation()->setValue(1);
@@ -219,7 +220,6 @@ class HoldingTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("1000-01-01")')->count());
     }
 
     /**

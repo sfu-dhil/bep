@@ -16,17 +16,18 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210629181331 extends AbstractMigration {
+final class Version20210630170334 extends AbstractMigration {
     public function getDescription() : string {
         return '';
     }
 
     public function up(Schema $schema) : void {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE inventory CHANGE description description LONGTEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE injunction ADD year INT DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void {
-        $this->throwIrreversibleMigrationException();
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE injunction DROP year');
     }
 }

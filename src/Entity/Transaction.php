@@ -19,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  * @ORM\Table(name="transact", indexes={
- *   @ORM\Index(name="transaction_ft", columns={"transcription","description","notes"}, flags={"fulltext"})
+ *     @ORM\Index(name="transaction_ft", columns={"transcription", "description", "notes"}, flags={"fulltext"})
  * })
  */
 class Transaction extends AbstractEntity {

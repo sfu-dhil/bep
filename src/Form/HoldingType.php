@@ -14,6 +14,7 @@ use App\Entity\Archive;
 use App\Entity\Book;
     use App\Entity\Holding;
     use App\Entity\Parish;
+use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

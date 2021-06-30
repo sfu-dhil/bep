@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\Entity\Inventory;
 use App\Form\InventoryType;
-use App\Repository\BookRepository;
 use App\Repository\InventoryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;

@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Injunction;
 use Nines\MediaBundle\Form\LinkableType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -30,6 +31,13 @@ class InjunctionType extends AbstractType {
         $builder->add('title', TextType::class, [
             'label' => 'Title',
             'required' => true,
+            'attr' => [
+                'help_block' => '',
+            ],
+        ]);
+        $builder->add('year', IntegerType::class, [
+            'label' => 'Year',
+            'required' => false,
             'attr' => [
                 'help_block' => '',
             ],

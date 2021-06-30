@@ -3,9 +3,8 @@
         <tr>
             <th>ID</th>
             <th>Title</th>
+            <th>Year</th>
             <th>Description</th>
-            <th>Estc</th>
-
         </tr>
     </thead>
     <tbody>
@@ -19,15 +18,12 @@
                 <td>
                     {{ injunction.title }}
                 </td>
-
+                <td>
+                    {{ injunction.year }}
+                </td>
                 <td>
                     {{ injunction.description|raw }}
                 </td>
-
-                <td>
-                    {{ injunction.estc }}
-                </td>
-
             </tr>
         {% endfor %}
     </tbody>

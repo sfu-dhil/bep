@@ -22,6 +22,8 @@ trait NotesTrait {
     }
 
     /**
+     * @param ?string $notes
+     *
      * @return $this
      */
     public function setNotes(?string $notes) : self {

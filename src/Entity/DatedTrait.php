@@ -29,6 +29,12 @@ trait DatedTrait {
     private $endDate;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=60, nullable=true)
+     */
+    private $writtenDate;
+
+    /**
      * @return string
      */
     public function getStartDate() : ?string {
@@ -54,5 +60,19 @@ trait DatedTrait {
      */
     public function setEndDate(?string $endDate) : void {
         $this->endDate = $endDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWrittenDate() : ?string {
+        return $this->writtenDate;
+    }
+
+    /**
+     * @param string $writtenDate
+     */
+    public function setWrittenDate(?string $writtenDate) : void {
+        $this->writtenDate = $writtenDate;
     }
 }
