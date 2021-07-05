@@ -63,7 +63,7 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
      * {@inheritDoc}
      */
     public function __toString() : string {
-        return implode(", ", $this->books->toArray()) . ' ' . $this->parish;
+        return implode(', ', $this->books->toArray()) . ' ' . $this->parish;
     }
 
     public function getDescription() : ?string {
@@ -87,24 +87,21 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Book[]|Collection
      */
-    public function getBooks(): Collection
-    {
+    public function getBooks() : Collection {
         return $this->books;
     }
 
-    public function addBook(Book $book): self
-    {
-        if (!$this->books->contains($book)) {
+    public function addBook(Book $book) : self {
+        if ( ! $this->books->contains($book)) {
             $this->books[] = $book;
         }
 
         return $this;
     }
 
-    public function removeBook(Book $book): self
-    {
+    public function removeBook(Book $book) : self {
         $this->books->removeElement($book);
 
         return $this;

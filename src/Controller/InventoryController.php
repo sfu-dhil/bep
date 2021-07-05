@@ -10,14 +10,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Holding;
 use App\Entity\Inventory;
 use App\Form\InventoryType;
 use App\Repository\InventoryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
-use Nines\MediaBundle\Entity\ImageContainerTrait;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -162,7 +160,6 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
 
         return $this->redirectToRoute('inventory_index');
     }
-
 
     /**
      * @Route("/{id}/new_image", name="inventory_new_image", methods={"GET", "POST"})
