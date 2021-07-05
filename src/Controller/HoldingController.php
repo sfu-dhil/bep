@@ -14,12 +14,13 @@ use App\Entity\Holding;
 use App\Form\HoldingType;
 use App\Repository\HoldingRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Controller\AbstractImageController;
+use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,8 +28,9 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/holding")
  */
-class HoldingController extends AbstractImageController implements PaginatorAwareInterface {
+class HoldingController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+    use ImageControllerTrait;
 
     /**
      * @Route("/", name="holding_index", methods={"GET"})
@@ -144,7 +146,7 @@ class HoldingController extends AbstractImageController implements PaginatorAwar
      * @Template(template="@NinesMedia/image/new.html.twig")
      */
     public function newImage(Request $request, Holding $holding) {
-        return parent::newImageAction($request, $holding, 'holding_show');
+        return $this->newImageAction($request, $holding, 'holding_show');
     }
 
     /**
@@ -155,7 +157,7 @@ class HoldingController extends AbstractImageController implements PaginatorAwar
      * @Template(template="@NinesMedia/image/edit.html.twig")
      */
     public function editImage(Request $request, Holding $holding, Image $image) {
-        return parent::editImageAction($request, $holding, $image, 'holding_show');
+        return $this->editImageAction($request, $holding, $image, 'holding_show');
     }
 
     /**
@@ -164,6 +166,6 @@ class HoldingController extends AbstractImageController implements PaginatorAwar
      * @IsGranted("ROLE_CONTENT_ADMIN")
      */
     public function deleteImage(Request $request, Holding $holding, Image $image) {
-        return parent::deleteImageAction($request, $holding, $image, 'holding_show');
+        return $this->deleteImageAction($request, $holding, $image, 'holding_show');
     }
 }

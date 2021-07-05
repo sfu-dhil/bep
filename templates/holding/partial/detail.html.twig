@@ -7,7 +7,10 @@
             </td>
         </tr>
         {% include 'partial/notes.html.twig' with {'item': holding} %}
-        {% include 'partial/long-date.html.twig' with {'entity': holding} %}
+        <tr>
+            <th>Date</th>
+            <td>{% include 'partial/long-date.html.twig' with {'entity': holding} %}</td>
+        </tr>
         <tr>
             <th>Parish</th>
             <td>
