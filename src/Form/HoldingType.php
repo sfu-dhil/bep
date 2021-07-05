@@ -53,12 +53,13 @@ class HoldingType extends AbstractType {
             ],
         ]);
 
-        $builder->add('book', Select2EntityType::class, [
-            'label' => 'Book',
+        $builder->add('books', Select2EntityType::class, [
+            'label' => 'Books',
             'required' => true,
             'class' => Book::class,
             'remote_route' => 'book_typeahead',
             'allow_clear' => true,
+            'multiple' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'book_new_popup',

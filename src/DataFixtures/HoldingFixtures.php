@@ -27,7 +27,7 @@ class HoldingFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setEndDate('1000-01-04');
 
             $fixture->setParish($this->getReference('parish.' . $i));
-            $fixture->setBook($this->getReference('book.' . $i));
+            $fixture->addBook($this->getReference('book.' . $i));
             $em->persist($fixture);
             $this->setReference('holding.' . $i, $fixture);
         }

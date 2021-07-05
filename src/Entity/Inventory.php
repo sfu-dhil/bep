@@ -14,6 +14,8 @@ use App\Repository\InventoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Nines\MediaBundle\Entity\ImageContainerInterface;
+use Nines\MediaBundle\Entity\ImageContainerTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
@@ -22,9 +24,10 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  *     @ORM\Index(name="inventory_ft", columns={"transcription", "modifications", "description", "notes"}, flags={"fulltext"})
  * })
  */
-class Inventory extends AbstractEntity {
+class Inventory extends AbstractEntity implements ImageContainerInterface {
     use DatedTrait;
     use NotesTrait;
+    use ImageContainerTrait;
 
     /**
      * @var string

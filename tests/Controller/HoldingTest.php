@@ -124,8 +124,9 @@ class HoldingTest extends ControllerBaseCase {
             'holding[description]' => 'Updated Description',
             'holding[startDate]' => '1000-01-01',
             'holding[writtenDate]' => 'In the year of swans',
-            'holding[parish]' => 1,
         ]);
+        $form['holding[parish]']->disableValidation()->setValue(1);
+        $form['holding[books]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/holding/1'));
@@ -189,7 +190,7 @@ class HoldingTest extends ControllerBaseCase {
             'holding[writtenDate]' => 'In the year of swans',
         ]);
         $form['holding[parish]']->disableValidation()->setValue(1);
-        $form['holding[book]']->disableValidation()->setValue(1);
+        $form['holding[books]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -213,7 +214,7 @@ class HoldingTest extends ControllerBaseCase {
             'holding[writtenDate]' => 'In the year of swans',
         ]);
         $form['holding[parish]']->disableValidation()->setValue(1);
-        $form['holding[book]']->disableValidation()->setValue(1);
+        $form['holding[books]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

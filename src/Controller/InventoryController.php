@@ -14,8 +14,11 @@ use App\Entity\Inventory;
 use App\Form\InventoryType;
 use App\Repository\InventoryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Controller\ImageControllerTrait;
+use Nines\MediaBundle\Entity\Image;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,11 +30,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class InventoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+    use ImageControllerTrait;
 
     /**
      * @Route("/", name="inventory_index", methods={"GET"})
      *
-     * @Template
+     * @Template(template="inventory/index.html.twig")
      */
     public function index(Request $request, InventoryRepository $inventoryRepository) : array {
         $query = $inventoryRepository->indexQuery();
@@ -46,7 +50,7 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
     /**
      * @Route("/search", name="inventory_search", methods={"GET"})
      *
-     * @Template
+     * @Template(template="inventory/search.html.twig")
      *
      * @return array
      */
@@ -67,7 +71,7 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
 
     /**
      * @Route("/new", name="inventory_new", methods={"GET", "POST"})
-     * @Template
+     * @Template(template="inventory/new.html.twig")
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -94,7 +98,7 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
 
     /**
      * @Route("/new_popup", name="inventory_new_popup", methods={"GET", "POST"})
-     * @Template
+     * @Template(template="inventory/new_popup.html.twig")
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -105,7 +109,7 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
 
     /**
      * @Route("/{id}", name="inventory_show", methods={"GET"})
-     * @Template
+     * @Template(template="inventory/show.html.twig")
      *
      * @return array
      */
@@ -119,7 +123,7 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}/edit", name="inventory_edit", methods={"GET", "POST"})
      *
-     * @Template
+     * @Template(template="inventory/edit.html.twig")
      *
      * @return array|RedirectResponse
      */
@@ -155,5 +159,35 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
         }
 
         return $this->redirectToRoute('inventory_index');
+    }
+
+    /**
+     * @Route("/{id}/new_image", name="inventory_new_image", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @Template(template="@NinesMedia/image/new.html.twig")
+     */
+    public function newImage(Request $request, Inventory $inventory) {
+        return $this->newImageAction($request, $inventory, 'inventory_show');
+    }
+
+    /**
+     * @Route("/{id}/edit_image/{image_id}", name="inventory_edit_image", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("image", options={"id": "image_id"})
+     *
+     * @Template(template="@NinesMedia/image/edit.html.twig")
+     */
+    public function editImage(Request $request, Inventory $inventory, Image $image) {
+        return $this->editImageAction($request, $inventory, $image, 'inventory_show');
+    }
+
+    /**
+     * @Route("/{id}/delete_image/{image_id}", name="inventory_delete_image", methods={"DELETE"})
+     * @ParamConverter("image", options={"id": "image_id"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     */
+    public function deleteImage(Request $request, Inventory $inventory, Image $image) {
+        return $this->deleteImageAction($request, $inventory, $image, 'inventory_show');
     }
 }

@@ -20,9 +20,11 @@
                     </a>
                 </td>
                 <td>
-                    <a href='{{ path('book_show', {'id': holding.book.id}) }}'>
-                        {{ holding.book }}
-                    </a>
+                    {% for book in holding.books %}
+                    <a href='{{ path('book_show', {'id': book.id}) }}'>
+                        {{ book -}}
+                    </a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
                 </td>
             </tr>
         {% endfor %}
