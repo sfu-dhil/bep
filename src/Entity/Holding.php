@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\HoldingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\MediaBundle\Entity\ImageContainerInterface;
 use Nines\MediaBundle\Entity\ImageContainerTrait;
@@ -41,10 +43,9 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
 
     /**
      * @var Book
-     * @ORM\ManyToOne(targetEntity="App\Entity\Book", inversedBy="holdings")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="holdings")
      */
-    private $book;
+    private $books;
 
     /**
      * @var Archive
@@ -55,13 +56,14 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
     public function __construct() {
         parent::__construct();
         $this->trait_constructor();
+        $this->books = new ArrayCollection();
     }
 
     /**
      * {@inheritDoc}
      */
     public function __toString() : string {
-        return $this->book . ' ' . $this->parish;
+        return implode(", ", $this->books->toArray()) . ' ' . $this->parish;
     }
 
     public function getDescription() : ?string {
@@ -84,12 +86,26 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
         return $this;
     }
 
-    public function getBook() : ?Book {
-        return $this->book;
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
     }
 
-    public function setBook(?Book $book) : self {
-        $this->book = $book;
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        $this->books->removeElement($book);
 
         return $this;
     }

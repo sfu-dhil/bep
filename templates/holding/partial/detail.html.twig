@@ -28,10 +28,14 @@
             </td>
         </tr>
         <tr>
-            <th>Book</th>
+            <th>Books</th>
             <td>
-                {% if holding.book %}
-                    <a href='{{ path("book_show", {"id": holding.book.id}) }}'>{{ holding.book }}</a>
+                {% if holding.books %}
+                    <ul>
+                        {% for book in holding.books %}
+                            <li><a href='{{ path("book_show", {"id": book.id}) }}'>{{ book }}</a></li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </td>
         </tr>
