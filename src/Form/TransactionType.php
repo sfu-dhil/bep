@@ -90,7 +90,7 @@ class TransactionType extends AbstractType {
             'label' => 'Location',
             'required' => false,
             'attr' => [
-                'help_block' => 'Enter the location of the transaction, if known. Optionally include details of the location in the Description field.',
+                'help_block' => 'Enter the location or parish if it is different from the parish you are working on. For example, if a book was purchased in Oxford for a London parish, enter “Oxford” or “Oxford, All Saints.”',
             ],
         ]);
 
