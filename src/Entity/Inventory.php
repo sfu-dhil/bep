@@ -30,6 +30,12 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     use ImageContainerTrait;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pageNumber;
+
+    /**
      * @var string
      * @ORM\Column(type="text")
      */
@@ -163,6 +169,18 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function setMonarch(?Monarch $monarch) : self {
         $this->monarch = $monarch;
+
+        return $this;
+    }
+
+    public function getPageNumber(): ?int
+    {
+        return $this->pageNumber;
+    }
+
+    public function setPageNumber(?int $pageNumber): self
+    {
+        $this->pageNumber = $pageNumber;
 
         return $this;
     }

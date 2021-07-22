@@ -18,6 +18,7 @@ use App\Entity\Source;
 use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,6 +52,14 @@ class InventoryType extends AbstractType {
                 'help_block' => '',
                 'add_path' => 'source_new_popup',
                 'add_label' => 'Add Source',
+            ],
+        ]);
+
+        $builder->add('pageNumber', IntegerType::class, [
+            'label' => 'pageNumber',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
             ],
         ]);
 

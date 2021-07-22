@@ -20,7 +20,11 @@
         </tr>
 
         {% include 'partial/notes.html.twig' with {'item': inventory} %}
-        {% include 'partial/long-date.html.twig' with {'entity': inventory} %}
+
+        <tr>
+            <th>Date</th>
+            <td>{% include 'partial/long-date.html.twig' with {'entity': inventory} %}</td>
+        </tr>
 
         <tr>
             <th>Source</th>
@@ -29,6 +33,10 @@
                     <a href='{{ path("source_show", {"id": inventory.source.id}) }}'>{{ inventory.source }}</a>
                 {% endif %}
             </td>
+        </tr>
+        <tr>
+            <th>Page Number</th>
+            <td>{{ inventory.pageNumber }}</td>
         </tr>
         <tr>
             <th>Parish</th>
