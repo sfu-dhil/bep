@@ -30,6 +30,12 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     use ImageContainerTrait;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pageNumber;
+
+    /**
      * @var string
      * @ORM\Column(type="text")
      */
@@ -60,6 +66,13 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
      * @ORM\JoinColumn(nullable=false)
      */
     private $parish;
+
+    /**
+     * @var Monarch
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $monarch;
 
     /**
      * @var Book[]|Collection
@@ -146,6 +159,28 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function removeBook(Book $book) : self {
         $this->books->removeElement($book);
+
+        return $this;
+    }
+
+    public function getMonarch() : ?Monarch {
+        return $this->monarch;
+    }
+
+    public function setMonarch(?Monarch $monarch) : self {
+        $this->monarch = $monarch;
+
+        return $this;
+    }
+
+    public function getPageNumber(): ?int
+    {
+        return $this->pageNumber;
+    }
+
+    public function setPageNumber(?int $pageNumber): self
+    {
+        $this->pageNumber = $pageNumber;
 
         return $this;
     }

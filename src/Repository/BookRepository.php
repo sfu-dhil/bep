@@ -45,10 +45,11 @@ class BookRepository extends ServiceEntityRepository {
      */
     public function typeaheadQuery($q) {
         $qb = $this->createQueryBuilder('book');
-        $qb->andWhere('book.title LIKE :q');
-        $qb->orderBy('book.title');
+        $qb->where('book.title LIKE :q');
+        $qb->orWhere('book.variantTitles LIKE :q');
+        $qb->orderBy('book.variantTitles');
         $qb->addOrderBy('book.id');
-        $qb->setParameter('q', "{$q}%");
+        $qb->setParameter('q', "%{$q}%");
 
         return $qb->getQuery()->execute();
     }
@@ -60,7 +61,7 @@ class BookRepository extends ServiceEntityRepository {
      */
     public function searchQuery($q) {
         $qb = $this->createQueryBuilder('book');
-        $qb->addSelect('MATCH (book.title, book.uniformTitle, book.variantTitles, book.description, book.author, book.publisher, book.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->addSelect('MATCH (book.title, book.uniformTitle, book.variantTitles, book.description, book.author, book.imprint, book.variantImprint, book.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');
         $qb->orderBy('score', 'DESC');
         $qb->setParameter('q', $q);

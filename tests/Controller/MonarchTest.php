@@ -10,21 +10,21 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\DataFixtures\BookFixtures;
-use App\Repository\BookRepository;
+use App\DataFixtures\MonarchFixtures;
+use App\Repository\MonarchRepository;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class BookTest extends ControllerBaseCase {
+class MonarchTest extends ControllerBaseCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'this is';
+    private const TYPEAHEAD_QUERY = 'label';
 
     protected function fixtures() : array {
         return [
-            BookFixtures::class,
+            MonarchFixtures::class,
             UserFixtures::class,
         ];
     }
@@ -34,7 +34,7 @@ class BookTest extends ControllerBaseCase {
      * @group index
      */
     public function testAnonIndex() : void {
-        $crawler = $this->client->request('GET', '/book/');
+        $crawler = $this->client->request('GET', '/monarch/');
         $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
@@ -45,7 +45,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testUserIndex() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/book/');
+        $crawler = $this->client->request('GET', '/monarch/');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
@@ -56,7 +56,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testAdminIndex() : void {
         $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/book/');
+        $crawler = $this->client->request('GET', '/monarch/');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->selectLink('New')->count());
     }
@@ -66,7 +66,7 @@ class BookTest extends ControllerBaseCase {
      * @group show
      */
     public function testAnonShow() : void {
-        $crawler = $this->client->request('GET', '/book/1');
+        $crawler = $this->client->request('GET', '/monarch/1');
         $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
@@ -77,7 +77,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testUserShow() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/book/1');
+        $crawler = $this->client->request('GET', '/monarch/1');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
@@ -88,7 +88,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testAdminShow() : void {
         $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/book/1');
+        $crawler = $this->client->request('GET', '/monarch/1');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
@@ -98,7 +98,7 @@ class BookTest extends ControllerBaseCase {
      * @group typeahead
      */
     public function testAnonTypeahead() : void {
-        $this->client->request('GET', '/book/typeahead?q=' . self::TYPEAHEAD_QUERY);
+        $this->client->request('GET', '/monarch/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
         $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
@@ -116,7 +116,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testUserTypeahead() : void {
         $this->login('user.user');
-        $this->client->request('GET', '/book/typeahead?q=' . self::TYPEAHEAD_QUERY);
+        $this->client->request('GET', '/monarch/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame('application/json', $response->headers->get('content-type'));
@@ -130,7 +130,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testAdminTypeahead() : void {
         $this->login('user.admin');
-        $this->client->request('GET', '/book/typeahead?q=' . self::TYPEAHEAD_QUERY);
+        $this->client->request('GET', '/monarch/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame('application/json', $response->headers->get('content-type'));
@@ -139,12 +139,12 @@ class BookTest extends ControllerBaseCase {
     }
 
     public function testAnonSearch() : void {
-        $repo = $this->createMock(BookRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('book.1')]);
+        $repo = $this->createMock(MonarchRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('monarch.1')]);
         $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . BookRepository::class, $repo);
+        $this->client->getContainer()->set('test.' . MonarchRepository::class, $repo);
 
-        $crawler = $this->client->request('GET', '/book/search');
+        $crawler = $this->client->request('GET', '/monarch/search');
         $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
@@ -152,7 +152,7 @@ class BookTest extends ControllerBaseCase {
         }
 
         $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'book',
+            'q' => 'monarch',
         ]);
 
         $responseCrawler = $this->client->submit($form);
@@ -160,17 +160,17 @@ class BookTest extends ControllerBaseCase {
     }
 
     public function testUserSearch() : void {
-        $repo = $this->createMock(BookRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('book.1')]);
+        $repo = $this->createMock(MonarchRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('monarch.1')]);
         $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . BookRepository::class, $repo);
+        $this->client->getContainer()->set('test.' . MonarchRepository::class, $repo);
 
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/book/search');
+        $crawler = $this->client->request('GET', '/monarch/search');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'book',
+            'q' => 'monarch',
         ]);
 
         $responseCrawler = $this->client->submit($form);
@@ -178,17 +178,17 @@ class BookTest extends ControllerBaseCase {
     }
 
     public function testAdminSearch() : void {
-        $repo = $this->createMock(BookRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('book.1')]);
+        $repo = $this->createMock(MonarchRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('monarch.1')]);
         $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . BookRepository::class, $repo);
+        $this->client->getContainer()->set('test.' . MonarchRepository::class, $repo);
 
         $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/book/search');
+        $crawler = $this->client->request('GET', '/monarch/search');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'book',
+            'q' => 'monarch',
         ]);
 
         $responseCrawler = $this->client->submit($form);
@@ -200,7 +200,7 @@ class BookTest extends ControllerBaseCase {
      * @group edit
      */
     public function testAnonEdit() : void {
-        $crawler = $this->client->request('GET', '/book/1/edit');
+        $crawler = $this->client->request('GET', '/monarch/1/edit');
         $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
@@ -211,7 +211,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testUserEdit() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/book/1/edit');
+        $crawler = $this->client->request('GET', '/monarch/1/edit');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -221,29 +221,19 @@ class BookTest extends ControllerBaseCase {
      */
     public function testAdminEdit() : void {
         $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/book/1/edit');
+        $formCrawler = $this->client->request('GET', '/monarch/1/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'book[title]' => 'Updated Title',
-            'book[uniformTitle]' => 'Updated UniformTitle',
-            'book[variantTitles][0]' => 'Updated VariantTitles',
-            'book[author]' => 'Updated Author',
-            'book[imprint]' => 'Updated Imprint',
-            'book[date]' => 'Updated Date',
-            'book[description]' => 'Updated Description',
+            'monarch[label]' => 'Updated Label',
+            'monarch[description]' => 'Updated Description',
         ]);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect('/book/1'));
+        $this->assertTrue($this->client->getResponse()->isRedirect('/monarch/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Title")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated UniformTitle")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantTitles")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Imprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Date")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Label")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
     }
 
@@ -252,7 +242,7 @@ class BookTest extends ControllerBaseCase {
      * @group new
      */
     public function testAnonNew() : void {
-        $crawler = $this->client->request('GET', '/book/new');
+        $crawler = $this->client->request('GET', '/monarch/new');
         $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
@@ -262,7 +252,7 @@ class BookTest extends ControllerBaseCase {
      * @group new
      */
     public function testAnonNewPopup() : void {
-        $crawler = $this->client->request('GET', '/book/new_popup');
+        $crawler = $this->client->request('GET', '/monarch/new_popup');
         $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
@@ -273,7 +263,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testUserNew() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/book/new');
+        $crawler = $this->client->request('GET', '/monarch/new');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -283,7 +273,7 @@ class BookTest extends ControllerBaseCase {
      */
     public function testUserNewPopup() : void {
         $this->login('user.user');
-        $crawler = $this->client->request('GET', '/book/new_popup');
+        $crawler = $this->client->request('GET', '/monarch/new_popup');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -293,28 +283,19 @@ class BookTest extends ControllerBaseCase {
      */
     public function testAdminNew() : void {
         $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/book/new');
+        $formCrawler = $this->client->request('GET', '/monarch/new');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'book[title]' => 'New Title',
-            'book[uniformTitle]' => 'New UniformTitle',
-            'book[author]' => 'New Author',
-            'book[imprint]' => 'New Imprint',
-            'book[date]' => 'New Date',
-            'book[description]' => 'New Description',
+            'monarch[label]' => 'New Label',
+            'monarch[description]' => 'New Description',
         ]);
 
         $this->client->submit($form);
-
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Label")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }
 
@@ -324,27 +305,19 @@ class BookTest extends ControllerBaseCase {
      */
     public function testAdminNewPopup() : void {
         $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/book/new_popup');
+        $formCrawler = $this->client->request('GET', '/monarch/new_popup');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $form = $formCrawler->selectButton('Save')->form([
-            'book[title]' => 'New Title',
-            'book[uniformTitle]' => 'New UniformTitle',
-            'book[author]' => 'New Author',
-            'book[imprint]' => 'New Imprint',
-            'book[date]' => 'New Date',
-            'book[description]' => 'New Description',
+            'monarch[label]' => 'New Label',
+            'monarch[description]' => 'New Description',
         ]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Label")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }
 
@@ -353,11 +326,11 @@ class BookTest extends ControllerBaseCase {
      * @group delete
      */
     public function testAdminDelete() : void {
-        $repo = self::$container->get(BookRepository::class);
+        $repo = self::$container->get(MonarchRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/book/1');
+        $crawler = $this->client->request('GET', '/monarch/1');
         $form = $crawler->selectButton('Delete')->form();
         $this->client->submit($form);
 

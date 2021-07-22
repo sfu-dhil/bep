@@ -107,6 +107,13 @@ class Transaction extends AbstractEntity {
      */
     private $injunction;
 
+    /**
+     * @var Monarch
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $monarch;
+
     public function __construct() {
         parent::__construct();
         $this->copies = 1;
@@ -303,6 +310,16 @@ class Transaction extends AbstractEntity {
 
     public function removeTransactionCategory(TransactionCategory $transactionCategory) : self {
         $this->transactionCategories->removeElement($transactionCategory);
+
+        return $this;
+    }
+
+    public function getMonarch() : ?Monarch {
+        return $this->monarch;
+    }
+
+    public function setMonarch(?Monarch $monarch) : self {
+        $this->monarch = $monarch;
 
         return $this;
     }

@@ -21,7 +21,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  * @ORM\Table(indexes={
- *     @ORM\Index(name="book_ft", columns={"title", "uniform_title", "variant_titles", "description", "author", "publisher", "notes"}, flags={"fulltext"})
+ *     @ORM\Index(name="book_ft", columns={"title", "uniform_title", "variant_titles", "description", "author", "imprint", "variant_imprint", "notes"}, flags={"fulltext"})
  * })
  */
 class Book extends AbstractEntity implements LinkableInterface {
@@ -58,7 +58,13 @@ class Book extends AbstractEntity implements LinkableInterface {
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
-    private $publisher;
+    private $imprint;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $variantImprint;
 
     /**
      * @var string
@@ -227,12 +233,12 @@ class Book extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function getPublisher() : ?string {
-        return $this->publisher;
+    public function getImprint() : ?string {
+        return $this->imprint;
     }
 
-    public function setPublisher(?string $publisher) : self {
-        $this->publisher = $publisher;
+    public function setImprint(?string $imprint) : self {
+        $this->imprint = $imprint;
 
         return $this;
     }
@@ -287,6 +293,18 @@ class Book extends AbstractEntity implements LinkableInterface {
                 $holding->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVariantImprint(): ?string
+    {
+        return $this->variantImprint;
+    }
+
+    public function setVariantImprint(?string $variantImprint): self
+    {
+        $this->variantImprint = $variantImprint;
 
         return $this;
     }

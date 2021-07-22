@@ -12,10 +12,12 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Injunction;
+use App\Entity\Monarch;
 use App\Entity\Parish;
 use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
+use App\Form\Mapper\LsdMapper;
 use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Doctrine\ORM\EntityRepository;
@@ -88,7 +90,7 @@ class TransactionType extends AbstractType {
             'label' => 'Location',
             'required' => false,
             'attr' => [
-                'help_block' => 'Enter the location of the transaction, if known. Optionally include details of the location in the Description field.',
+                'help_block' => 'Enter the location or parish if it is different from the parish you are working on. For example, if a book was purchased in Oxford for a London parish, enter “Oxford” or “Oxford, All Saints.”',
             ],
         ]);
 
@@ -182,7 +184,19 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
-        $builder->setDataMapper(new Mapper\LsdMapper());
+        $builder->add('monarch', Select2EntityType::class, [
+            'label' => 'Monarch',
+            'required' => false,
+            'class' => Monarch::class,
+            'remote_route' => 'monarch_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'monarch_new_popup',
+                'add_label' => 'Add Monarch',
+            ],
+        ]);
+
+        $builder->setDataMapper(new LsdMapper());
     }
 
     /**

@@ -15,6 +15,7 @@ services:
     test.App\Repository\HoldingRepository: '@App\Repository\HoldingRepository'
     test.App\Repository\InjunctionRepository: '@App\Repository\InjunctionRepository'
     test.App\Repository\InventoryRepository: '@App\Repository\InventoryRepository'
+    test.App\Repository\MonarchRepository: '@App\Repository\MonarchRepository'
     test.App\Repository\NationRepository: '@App\Repository\NationRepository'
     test.App\Repository\ParishRepository: '@App\Repository\ParishRepository'
     test.App\Repository\ProvinceRepository: '@App\Repository\ProvinceRepository'
