@@ -34,7 +34,7 @@ class BookType extends AbstractType {
             'label' => 'Title',
             'required' => false,
             'attr' => [
-                'help_block' => 'A modern-spelling title',
+                'help_block' => 'As it appears in the ESTC',
                 'class' => '',
             ],
         ]);
@@ -59,7 +59,7 @@ class BookType extends AbstractType {
 
             'attr' => [
                 'class' => 'collection collection-simple',
-                'help_block' => 'Original spelling title and any variants of it',
+                'help_block' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
             ],
         ]);
         $builder->add('author', TextType::class, [
