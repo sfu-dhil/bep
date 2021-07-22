@@ -45,10 +45,11 @@ class BookRepository extends ServiceEntityRepository {
      */
     public function typeaheadQuery($q) {
         $qb = $this->createQueryBuilder('book');
-        $qb->andWhere('book.title LIKE :q');
-        $qb->orderBy('book.title');
+        $qb->where('book.title LIKE :q');
+        $qb->orWhere('book.variantTitles LIKE :q');
+        $qb->orderBy('book.variantTitles');
         $qb->addOrderBy('book.id');
-        $qb->setParameter('q', "{$q}%");
+        $qb->setParameter('q', "%{$q}%");
 
         return $qb->getQuery()->execute();
     }
