@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Inventory;
+use App\Entity\Monarch;
 use App\Entity\Parish;
 use App\Entity\Source;
 use App\Form\Partial\DatedType;
@@ -50,6 +51,18 @@ class InventoryType extends AbstractType {
                 'help_block' => '',
                 'add_path' => 'source_new_popup',
                 'add_label' => 'Add Source',
+            ],
+        ]);
+
+        $builder->add('monarch', Select2EntityType::class, [
+            'label' => 'Monarch',
+            'required' => false,
+            'class' => Monarch::class,
+            'remote_route' => 'monarch_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'monarch_new_popup',
+                'add_label' => 'Add Monarch',
             ],
         ]);
 

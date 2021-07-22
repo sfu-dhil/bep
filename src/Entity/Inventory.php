@@ -62,6 +62,13 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     private $parish;
 
     /**
+     * @var Monarch
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $monarch;
+
+    /**
      * @var Book[]|Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="inventories")
      */
@@ -146,6 +153,16 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function removeBook(Book $book) : self {
         $this->books->removeElement($book);
+
+        return $this;
+    }
+
+    public function getMonarch() : ?Monarch {
+        return $this->monarch;
+    }
+
+    public function setMonarch(?Monarch $monarch) : self {
+        $this->monarch = $monarch;
 
         return $this;
     }

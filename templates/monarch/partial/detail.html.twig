@@ -1,0 +1,37 @@
+{% embed '@NinesUtil/term/partial/show.html.twig' with {'term': monarch} %}
+    {% block callback %}
+        <tr>
+            <th>Inventories</th>
+            <td>
+                {% if monarch.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in monarch.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                    {{ inventory }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Transactions</th>
+            <td>
+                {% if monarch.transactions|length > 0 %}
+                    <ul>
+                        {% for transaction in monarch.transactions %}
+                            <li>
+                                <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
+                                    {{ transaction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+    {% endblock %}
+{% endembed %}
+
