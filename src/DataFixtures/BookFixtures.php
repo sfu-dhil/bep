@@ -26,7 +26,7 @@ class BookFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setUniformTitle("This is paragraph {$i}");
             $fixture->setVariantTitles(['VariantTitles ' . $i]);
             $fixture->setAuthor('Author ' . $i);
-            $fixture->setPublisher('Publisher ' . $i);
+            $fixture->setImprint('Imprint ' . $i);
             $fixture->setDate('Date ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setFormat($this->getReference('format.' . $i));

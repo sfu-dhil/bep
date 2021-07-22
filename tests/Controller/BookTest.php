@@ -229,7 +229,7 @@ class BookTest extends ControllerBaseCase {
             'book[uniformTitle]' => 'Updated UniformTitle',
             'book[variantTitles][0]' => 'Updated VariantTitles',
             'book[author]' => 'Updated Author',
-            'book[publisher]' => 'Updated Publisher',
+            'book[imprint]' => 'Updated Imprint',
             'book[date]' => 'Updated Date',
             'book[description]' => 'Updated Description',
         ]);
@@ -242,7 +242,7 @@ class BookTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated UniformTitle")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantTitles")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Publisher")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Imprint")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
     }
@@ -300,7 +300,7 @@ class BookTest extends ControllerBaseCase {
             'book[title]' => 'New Title',
             'book[uniformTitle]' => 'New UniformTitle',
             'book[author]' => 'New Author',
-            'book[publisher]' => 'New Publisher',
+            'book[imprint]' => 'New Imprint',
             'book[date]' => 'New Date',
             'book[description]' => 'New Description',
         ]);
@@ -313,7 +313,7 @@ class BookTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Publisher")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }
@@ -331,7 +331,7 @@ class BookTest extends ControllerBaseCase {
             'book[title]' => 'New Title',
             'book[uniformTitle]' => 'New UniformTitle',
             'book[author]' => 'New Author',
-            'book[publisher]' => 'New Publisher',
+            'book[imprint]' => 'New Imprint',
             'book[date]' => 'New Date',
             'book[description]' => 'New Description',
         ]);
@@ -343,7 +343,7 @@ class BookTest extends ControllerBaseCase {
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Publisher")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
     }

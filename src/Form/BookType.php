@@ -69,11 +69,18 @@ class BookType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        $builder->add('publisher', TextareaType::class, [
-            'label' => 'Publisher',
+        $builder->add('imprint', TextareaType::class, [
+            'label' => 'Imprint',
             'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'A modern spelling imprint',
+            ],
+        ]);
+        $builder->add('variantImprint', TextareaType::class, [
+            'label' => 'Variant Imprint',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Original spelling imprint and any variations of it',
             ],
         ]);
         $builder->add('date', TextType::class, [
