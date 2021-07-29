@@ -109,7 +109,7 @@ class Transaction extends AbstractEntity {
 
     /**
      * @var Monarch
-     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="inventories")
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=true)
      */
     private $monarch;
