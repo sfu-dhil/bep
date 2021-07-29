@@ -74,7 +74,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      */
     public function typeahead(Request $request, BookRepository $bookRepository) {
         $q = $request->query->get('q');
-        if ( (! $q) || (mb_strlen($q) < 4)) {
+        if (( ! $q) || (mb_strlen($q) < 4)) {
             return new JsonResponse([]);
         }
         $data = [];
@@ -82,7 +82,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
         foreach ($bookRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
-                'text' => implode(", ", array_map(fn($s) => '"' . $s . '"', array_merge([$result->getTitle()], $result->getVariantTitles()))),
+                'text' => implode(', ', array_map(fn ($s) => '"' . $s . '"', array_merge([$result->getTitle()], $result->getVariantTitles()))),
             ];
         }
 

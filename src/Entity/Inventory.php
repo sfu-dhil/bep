@@ -173,13 +173,11 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
         return $this;
     }
 
-    public function getPageNumber(): ?int
-    {
+    public function getPageNumber() : ?int {
         return $this->pageNumber;
     }
 
-    public function setPageNumber(?int $pageNumber): self
-    {
+    public function setPageNumber(?int $pageNumber) : self {
         $this->pageNumber = $pageNumber;
 
         return $this;
