@@ -297,13 +297,11 @@ class Book extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function getVariantImprint(): ?string
-    {
+    public function getVariantImprint() : ?string {
         return $this->variantImprint;
     }
 
-    public function setVariantImprint(?string $variantImprint): self
-    {
+    public function setVariantImprint(?string $variantImprint) : self {
         $this->variantImprint = $variantImprint;
 
         return $this;
