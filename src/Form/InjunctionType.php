@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Injunction;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,6 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Injunction form.
  */
 class InjunctionType extends AbstractType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -58,6 +61,15 @@ class InjunctionType extends AbstractType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @param LinkableMapper $mapper
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) {
+        $this->mapper = $mapper;
     }
 
     /**

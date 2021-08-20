@@ -96,7 +96,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -104,9 +104,6 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($book);
-            $entityManager->flush();
-
-            $linkManager->setLinks($book, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new book has been saved.');
@@ -127,8 +124,8 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +148,11 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Book $book, LinkManager $linkManager) {
+    public function edit(Request $request, Book $book) {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($book, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated book has been saved.');
 

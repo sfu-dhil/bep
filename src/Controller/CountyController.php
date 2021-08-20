@@ -96,7 +96,7 @@ class CountyController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $county = new County();
         $form = $this->createForm(CountyType::class, $county);
         $form->handleRequest($request);
@@ -104,9 +104,6 @@ class CountyController extends AbstractController implements PaginatorAwareInter
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($county);
-            $entityManager->flush();
-
-            $linkManager->setLinks($county, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new county has been saved.');
@@ -127,8 +124,8 @@ class CountyController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +148,11 @@ class CountyController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, County $county, LinkManager $linkManager) {
+    public function edit(Request $request, County $county) {
         $form = $this->createForm(CountyType::class, $county);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($county, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated county has been saved.');
 

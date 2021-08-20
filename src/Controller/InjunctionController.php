@@ -96,7 +96,7 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $injunction = new Injunction();
         $form = $this->createForm(InjunctionType::class, $injunction);
         $form->handleRequest($request);
@@ -106,8 +106,6 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
             $entityManager->persist($injunction);
             $entityManager->flush();
 
-            $linkManager->setLinks($injunction, $form->get('links')->getData());
-            $entityManager->flush();
             $this->addFlash('success', 'The new injunction has been saved.');
 
             return $this->redirectToRoute('injunction_show', ['id' => $injunction->getId()]);
@@ -126,8 +124,8 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -150,12 +148,11 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Injunction $injunction, LinkManager $linkManager) {
+    public function edit(Request $request, Injunction $injunction) {
         $form = $this->createForm(InjunctionType::class, $injunction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($injunction, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated injunction has been saved.');
 

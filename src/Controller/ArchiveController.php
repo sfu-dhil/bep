@@ -96,7 +96,7 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $archive = new Archive();
         $form = $this->createForm(ArchiveType::class, $archive);
         $form->handleRequest($request);
@@ -104,9 +104,6 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($archive);
-            $entityManager->flush();
-
-            $linkManager->setLinks($archive, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new archive has been saved.');
@@ -127,8 +124,8 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +148,11 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Archive $archive, LinkManager $linkManager) {
+    public function edit(Request $request, Archive $archive) {
         $form = $this->createForm(ArchiveType::class, $archive);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($archive, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated archive has been saved.');
 

@@ -14,6 +14,7 @@ use App\Entity\Archive;
 use App\Entity\Source;
 use App\Entity\SourceCategory;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +25,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Source form.
  */
 class SourceType extends TermType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -61,6 +64,15 @@ class SourceType extends TermType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @param LinkableMapper $mapper
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) {
+        $this->mapper = $mapper;
     }
 
     /**

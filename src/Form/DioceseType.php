@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Diocese;
     use App\Entity\Province;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Diocese form.
  */
 class DioceseType extends TermType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -40,6 +43,15 @@ class DioceseType extends TermType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @param LinkableMapper $mapper
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) {
+        $this->mapper = $mapper;
     }
 
     /**

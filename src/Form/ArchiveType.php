@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Archive;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,12 +21,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Archive form.
  */
 class ArchiveType extends TermType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         parent::buildForm($builder, $options);
         LinkableType::add($builder, $options);
+        LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @param LinkableMapper $mapper
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) {
+        $this->mapper = $mapper;
     }
 
     /**

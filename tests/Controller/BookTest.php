@@ -227,17 +227,19 @@ class BookTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'book[title]' => 'Updated Title',
             'book[uniformTitle]' => 'Updated UniformTitle',
-            'book[variantTitles][0]' => 'Updated VariantTitles',
             'book[author]' => 'Updated Author',
             'book[imprint]' => 'Updated Imprint',
             'book[date]' => 'Updated Date',
             'book[description]' => 'Updated Description',
         ]);
+        $values = $form->getPhpValues();
+        $values['book']['variantTitles'][0] = 'Updated VariantTitles';
+        $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 
-        $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/book/1'));
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Title")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated UniformTitle")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantTitles")')->count());

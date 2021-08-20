@@ -96,7 +96,7 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $province = new Province();
         $form = $this->createForm(ProvinceType::class, $province);
         $form->handleRequest($request);
@@ -104,9 +104,6 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($province);
-            $entityManager->flush();
-
-            $linkManager->setLinks($province, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new province has been saved.');
@@ -127,8 +124,8 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +148,11 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Province $province, LinkManager $linkManager) {
+    public function edit(Request $request, Province $province) {
         $form = $this->createForm(ProvinceType::class, $province);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($province, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated province has been saved.');
 

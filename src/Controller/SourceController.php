@@ -96,7 +96,7 @@ class SourceController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $source = new Source();
         $form = $this->createForm(SourceType::class, $source);
         $form->handleRequest($request);
@@ -104,9 +104,6 @@ class SourceController extends AbstractController implements PaginatorAwareInter
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($source);
-            $entityManager->flush();
-
-            $linkManager->setLinks($source, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new source has been saved.');
@@ -127,8 +124,8 @@ class SourceController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,13 +148,11 @@ class SourceController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Source $source, LinkManager $linkManager) {
+    public function edit(Request $request, Source $source) {
         $form = $this->createForm(SourceType::class, $source);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($source, $form->get('links')->getData());
-
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated source has been saved.');
 
