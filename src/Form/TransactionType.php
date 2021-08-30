@@ -102,11 +102,19 @@ class TransactionType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
-        $builder->add('description', TextareaType::class, [
+        $builder->add('modernTranscription', TextareaType::class, [
             'label' => 'Modern English',
             'required' => false,
             'attr' => [
                 'help_block' => 'Provide a modern English equivalent of the manuscript entry',
+                'class' => 'tinymce',
+            ],
+        ]);
+        $builder->add('publicNotes', TextareaType::class, [
+            'label' => 'Public Notes',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Provide any contextual or descriptive notes about the physical appearance of the entry',
                 'class' => 'tinymce',
             ],
         ]);

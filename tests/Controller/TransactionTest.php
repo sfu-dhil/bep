@@ -180,7 +180,7 @@ class TransactionTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 2,
             'transaction[copies]' => 3,
-            'transaction[description]' => 'Updated Description',
+            'transaction[modernTranscription]' => 'Updated Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
             'transaction[writtenDate]' => 'In the year of swans',
@@ -251,7 +251,7 @@ class TransactionTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 1,
             'transaction[copies]' => 1,
-            'transaction[description]' => 'New Description',
+            'transaction[modernTranscription]' => 'New Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
             'transaction[writtenDate]' => 'In the year of swans',
@@ -281,7 +281,7 @@ class TransactionTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 1,
             'transaction[copies]' => 1,
-            'transaction[description]' => 'New Description',
+            'transaction[modernTranscription]' => 'New Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
             'transaction[writtenDate]' => 'In the year of swans',

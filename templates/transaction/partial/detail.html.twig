@@ -47,7 +47,13 @@
         <tr>
             <th>Modern English</th>
             <td>
-                {{ transaction.description|raw }}
+                {{ transaction.modernTranscription|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Notes</th>
+            <td>
+                {{ transaction.publicNotes|raw }}
             </td>
         </tr>
         {% include 'partial/notes.html.twig' with {'item': transaction} %}

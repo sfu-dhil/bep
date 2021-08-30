@@ -1,6 +1,6 @@
 {% if is_granted('ROLE_USER') %}
     <tr>
-        <th>Notes</th>
+        <th>Private Notes</th>
         <td>
             {% if item.notes %}
                 {{ item.notes|raw }}
