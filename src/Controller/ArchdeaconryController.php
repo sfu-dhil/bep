@@ -14,7 +14,6 @@ use App\Entity\Archdeaconry;
 use App\Form\ArchdeaconryType;
 use App\Repository\ArchdeaconryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -96,7 +95,7 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $archdeaconry = new Archdeaconry();
         $form = $this->createForm(ArchdeaconryType::class, $archdeaconry);
         $form->handleRequest($request);
@@ -104,9 +103,6 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($archdeaconry);
-            $entityManager->flush();
-
-            $linkManager->setLinks($archdeaconry, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new archdeaconry has been saved.');
@@ -127,8 +123,8 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +147,11 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Archdeaconry $archdeaconry, LinkManager $linkManager) {
+    public function edit(Request $request, Archdeaconry $archdeaconry) {
         $form = $this->createForm(ArchdeaconryType::class, $archdeaconry);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($archdeaconry, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated archdeaconry has been saved.');
 

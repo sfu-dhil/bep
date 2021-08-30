@@ -14,6 +14,7 @@ use App\Entity\Book;
 use App\Entity\Format;
 use App\Form\Partial\NotesType;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,6 +27,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Book form.
  */
 class BookType extends AbstractType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -112,6 +115,14 @@ class BookType extends AbstractType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**

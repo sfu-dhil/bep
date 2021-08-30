@@ -62,9 +62,14 @@
                     <ul>
                         {% for inventory in parish.inventories %}
                             <li>
-                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
-                                    {% include 'partial/short-date.html.twig' with {'entity': inventory} %} {{ inventory.book }}
-                                </a>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>{% include 'partial/short-date.html.twig' with {'entity': inventory} %}</a>
+                                {% if inventory.books | length > 0 %}
+                                    <ul>
+                                        {% for book in inventory.books %}
+                                            <li><a href='{{ path('book_show', {'id': book.id}) }}'>{{ book }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </li>
                         {% endfor %}
                     </ul>

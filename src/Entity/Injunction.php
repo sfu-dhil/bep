@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Injunction extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
+
     }
 
     /**

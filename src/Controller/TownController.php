@@ -14,7 +14,6 @@ use App\Entity\Town;
 use App\Form\TownType;
 use App\Repository\TownRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -96,7 +95,7 @@ class TownController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $town = new Town();
         $form = $this->createForm(TownType::class, $town);
         $form->handleRequest($request);
@@ -104,9 +103,6 @@ class TownController extends AbstractController implements PaginatorAwareInterfa
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($town);
-            $entityManager->flush();
-
-            $linkManager->setLinks($town, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new town has been saved.');
@@ -127,8 +123,8 @@ class TownController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +147,11 @@ class TownController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Town $town, LinkManager $linkManager) {
+    public function edit(Request $request, Town $town) {
         $form = $this->createForm(TownType::class, $town);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($town, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated town has been saved.');
 

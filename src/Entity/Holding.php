@@ -24,8 +24,11 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Holding extends AbstractEntity implements ImageContainerInterface {
     use ImageContainerTrait {
         ImageContainerTrait::__construct as protected trait_constructor;
+
     }
+
     use DatedTrait;
+
     use NotesTrait;
 
     /**

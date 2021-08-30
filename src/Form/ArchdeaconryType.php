@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Archdeaconry;
 use App\Entity\Diocese;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Archdeaconry form.
  */
 class ArchdeaconryType extends TermType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -39,6 +42,14 @@ class ArchdeaconryType extends TermType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**

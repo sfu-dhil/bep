@@ -14,6 +14,7 @@ use App\Entity\Archdeaconry;
 use App\Entity\Parish;
 use App\Entity\Town;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -25,6 +26,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Parish form.
  */
 class ParishType extends TermType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -87,6 +90,14 @@ class ParishType extends TermType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**
