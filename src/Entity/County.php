@@ -24,6 +24,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class County extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
+
     }
 
     /**

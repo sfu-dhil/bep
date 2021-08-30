@@ -68,10 +68,9 @@ class SourceType extends TermType {
     }
 
     /**
-     * @param LinkableMapper $mapper
      * @required
      */
-    public function setMapper(LinkableMapper $mapper) {
+    public function setMapper(LinkableMapper $mapper) : void {
         $this->mapper = $mapper;
     }
 

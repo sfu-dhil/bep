@@ -24,6 +24,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  */
 class Transaction extends AbstractEntity {
     use DatedTrait;
+
     use NotesTrait;
 
     /**

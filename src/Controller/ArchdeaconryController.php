@@ -14,7 +14,6 @@ use App\Entity\Archdeaconry;
 use App\Form\ArchdeaconryType;
 use App\Repository\ArchdeaconryRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -105,7 +104,6 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($archdeaconry);
             $entityManager->flush();
-
 
             $this->addFlash('success', 'The new archdeaconry has been saved.');
 
