@@ -19,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  * @ORM\Table(name="transact", indexes={
- *     @ORM\Index(name="transaction_ft", columns={"transcription", "description", "notes"}, flags={"fulltext"})
+ *     @ORM\Index(name="transaction_ft", columns={"transcription", "modern_transcription", "notes"}, flags={"fulltext"})
  * })
  */
 class Transaction extends AbstractEntity {
@@ -73,7 +73,13 @@ class Transaction extends AbstractEntity {
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private $modernTranscription;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $publicNotes;
 
     /**
      * @var Book[]|Collection
@@ -156,12 +162,12 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    public function getDescription() : ?string {
-        return $this->description;
+    public function getModernTranscription() : ?string {
+        return $this->modernTranscription;
     }
 
-    public function setDescription(?string $description) : self {
-        $this->description = $description;
+    public function setModernTranscription(?string $modernTranscription) : self {
+        $this->modernTranscription = $modernTranscription;
 
         return $this;
     }
@@ -323,5 +329,19 @@ class Transaction extends AbstractEntity {
         $this->monarch = $monarch;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicNotes() : ?string {
+        return $this->publicNotes;
+    }
+
+    /**
+     * @param string $publicNotes
+     */
+    public function setPublicNotes(string $publicNotes) : void {
+        $this->publicNotes = $publicNotes;
     }
 }

@@ -26,7 +26,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setShippingValue($i * 2);
             $fixture->setCopies($i);
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
-            $fixture->setDescription("<p>This is paragraph {$i}</p>");
+            $fixture->setModernTranscription("<p>This is paragraph {$i}</p>");
             $fixture->addBook($this->getReference('book.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setSource($this->getReference('source.' . $i));
