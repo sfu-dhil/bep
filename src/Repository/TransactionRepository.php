@@ -46,7 +46,7 @@ class TransactionRepository extends ServiceEntityRepository {
      */
     public function searchQuery($q) {
         $qb = $this->createQueryBuilder('transaction');
-        $qb->addSelect('MATCH (transaction.transcription, transaction.description, transaction.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->addSelect('MATCH (transaction.transcription, transaction.modernTranscription, transaction.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');
         $qb->orderBy('score', 'DESC');
         $qb->setParameter('q', $q);
