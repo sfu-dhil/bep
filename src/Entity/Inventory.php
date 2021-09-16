@@ -33,7 +33,7 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $pageNumber;
 
