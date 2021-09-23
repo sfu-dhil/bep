@@ -1,13 +1,19 @@
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
+            <th>ID</th>
+            <td>
+                {{ transaction }}
+            </td>
+        </tr>
+        <tr>
             <th>Value</th>
             <td>
                 {{ transaction.value(true) }}
             </td>
         </tr>
         <tr>
-            <th>Shipping</th>
+            <th>Carriage</th>
             <td>
                 {{ transaction.shippingValue(true) }}
             </td>
@@ -15,7 +21,21 @@
         <tr>
             <th>Copies</th>
             <td>
-                {{ transaction.copies }}
+                {% if transaction.copies is not null %}
+                    {{ transaction.copies }}
+                {% else %}
+                    <i>unknown</i>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>{{ transaction.location }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>
+                {% include 'partial/long-date.html.twig' with {'entity': transaction} %}
             </td>
         </tr>
         <tr>
@@ -25,17 +45,29 @@
             </td>
         </tr>
         <tr>
-            <th>Description</th>
+            <th>Modern English</th>
             <td>
-                {{ transaction.description|raw }}
+                {{ transaction.modernTranscription|raw }}
             </td>
         </tr>
-
         <tr>
-            <th>Book</th>
+            <th>Notes</th>
             <td>
-                {% if transaction.book %}
-                    <a href='{{ path("book_show", {"id": transaction.book.id}) }}'>{{ transaction.book }}</a>
+                {{ transaction.publicNotes|raw }}
+            </td>
+        </tr>
+        {% include 'partial/notes.html.twig' with {'item': transaction} %}
+        <tr>
+            <th>Books</th>
+            <td>
+                {% if transaction.books|length > 0 %}
+                    <ul>
+                        {% for book in transaction.books %}
+                            <li>
+                                <a href='{{ path("book_show", {"id": book.id}) }}'>{{ book }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </td>
         </tr>
@@ -43,7 +75,7 @@
             <th>Parish</th>
             <td>
                 {% if transaction.parish %}
-                    <a href='{{ path("parish_show", {"id": transaction.parish.id}) }}'>{{ transaction.parish }}</a>
+                    {% include 'parish/partial/location.html.twig' with {'parish': transaction.parish } %}
                 {% endif %}
             </td>
         </tr>
@@ -57,11 +89,12 @@
             </td>
         </tr>
         <tr>
-            <th>Transaction Category</th>
+            <th>Transaction Categories</th>
             <td>
-                {% if transaction.transactionCategory %}
-                    <a href='{{ path("transaction_category_show", {"id": transaction.transactionCategory.id}) }}'>{{ transaction.transactionCategory }}</a>
-                {% endif %}
+                {% for category in transaction.transactionCategories %}
+                <a href='{{ path("transaction_category_show", {"id": category.id}) }}'>{{ category }}</a>
+                {%- if not loop.last %}, {% endif %}
+                {% endfor %}
             </td>
         </tr>
         <tr>

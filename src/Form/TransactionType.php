@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -12,10 +12,16 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Injunction;
+use App\Entity\Monarch;
 use App\Entity\Parish;
 use App\Entity\Source;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
+use App\Form\Mapper\LsdMapper;
+use App\Form\Partial\DatedType;
+use App\Form\Partial\NotesType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -32,8 +38,6 @@ class TransactionType extends AbstractType {
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        /** @var Transaction $transaction */
-        $transaction = $options['data'];
         $builder->add('l', NumberType::class, [
             'label' => 'Cost Pounds',
             'scale' => 0,
@@ -54,23 +58,25 @@ class TransactionType extends AbstractType {
         ]);
 
         $builder->add('sl', NumberType::class, [
-            'label' => 'Shipping Pounds',
+            'label' => 'Carriage Pounds',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('ss', NumberType::class, [
-            'label' => 'Shipping Shillings',
+            'label' => 'Carriage Shillings',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
         $builder->add('sd', NumberType::class, [
-            'label' => 'Shipping Pence',
+            'label' => 'Carriage Pence',
             'scale' => 0,
             'required' => false,
             'mapped' => false,
         ]);
+
+        DatedType::buildForm($builder, $options);
 
         $builder->add('copies', NumberType::class, [
             'label' => 'Copies',
@@ -80,27 +86,46 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
+        $builder->add('location', TextType::class, [
+            'label' => 'Location',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Enter the location or parish if it is different from the parish you are working on. For example, if a book was purchased in Oxford for a London parish, enter “Oxford” or “Oxford, All Saints.”',
+            ],
+        ]);
+
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
             'required' => false,
             'attr' => [
-                'help_block' => 'Copy the transaction text as closely as possible to how it appears',
+                'help_block' => 'Provide a semi-diplomatic transcript of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
-        $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
+        $builder->add('modernTranscription', TextareaType::class, [
+            'label' => 'Modern English',
             'required' => false,
             'attr' => [
-                'help_block' => 'Provide a modern-spelling equivalent to the transaction text',
+                'help_block' => 'Provide a modern English equivalent of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
+        $builder->add('publicNotes', TextareaType::class, [
+            'label' => 'Public Notes',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Provide any contextual or descriptive notes about the physical appearance of the entry',
+                'class' => 'tinymce',
+            ],
+        ]);
+        NotesType::add($builder, $options);
 
-        $builder->add('book', Select2EntityType::class, [
-            'label' => 'Book',
-            'class' => Book::class,
+        $builder->add('books', Select2EntityType::class, [
+            'label' => 'Books',
+            'multiple' => true,
             'remote_route' => 'book_typeahead',
+            'class' => Book::class,
+            'page_limit' => 10,
             'allow_clear' => true,
             'attr' => [
                 'help_block' => '',
@@ -113,7 +138,8 @@ class TransactionType extends AbstractType {
             'label' => 'Parish',
             'class' => Parish::class,
             'remote_route' => 'parish_typeahead',
-            'allow_clear' => true,
+            'allow_clear' => false,
+            'required' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'parish_new_popup',
@@ -125,7 +151,8 @@ class TransactionType extends AbstractType {
             'label' => 'Source',
             'class' => Source::class,
             'remote_route' => 'source_typeahead',
-            'allow_clear' => true,
+            'allow_clear' => false,
+            'required' => true,
             'attr' => [
                 'help_block' => '',
                 'add_path' => 'source_new_popup',
@@ -136,19 +163,20 @@ class TransactionType extends AbstractType {
             'label' => 'Page',
             'required' => false,
             'attr' => [
-                'help_block' => 'Enter a page number (p. 5) or folio location (f. 5 r. col. a)',
+                'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
             ],
         ]);
 
-        $builder->add('transactionCategory', Select2EntityType::class, [
-            'label' => 'Transaction Category',
+        $builder->add('transactionCategories', EntityType::class, [
+            'label' => 'Transaction Categories',
+            'expanded' => false,
+            'multiple' => true,
             'class' => TransactionCategory::class,
-            'remote_route' => 'transaction_category_typeahead',
-            'allow_clear' => true,
+            'choice_label' => 'label',
+            'query_builder' => fn (EntityRepository $r) => $r->createQueryBuilder('c')->orderBy('c.label'),
+
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'transaction_category_new_popup',
-                'add_label' => 'Add TransactionCategory',
+                'help_block' => 'Select categories by holding the Ctrl, Command, or Shift keys depending on your operating system.',
             ],
         ]);
 
@@ -164,7 +192,19 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
-        $builder->setDataMapper(new Mapper\LsdMapper());
+        $builder->add('monarch', Select2EntityType::class, [
+            'label' => 'Monarch',
+            'required' => false,
+            'class' => Monarch::class,
+            'remote_route' => 'monarch_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'monarch_new_popup',
+                'add_label' => 'Add Monarch',
+            ],
+        ]);
+
+        $builder->setDataMapper(new LsdMapper());
     }
 
     /**

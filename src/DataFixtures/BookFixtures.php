@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -23,8 +23,10 @@ class BookFixtures extends Fixture implements DependentFixtureInterface {
         for ($i = 1; $i <= 4; $i++) {
             $fixture = new Book();
             $fixture->setTitle("This is paragraph {$i}");
-            $fixture->setVariants(["Variant {$i}"]);
-            $fixture->addVariant("Other variant {$i}");
+            $fixture->setUniformTitle("This is paragraph {$i}");
+            $fixture->setVariantTitles(['VariantTitles ' . $i]);
+            $fixture->setAuthor('Author ' . $i);
+            $fixture->setImprint('Imprint ' . $i);
             $fixture->setDate('Date ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setFormat($this->getReference('format.' . $i));

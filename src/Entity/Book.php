@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -20,11 +20,17 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="book_ft", columns={"title", "uniform_title", "variant_titles", "description", "author", "imprint", "variant_imprint", "notes"}, flags={"fulltext"})
+ * })
  */
 class Book extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
+
     }
+
+    use NotesTrait;
 
     /**
      * @var string
@@ -34,9 +40,33 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $uniformTitle;
+
+    /**
+     * @var string
      * @ORM\Column(type="array")
      */
-    private $variants;
+    private $variantTitles;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $author;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $imprint;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $variantImprint;
 
     /**
      * @var string
@@ -58,21 +88,38 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var Collection|Transaction[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="book")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Transaction", mappedBy="books")
      */
     private $transactions;
+
+    /**
+     * @var Collection|Inventory[]
+     * @ORM\ManyToMany(targetEntity="App\Entity\Inventory", mappedBy="books")
+     */
+    private $inventories;
+
+    /**
+     * @var Collection|Holding[]
+     * @ORM\ManyToMany(targetEntity="App\Entity\Holding", mappedBy="books")
+     */
+    private $holdings;
 
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
-        $this->variants = [];
+        $this->variantTitles = [];
+        $this->inventories = new ArrayCollection();
+        $this->holdings = new ArrayCollection();
     }
 
     /**
      * {@inheritdoc}
      */
     public function __toString() : string {
+        if ($this->uniformTitle) {
+            return $this->uniformTitle;
+        }
         if ($this->title) {
             return $this->title;
         }
@@ -150,20 +197,114 @@ class Book extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function getVariants() : ?array {
-        return $this->variants;
+    public function getVariantTitles() : ?array {
+        return $this->variantTitles;
     }
 
     public function addVariant(string $variant) : self {
-        if ( ! in_array($variant, $this->variants, true)) {
-            $this->variants[] = $variant;
+        if ( ! in_array($variant, $this->variantTitles, true)) {
+            $this->variantTitles[] = $variant;
         }
 
         return $this;
     }
 
-    public function setVariants(array $variants) : self {
-        $this->variants = $variants;
+    public function setVariantTitles(array $variantTitles) : self {
+        $this->variantTitles = $variantTitles;
+
+        return $this;
+    }
+
+    public function getUniformTitle() : ?string {
+        return $this->uniformTitle;
+    }
+
+    public function setUniformTitle(?string $uniformTitle) : self {
+        $this->uniformTitle = $uniformTitle;
+
+        return $this;
+    }
+
+    public function getAuthor() : ?string {
+        return $this->author;
+    }
+
+    public function setAuthor(?string $author) : self {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getImprint() : ?string {
+        return $this->imprint;
+    }
+
+    public function setImprint(?string $imprint) : self {
+        $this->imprint = $imprint;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inventory[]
+     */
+    public function getInventories() : Collection {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory) : self {
+        if ( ! $this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory) : self {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getBook() === $this) {
+                $inventory->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Holding[]
+     */
+    public function getHoldings() : Collection {
+        return $this->holdings;
+    }
+
+    public function addHolding(Holding $holding) : self {
+        if ( ! $this->holdings->contains($holding)) {
+            $this->holdings[] = $holding;
+            $holding->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHolding(Holding $holding) : self {
+        if ($this->holdings->removeElement($holding)) {
+            // set the owning side to null (unless already changed)
+            if ($holding->getBook() === $this) {
+                $holding->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getVariantImprint() : ?string {
+        return $this->variantImprint;
+    }
+
+    public function setVariantImprint(?string $variantImprint) : self {
+        $this->variantImprint = $variantImprint;
 
         return $this;
     }

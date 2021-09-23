@@ -7,7 +7,7 @@
             </td>
         </tr>
         <tr>
-            <th>Source Category</th>
+            <th>SourceCategory</th>
             <td>
                 {% if source.sourceCategory %}
                     <a href='{{ path("source_category_show", {"id": source.sourceCategory.id}) }}'>{{ source.sourceCategory }}</a>
@@ -31,6 +31,22 @@
                             <li>
                                 <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
                                     {{ transaction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Inventories</th>
+            <td>
+                {% if source.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in source.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                    {{ inventory|raw }}
                                 </a>
                             </li>
                         {% endfor %}

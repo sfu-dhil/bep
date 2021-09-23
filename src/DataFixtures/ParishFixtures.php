@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -27,6 +27,9 @@ class ParishFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setArchdeaconry($this->getReference('archdeaconry.' . $i));
             $fixture->setTown($this->getReference('town.' . $i));
+            $fixture->setLatitude("5{$i}.29406616821392");
+            $fixture->setLongitude("-{$i}.2530476504677621");
+            $fixture->setAddress("{$i} Some St, Buckden");
             $em->persist($fixture);
             $this->setReference('parish.' . $i, $fixture);
         }

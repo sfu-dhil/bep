@@ -44,8 +44,8 @@
 
     {% if dioceses|length %}
 
-    {% embed 'diocese/partial/table.html.twig' %}
-    {% endembed %}
+        {% embed 'diocese/partial/table.html.twig' %}
+        {% endembed %}
 
         <div class="navigation">
             {{ knp_pagination_render(dioceses) }}

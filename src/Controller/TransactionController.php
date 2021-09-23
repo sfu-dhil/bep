@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -40,6 +40,28 @@ class TransactionController extends AbstractController implements PaginatorAware
 
         return [
             'transactions' => $this->paginator->paginate($query, $page, $pageSize),
+        ];
+    }
+
+    /**
+     * @Route("/search", name="transaction_search", methods={"GET"})
+     *
+     * @Template
+     *
+     * @return array
+     */
+    public function search(Request $request, TransactionRepository $transactionRepository) {
+        $q = $request->query->get('q');
+        if ($q) {
+            $query = $transactionRepository->searchQuery($q);
+            $transactions = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
+        } else {
+            $transactions = [];
+        }
+
+        return [
+            'transactions' => $transactions,
+            'q' => $q,
         ];
     }
 

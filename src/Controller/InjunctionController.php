@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -14,7 +14,6 @@ use App\Entity\Injunction;
 use App\Form\InjunctionType;
 use App\Repository\InjunctionRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -96,7 +95,7 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $injunction = new Injunction();
         $form = $this->createForm(InjunctionType::class, $injunction);
         $form->handleRequest($request);
@@ -106,8 +105,6 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
             $entityManager->persist($injunction);
             $entityManager->flush();
 
-            $linkManager->setLinks($injunction, $form->get('links')->getData());
-            $entityManager->flush();
             $this->addFlash('success', 'The new injunction has been saved.');
 
             return $this->redirectToRoute('injunction_show', ['id' => $injunction->getId()]);
@@ -126,8 +123,8 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -150,12 +147,11 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Injunction $injunction, LinkManager $linkManager) {
+    public function edit(Request $request, Injunction $injunction) {
         $form = $this->createForm(InjunctionType::class, $injunction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($injunction, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated injunction has been saved.');
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -24,11 +24,12 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class Source extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
+
     }
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=24, nullable=true)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $callNumber;
 
@@ -52,10 +53,17 @@ class Source extends AbstractTerm implements LinkableInterface {
      */
     private $transactions;
 
+    /**
+     * @var Collection|Inventory[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="source")
+     */
+    private $inventories;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
+        $this->inventories = new ArrayCollection();
     }
 
     public function getCallNumber() : ?string {
@@ -109,6 +117,33 @@ class Source extends AbstractTerm implements LinkableInterface {
             // set the owning side to null (unless already changed)
             if ($transaction->getSource() === $this) {
                 $transaction->setSource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inventory[]
+     */
+    public function getInventories() : Collection {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory) : self {
+        if ( ! $this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setSource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory) : self {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getSource() === $this) {
+                $inventory->setSource(null);
             }
         }
 

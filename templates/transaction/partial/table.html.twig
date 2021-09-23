@@ -2,10 +2,11 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Date</th>
             <th>Value</th>
-            <th>Copies</th>
-            <th>Transcription</th>
-            <th>Description</th>
+            <th>Books</th>
+            <th>Parish</th>
+            <th>Modern English</th>
 
         </tr>
     </thead>
@@ -14,7 +15,12 @@
             <tr>
                 <td>
                     <a href="{{ path('transaction_show', { 'id': transaction.id }) }}">
-                        {{ transaction.id }}
+                        {{ transaction }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('transaction_show', { 'id': transaction.id }) }}">
+                        {% include 'partial/short-date.html.twig' with {'entity': transaction} %}
                     </a>
                 </td>
                 <td>
@@ -22,15 +28,17 @@
                 </td>
 
                 <td>
-                    {{ transaction.copies }}
+                    {{ transaction.books|length }}
                 </td>
 
                 <td>
-                    {{ transaction.transcription|raw }}
+                    {% if transaction.parish %}
+                        {% include 'parish/partial/location.html.twig' with {'parish': transaction.parish } %}
+                    {% endif %}
                 </td>
 
                 <td>
-                    {{ transaction.description|raw }}
+                    {{ transaction.modernTranscription|raw }}
                 </td>
 
             </tr>

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -14,7 +14,6 @@ use App\Entity\Diocese;
 use App\Form\DioceseType;
 use App\Repository\DioceseRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -96,7 +95,7 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $diocese = new Diocese();
         $form = $this->createForm(DioceseType::class, $diocese);
         $form->handleRequest($request);
@@ -104,9 +103,6 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($diocese);
-            $entityManager->flush();
-
-            $linkManager->setLinks($diocese, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new diocese has been saved.');
@@ -127,8 +123,8 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +147,11 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Diocese $diocese, LinkManager $linkManager) {
+    public function edit(Request $request, Diocese $diocese) {
         $form = $this->createForm(DioceseType::class, $diocese);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($diocese, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated diocese has been saved.');
 

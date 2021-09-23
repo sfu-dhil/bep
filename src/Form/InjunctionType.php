@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -12,7 +12,9 @@ namespace App\Form;
 
 use App\Entity\Injunction;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -23,6 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Injunction form.
  */
 class InjunctionType extends AbstractType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -30,6 +34,13 @@ class InjunctionType extends AbstractType {
         $builder->add('title', TextType::class, [
             'label' => 'Title',
             'required' => true,
+            'attr' => [
+                'help_block' => '',
+            ],
+        ]);
+        $builder->add('year', IntegerType::class, [
+            'label' => 'Year',
+            'required' => false,
             'attr' => [
                 'help_block' => '',
             ],
@@ -50,6 +61,14 @@ class InjunctionType extends AbstractType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**

@@ -1,7 +1,30 @@
 {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': parish} %}
     {% block callback %}
         <tr>
-            <th>Archdeaconry</th>
+            <th>Geocoordinates</th>
+            <td>
+                {% if parish.latitude %}
+                    {{ parish.latitude }}, {{ parish.longitude }} <br>
+                    <a href="https://maps.google.com/?q={{ parish.latitude }},{{ parish.longitude }}">Google Maps</a>
+                    <br>
+                    <a href='https://www.openstreetmap.org/?mlat={{ parish.latitude }}&mlon={{ parish.longitude }}&zoom=15'>Open
+                        Street Map</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Street Address</th>
+            <td>
+                {% if parish.address %}
+                    {{ parish.address }} <br />
+                    <a href="https://maps.google.com/?q={{ parish.address }}">Google Maps</a><br>
+                    <a href='https://www.openstreetmap.org/search?query={{ parish.address }}'>Open Street Map</a>
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Archdeaconry or Peculiar Court</th>
             <td>
                 {% if parish.archdeaconry %}
                     <a href='{{ path("archdeaconry_show", {"id": parish.archdeaconry.id}) }}'>{{ parish.archdeaconry }}</a>
@@ -17,18 +40,7 @@
             </td>
         </tr>
         <tr>
-            <th>Links</th>
-            <td>
-                {% embed '@NinesMedia/link/partial/list.html.twig'
-                    with {
-                        'entity': parish
-                    }
-                %}
-                {% endembed %}
-            </td>
-        </tr>
-        <tr>
-            <th>Transactions</th>
+            <th>Transaction</th>
             <td>
                 {% if parish.transactions|length > 0 %}
                     <ul>
@@ -42,6 +54,59 @@
                     </ul>
                 {% endif %}
             </td>
+        </tr>
+        <tr>
+            <th>Inventory</th>
+            <td>
+                {% if parish.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in parish.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>{% include 'partial/short-date.html.twig' with {'entity': inventory} %}</a>
+                                {% if inventory.books | length > 0 %}
+                                    <ul>
+                                        {% for book in inventory.books %}
+                                            <li><a href='{{ path('book_show', {'id': book.id}) }}'>{{ book }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Surviving Text</th>
+            <td>
+                {% if parish.holdings|length > 0 %}
+                    <ul>
+                        {% for holding in parish.holdings %}
+                            <li>
+                                <a href='{{ path("holding_show", {"id":holding.id }) }}'>
+                                    {% include 'partial/short-date.html.twig' with {'entity': holding} %} {{ holding.book }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': parish } %}
+                {% endembed %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ parish.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ parish.updated|date }}</td>
         </tr>
     {% endblock %}
 {% endembed %}

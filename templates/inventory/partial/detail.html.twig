@@ -1,0 +1,74 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Transcription</th>
+            <td>
+                {{ inventory.transcription|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Modern English</th>
+            <td>
+                {{ inventory.modifications|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                {{ inventory.description|raw }}
+            </td>
+        </tr>
+
+        {% include 'partial/notes.html.twig' with {'item': inventory} %}
+
+        <tr>
+            <th>Date</th>
+            <td>{% include 'partial/long-date.html.twig' with {'entity': inventory} %}</td>
+        </tr>
+
+        <tr>
+            <th>Source</th>
+            <td>
+                {% if inventory.source %}
+                    <a href='{{ path("source_show", {"id": inventory.source.id}) }}'>{{ inventory.source }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Page Number</th>
+            <td>{{ inventory.pageNumber }}</td>
+        </tr>
+        <tr>
+            <th>Parish</th>
+            <td>
+                {% if inventory.parish %}
+                    <a href='{{ path("parish_show", {"id": inventory.parish.id}) }}'>{{ inventory.parish }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Books</th>
+            <td>
+                {% if inventory.books|length > 0 %}
+                <ul>
+                    {% for book in inventory.books %}
+                        <li>
+                            <a href='{{ path("book_show", {"id": book.id}) }}'>{{ book }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ inventory.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ inventory.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

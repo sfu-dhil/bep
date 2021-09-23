@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -91,6 +91,63 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
 
+    public function testAnonSearch() : void {
+        $repo = $this->createMock(TransactionRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
+        $this->client->disableReboot();
+        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
+
+        $crawler = $this->client->request('GET', '/transaction/search');
+        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
+            // If authentication is required stop here.
+            return;
+        }
+
+        $form = $crawler->selectButton('btn-search')->form([
+            'q' => 'transaction',
+        ]);
+
+        $responseCrawler = $this->client->submit($form);
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testUserSearch() : void {
+        $repo = $this->createMock(TransactionRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
+        $this->client->disableReboot();
+        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
+
+        $this->login('user.user');
+        $crawler = $this->client->request('GET', '/transaction/search');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $form = $crawler->selectButton('btn-search')->form([
+            'q' => 'transaction',
+        ]);
+
+        $responseCrawler = $this->client->submit($form);
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testAdminSearch() : void {
+        $repo = $this->createMock(TransactionRepository::class);
+        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
+        $this->client->disableReboot();
+        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
+
+        $this->login('user.admin');
+        $crawler = $this->client->request('GET', '/transaction/search');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $form = $crawler->selectButton('btn-search')->form([
+            'q' => 'transaction',
+        ]);
+
+        $responseCrawler = $this->client->submit($form);
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+    }
+
     /**
      * @group anon
      * @group edit
@@ -123,13 +180,14 @@ class TransactionTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 2,
             'transaction[copies]' => 3,
-            'transaction[description]' => 'Updated Description',
+            'transaction[modernTranscription]' => 'Updated Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
+            'transaction[writtenDate]' => 'In the year of swans',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect('/transaction/1'));
@@ -193,13 +251,14 @@ class TransactionTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 1,
             'transaction[copies]' => 1,
-            'transaction[description]' => 'New Description',
+            'transaction[modernTranscription]' => 'New Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
+            'transaction[writtenDate]' => 'In the year of swans',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -222,13 +281,14 @@ class TransactionTest extends ControllerBaseCase {
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 1,
             'transaction[copies]' => 1,
-            'transaction[description]' => 'New Description',
+            'transaction[modernTranscription]' => 'New Description',
             'transaction[sl]' => 3,
             'transaction[page]' => 'p. 6',
+            'transaction[writtenDate]' => 'In the year of swans',
         ]);
         $form['transaction[parish]']->disableValidation()->setValue(1);
         $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategory]']->disableValidation()->setValue(1);
+        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

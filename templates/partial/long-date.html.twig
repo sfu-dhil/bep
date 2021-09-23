@@ -1,0 +1,10 @@
+{% if entity.writtenDate %}
+    {{ entity.writtenDate }} <br/>
+{% endif %}
+{% if entity.startDate and entity.endDate %}
+    Between {{ entity.startDate }} and {{ entity.endDate }}
+{% elseif entity.startDate %}
+    {{ entity.startDate }}
+{% else %}
+    No date given
+{% endif %}

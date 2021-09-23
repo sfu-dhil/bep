@@ -7,11 +7,35 @@
             </td>
         </tr>
         <tr>
+            <th>Uniform Title</th>
+            <td>
+                {{ book.uniformTitle }}
+            </td>
+        </tr>
+        <tr>
             <th>Variant Titles</th>
             <td>
-                {% for title in book.variants %}
+                {% for title in book.variantTitles %}
                     {{ title }}{% if not loop.last %}<br>{% endif %}
                 {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td>
+                {{ book.author }}
+            </td>
+        </tr>
+        <tr>
+            <th>Imprint</th>
+            <td>
+                {{ book.imprint }}
+            </td>
+        </tr>
+        <tr>
+            <th>Variant Imprint</th>
+            <td>
+                {{ book.variantImprint }}
             </td>
         </tr>
         <tr>
@@ -26,7 +50,7 @@
                 {{ book.description|raw }}
             </td>
         </tr>
-
+        {% include 'partial/notes.html.twig' with {'item': book} %}
         <tr>
             <th>Format</th>
             <td>
@@ -36,7 +60,7 @@
             </td>
         </tr>
         <tr>
-            <th>Transactions</th>
+            <th>Transaction</th>
             <td>
                 {% if book.transactions|length > 0 %}
                     <ul>
@@ -44,6 +68,38 @@
                             <li>
                                 <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
                                     {{ transaction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Inventory</th>
+            <td>
+                {% if book.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in book.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                    {% include 'partial/short-date.html.twig' with {'entity': inventory} %} {{ inventory.parish }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Surviving Text</th>
+            <td>
+                {% if book.holdings|length > 0 %}
+                    <ul>
+                        {% for holding in book.holdings %}
+                            <li>
+                                <a href='{{ path("holding_show", {"id":holding.id }) }}'>
+                                    {% include 'partial/short-date.html.twig' with {'entity': holding} %} {{ holding.parish }}
                                 </a>
                             </li>
                         {% endfor %}

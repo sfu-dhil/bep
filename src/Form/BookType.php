@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -12,7 +12,9 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Format;
-    use Nines\MediaBundle\Form\LinkableType;
+use App\Form\Partial\NotesType;
+use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -25,6 +27,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Book form.
  */
 class BookType extends AbstractType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -33,11 +37,19 @@ class BookType extends AbstractType {
             'label' => 'Title',
             'required' => false,
             'attr' => [
-                'help_block' => 'A modern-spelling title',
+                'help_block' => 'As it appears in the ESTC',
                 'class' => '',
             ],
         ]);
-        $builder->add('variants', CollectionType::class, [
+        $builder->add('uniformTitle', TextareaType::class, [
+            'label' => 'Uniform Title',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+                'class' => '',
+            ],
+        ]);
+        $builder->add('variantTitles', CollectionType::class, [
             'label' => 'Variant Titles',
             'required' => false,
             'allow_add' => true,
@@ -49,8 +61,29 @@ class BookType extends AbstractType {
             ],
 
             'attr' => [
-                'help_block' => 'Original spelling title and any variants of it',
                 'class' => 'collection collection-simple',
+                'help_block' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
+            ],
+        ]);
+        $builder->add('author', TextType::class, [
+            'label' => 'Author',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+            ],
+        ]);
+        $builder->add('imprint', TextareaType::class, [
+            'label' => 'Imprint',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'A modern spelling imprint',
+            ],
+        ]);
+        $builder->add('variantImprint', TextareaType::class, [
+            'label' => 'Variant Imprint',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Original spelling imprint and any variations of it',
             ],
         ]);
         $builder->add('date', TextType::class, [
@@ -64,10 +97,12 @@ class BookType extends AbstractType {
             'label' => 'Description',
             'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'Public description of the item.',
                 'class' => 'tinymce',
             ],
         ]);
+        NotesType::add($builder, $options);
+
         $builder->add('format', Select2EntityType::class, [
             'label' => 'Format',
             'class' => Format::class,
@@ -80,6 +115,14 @@ class BookType extends AbstractType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**

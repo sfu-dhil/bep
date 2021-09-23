@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -14,6 +14,7 @@ use App\Entity\Archive;
 use App\Entity\Source;
 use App\Entity\SourceCategory;
 use Nines\MediaBundle\Form\LinkableType;
+use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +25,8 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Source form.
  */
 class SourceType extends TermType {
+    private LinkableMapper $mapper;
+
     /**
      * Add form fields to $builder.
      */
@@ -61,6 +64,14 @@ class SourceType extends TermType {
             ],
         ]);
         LinkableType::add($builder, $options);
+        $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setMapper(LinkableMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**

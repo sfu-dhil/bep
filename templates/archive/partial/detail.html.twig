@@ -17,6 +17,20 @@
             </td>
         </tr>
         <tr>
+            <th>Surviving Texts</th>
+            <td>
+                {% if archive.holdings|length > 0 %}
+                    <ul>
+                        {% for holding in archive.holdings %}
+                            <li>
+                                <a href='{{ path("holding_show", {'id': holding.id}) }}'>{{ holding }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Links</th>
             <td>
                 {% embed '@NinesMedia/link/partial/list.html.twig' with {

@@ -1,0 +1,11 @@
+{% apply spaceless %}
+    <a href='{{ path("parish_show", {"id": parish.id}) }}'>{{ parish }}</a>
+    {%- if parish.town -%}
+        {% set town = parish.town -%}
+        , <a href='{{ path('town_show', {'id': town.id}) }}'>{{ town }}</a>
+        {%- if town.county -%}
+            {% set county = town.county -%}
+            , <a href='{{ path('county_show', {'id': county.id}) }}'>{{ county }}</a>
+        {% endif %}
+    {% endif %}
+{% endapply %}

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -21,10 +21,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InjunctionRepository::class)
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="injunction_ft", columns={"title", "description", "estc"}, flags={"fulltext"})
+ * })
  */
 class Injunction extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
+
     }
 
     /**
@@ -45,6 +49,12 @@ class Injunction extends AbstractEntity implements LinkableInterface {
      * @ORM\Column(type="string", nullable=true)
      */
     private $estc;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
 
     /**
      * @var Collection
@@ -118,6 +128,24 @@ class Injunction extends AbstractEntity implements LinkableInterface {
                 $transaction->setInjunction(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getYear() {
+        return $this->year;
+    }
+
+    /**
+     * @param ?int $year
+     *
+     * @return $this
+     */
+    public function setYear($year) : self {
+        $this->year = $year;
 
         return $this;
     }

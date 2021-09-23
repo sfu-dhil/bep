@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -14,7 +14,6 @@ use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
-use Nines\MediaBundle\Service\LinkManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -37,7 +36,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      */
     public function index(Request $request, BookRepository $bookRepository) : array {
         $query = $bookRepository->indexQuery();
-        $pageSize = $this->getParameter('page_size');
+        $pageSize = (int) $this->getParameter('page_size');
         $page = $request->query->getint('page', 1);
 
         return [
@@ -74,7 +73,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      */
     public function typeahead(Request $request, BookRepository $bookRepository) {
         $q = $request->query->get('q');
-        if ( ! $q) {
+        if (( ! $q) || (mb_strlen($q) < 4)) {
             return new JsonResponse([]);
         }
         $data = [];
@@ -82,7 +81,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
         foreach ($bookRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
-                'text' => (string) $result,
+                'text' => implode(', ', array_map(fn ($s) => '"' . $s . '"', array_merge([$result->getTitle()], $result->getVariantTitles()))),
             ];
         }
 
@@ -96,7 +95,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request) {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -104,9 +103,6 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($book);
-            $entityManager->flush();
-
-            $linkManager->setLinks($book, $form->get('links')->getData());
             $entityManager->flush();
 
             $this->addFlash('success', 'The new book has been saved.');
@@ -127,8 +123,8 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request, LinkManager $linkManager) {
-        return $this->new($request, $linkManager);
+    public function new_popup(Request $request) {
+        return $this->new($request);
     }
 
     /**
@@ -151,12 +147,11 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Book $book, LinkManager $linkManager) {
+    public function edit(Request $request, Book $book) {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkManager->setLinks($book, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated book has been saved.');
 

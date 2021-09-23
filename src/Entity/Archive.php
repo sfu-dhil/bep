@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -24,6 +24,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class Archive extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
+
     }
 
     /**
@@ -32,10 +33,17 @@ class Archive extends AbstractTerm implements LinkableInterface {
      */
     private $sources;
 
+    /**
+     * @var Collection|Holding[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Holding", mappedBy="archive")
+     */
+    private $holdings;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_constructor();
         $this->sources = new ArrayCollection();
+        $this->holdings = new ArrayCollection();
     }
 
     /**
@@ -59,6 +67,33 @@ class Archive extends AbstractTerm implements LinkableInterface {
             // set the owning side to null (unless already changed)
             if ($source->getArchive() === $this) {
                 $source->setArchive(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Holding[]
+     */
+    public function getHoldings() : Collection {
+        return $this->holdings;
+    }
+
+    public function addHolding(Holding $holding) : self {
+        if ( ! $this->holdings->contains($holding)) {
+            $this->holdings[] = $holding;
+            $holding->setArchive($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHolding(Holding $holding) : self {
+        if ($this->holdings->removeElement($holding)) {
+            // set the owning side to null (unless already changed)
+            if ($holding->getArchive() === $this) {
+                $holding->setArchive(null);
             }
         }
 

@@ -1,0 +1,11 @@
+{% if is_granted('ROLE_USER') %}
+    <tr>
+        <th>Private Notes</th>
+        <td>
+            {% if item.notes %}
+                {{ item.notes|raw }}
+                <p class='text-muted'><i>These notes are not shown to the public.</i></p>
+            {% endif %}
+        </td>
+    </tr>
+{% endif %}

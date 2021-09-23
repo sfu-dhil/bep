@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -24,7 +24,29 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class Parish extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
+
     }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $address;
 
     /**
      * @var Archdeaconry
@@ -38,7 +60,7 @@ class Parish extends AbstractTerm implements LinkableInterface {
      *
      * @var Town
      * @ORM\ManyToOne(targetEntity="App\Entity\Town", inversedBy="parishes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $town;
 
@@ -48,10 +70,24 @@ class Parish extends AbstractTerm implements LinkableInterface {
      */
     private $transactions;
 
+    /**
+     * @var Collection|Inventory[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="parish")
+     */
+    private $inventories;
+
+    /**
+     * @var Collection|Holding[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Holding", mappedBy="parish")
+     */
+    private $holdings;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
+        $this->inventories = new ArrayCollection();
+        $this->holdings = new ArrayCollection();
     }
 
     public function getArchdeaconry() : ?Archdeaconry {
@@ -95,6 +131,90 @@ class Parish extends AbstractTerm implements LinkableInterface {
             // set the owning side to null (unless already changed)
             if ($transaction->getParish() === $this) {
                 $transaction->setParish(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLatitude() : ?string {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude) : self {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude() : ?string {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude) : self {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getAddress() : ?string {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address) : self {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inventory[]
+     */
+    public function getInventories() : Collection {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory) : self {
+        if ( ! $this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setParish($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory) : self {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getParish() === $this) {
+                $inventory->setParish(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Holding[]
+     */
+    public function getHoldings() : Collection {
+        return $this->holdings;
+    }
+
+    public function addHolding(Holding $holding) : self {
+        if ( ! $this->holdings->contains($holding)) {
+            $this->holdings[] = $holding;
+            $holding->setParish($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHolding(Holding $holding) : self {
+        if ($this->holdings->removeElement($holding)) {
+            // set the owning side to null (unless already changed)
+            if ($holding->getParish() === $this) {
+                $holding->setParish(null);
             }
         }
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -26,12 +26,12 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setShippingValue($i * 2);
             $fixture->setCopies($i);
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
-            $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $fixture->setBook($this->getReference('book.' . $i));
+            $fixture->setModernTranscription("<p>This is paragraph {$i}</p>");
+            $fixture->addBook($this->getReference('book.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setSource($this->getReference('source.' . $i));
             $fixture->setPage("p. {$i}");
-            $fixture->setTransactioncategory($this->getReference('transactioncategory.' . $i));
+            $fixture->addTransactionCategory($this->getReference('transactioncategory.' . $i));
             $fixture->setInjunction($this->getReference('injunction.' . $i));
             $em->persist($fixture);
             $this->setReference('transaction.' . $i, $fixture);
