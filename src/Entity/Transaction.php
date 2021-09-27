@@ -338,9 +338,6 @@ class Transaction extends AbstractEntity {
         return $this->publicNotes;
     }
 
-    /**
-     * @param string $publicNotes
-     */
     public function setPublicNotes(string $publicNotes) : void {
         $this->publicNotes = $publicNotes;
     }
