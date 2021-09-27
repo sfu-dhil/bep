@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\Injunction;
 use App\Form\InjunctionType;
 use App\Repository\InjunctionRepository;
+
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -77,7 +78,6 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
             return new JsonResponse([]);
         }
         $data = [];
-
         foreach ($injunctionRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
@@ -104,7 +104,6 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($injunction);
             $entityManager->flush();
-
             $this->addFlash('success', 'The new injunction has been saved.');
 
             return $this->redirectToRoute('injunction_show', ['id' => $injunction->getId()]);

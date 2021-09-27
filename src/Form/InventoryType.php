@@ -18,8 +18,8 @@ use App\Entity\Source;
 use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -55,11 +55,11 @@ class InventoryType extends AbstractType {
             ],
         ]);
 
-        $builder->add('pageNumber', IntegerType::class, [
-            'label' => 'pageNumber',
+        $builder->add('pageNumber', TextType::class, [
+            'label' => 'Page',
             'required' => false,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
             ],
         ]);
 

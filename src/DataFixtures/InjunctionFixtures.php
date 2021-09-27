@@ -22,6 +22,12 @@ class InjunctionFixtures extends Fixture {
         for ($i = 1; $i <= 4; $i++) {
             $fixture = new Injunction();
             $fixture->setTitle('Title ' . $i);
+            $fixture->setUniformTitle("<p>This is paragraph {$i}</p>");
+            $fixture->setVariantTitles(['VariantTitles ' . $i]);
+            $fixture->setAuthor('Author ' . $i);
+            $fixture->setImprint("<p>This is paragraph {$i}</p>");
+            $fixture->setVariantImprint("<p>This is paragraph {$i}</p>");
+            $fixture->setDate('Date ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setEstc('Estc ' . $i);
 

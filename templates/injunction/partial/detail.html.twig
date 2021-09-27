@@ -7,8 +7,40 @@
             </td>
         </tr>
         <tr>
-            <th>Year</th>
-            <td>{{ injunction.year }}</td>
+            <th>Uniform Title</th>
+            <td>
+                {{ injunction.uniformTitle|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Variant Titles</th>
+            <td>
+                {% if injunction.variantTitles %}{{ injunction.variantTitles|join(', ') }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td>
+                {{ injunction.author }}
+            </td>
+        </tr>
+        <tr>
+            <th>Imprint</th>
+            <td>
+                {{ injunction.imprint|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Variant Imprint</th>
+            <td>
+                {{ injunction.variantImprint|raw }}
+            </td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>
+                {{ injunction.date }}
+            </td>
         </tr>
         <tr>
             <th>Description</th>
@@ -22,8 +54,9 @@
                 {{ injunction.estc }}
             </td>
         </tr>
+
         <tr>
-            <th>Transactions</th>
+            <th>Transaction</th>
             <td>
                 {% if injunction.transactions|length > 0 %}
                     <ul>
@@ -36,14 +69,6 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Links</th>
-            <td>
-                {% embed '@NinesMedia/link/partial/list.html.twig' with {
-                    'entity': injunction } %}
-                {% endembed %}
             </td>
         </tr>
         <tr>

@@ -1,9 +1,8 @@
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Title</th>
-            <th>Year</th>
+            <th>Date</th>
             <th>Description</th>
         </tr>
     </thead>
@@ -12,14 +11,11 @@
             <tr>
                 <td>
                     <a href="{{ path('injunction_show', { 'id': injunction.id }) }}">
-                        {{ injunction.id }}
+                        {{ injunction.title }}
                     </a>
                 </td>
                 <td>
-                    {{ injunction.title }}
-                </td>
-                <td>
-                    {{ injunction.year }}
+                    {{ injunction.date }}
                 </td>
                 <td>
                     {{ injunction.description|raw }}

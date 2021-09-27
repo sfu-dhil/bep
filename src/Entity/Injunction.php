@@ -17,12 +17,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InjunctionRepository::class)
  * @ORM\Table(indexes={
- *     @ORM\Index(name="injunction_ft", columns={"title", "description", "estc"}, flags={"fulltext"})
+ *     @ORM\Index(name="injunction_ft", columns={"title", "uniform_title", "variant_titles", "description", "author", "imprint", "variant_imprint"}, flags={"fulltext"})
  * })
  */
 class Injunction extends AbstractEntity implements LinkableInterface {
@@ -39,22 +38,51 @@ class Injunction extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $uniformTitle;
+
+    /**
+     * @var array
+     * @ORM\Column(type="array")
+     */
+    private $variantTitles;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $author;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $imprint;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $variantImprint;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=12, nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var string
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
      * @var string
-     * @Assert\Url
      * @ORM\Column(type="string", nullable=true)
      */
     private $estc;
-
-    /**
-     * @var int
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $year;
 
     /**
      * @var Collection
@@ -81,6 +109,66 @@ class Injunction extends AbstractEntity implements LinkableInterface {
 
     public function setTitle(string $title) : self {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getUniformTitle() : ?string {
+        return $this->uniformTitle;
+    }
+
+    public function setUniformTitle(?string $uniformTitle) : self {
+        $this->uniformTitle = $uniformTitle;
+
+        return $this;
+    }
+
+    public function getVariantTitles() : ?array {
+        return $this->variantTitles;
+    }
+
+    public function setVariantTitles(array $variantTitles) : self {
+        $this->variantTitles = $variantTitles;
+
+        return $this;
+    }
+
+    public function getAuthor() : ?string {
+        return $this->author;
+    }
+
+    public function setAuthor(?string $author) : self {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getImprint() : ?string {
+        return $this->imprint;
+    }
+
+    public function setImprint(?string $imprint) : self {
+        $this->imprint = $imprint;
+
+        return $this;
+    }
+
+    public function getVariantImprint() : ?string {
+        return $this->variantImprint;
+    }
+
+    public function setVariantImprint(?string $variantImprint) : self {
+        $this->variantImprint = $variantImprint;
+
+        return $this;
+    }
+
+    public function getDate() : ?string {
+        return $this->date;
+    }
+
+    public function setDate(?string $date) : self {
+        $this->date = $date;
 
         return $this;
     }
@@ -128,24 +216,6 @@ class Injunction extends AbstractEntity implements LinkableInterface {
                 $transaction->setInjunction(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return ?int
-     */
-    public function getYear() {
-        return $this->year;
-    }
-
-    /**
-     * @param ?int $year
-     *
-     * @return $this
-     */
-    public function setYear($year) : self {
-        $this->year = $year;
 
         return $this;
     }

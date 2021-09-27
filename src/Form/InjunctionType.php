@@ -11,13 +11,13 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Injunction;
+
 use Nines\MediaBundle\Form\LinkableType;
 use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,11 +35,58 @@ class InjunctionType extends AbstractType {
             'label' => 'Title',
             'required' => true,
             'attr' => [
+                'help_block' => 'As it appears in the ESTC',
+            ],
+        ]);
+        $builder->add('uniformTitle', TextareaType::class, [
+            'label' => 'Uniform Title',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+                'class' => 'tinymce',
+            ],
+        ]);
+        $builder->add('variantTitles', CollectionType::class, [
+            'label' => 'Variant Titles',
+            'required' => true,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'delete_empty' => true,
+            'entry_type' => TextType::class,
+            'entry_options' => [
+                'label' => false,
+            ],
+            'by_reference' => false,
+            'attr' => [
+                'class' => 'collection collection-simple',
+                'help_block' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
+            ],
+        ]);
+        $builder->add('author', TextType::class, [
+            'label' => 'Author',
+            'required' => false,
+            'attr' => [
                 'help_block' => '',
             ],
         ]);
-        $builder->add('year', IntegerType::class, [
-            'label' => 'Year',
+        $builder->add('imprint', TextareaType::class, [
+            'label' => 'Imprint',
+            'required' => false,
+            'attr' => [
+                'class' => 'tinymce',
+                'help_block' => 'A modern spelling imprint',
+            ],
+        ]);
+        $builder->add('variantImprint', TextareaType::class, [
+            'label' => 'Variant Imprint',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Original spelling imprint and any variations of it',
+                'class' => 'tinymce',
+            ],
+        ]);
+        $builder->add('date', TextType::class, [
+            'label' => 'Date',
             'required' => false,
             'attr' => [
                 'help_block' => '',
@@ -49,11 +96,11 @@ class InjunctionType extends AbstractType {
             'label' => 'Description',
             'required' => true,
             'attr' => [
-                'help_block' => '',
+                'help_block' => 'Public description of the item.',
                 'class' => 'tinymce',
             ],
         ]);
-        $builder->add('estc', UrlType::class, [
+        $builder->add('estc', TextType::class, [
             'label' => 'Estc',
             'required' => false,
             'attr' => [

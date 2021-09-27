@@ -226,8 +226,14 @@ class InjunctionTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'injunction[title]' => 'Updated Title',
+            'injunction[uniformTitle]' => 'Updated UniformTitle',
+            'injunction[variantTitles]' => ['Updated VariantTitles'],
+            'injunction[author]' => 'Updated Author',
+            'injunction[imprint]' => 'Updated Imprint',
+            'injunction[variantImprint]' => 'Updated VariantImprint',
+            'injunction[date]' => 'Updated Date',
             'injunction[description]' => 'Updated Description',
-            'injunction[estc]' => 'http://example.com/1/2/3',
+            'injunction[estc]' => 'Updated Estc',
         ]);
 
         $this->client->submit($form);
@@ -235,8 +241,14 @@ class InjunctionTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Title")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated UniformTitle")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantTitles")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Author")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Imprint")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantImprint")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("http://example.com/1/2/3")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Estc")')->count());
     }
 
     /**
@@ -290,8 +302,13 @@ class InjunctionTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'injunction[title]' => 'New Title',
+            'injunction[uniformTitle]' => 'New UniformTitle',
+            'injunction[author]' => 'New Author',
+            'injunction[imprint]' => 'New Imprint',
+            'injunction[variantImprint]' => 'New VariantImprint',
+            'injunction[date]' => 'New Date',
             'injunction[description]' => 'New Description',
-            'injunction[estc]' => 'http://example.com/1/2/3',
+            'injunction[estc]' => 'New Estc',
         ]);
 
         $this->client->submit($form);
@@ -299,8 +316,13 @@ class InjunctionTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New VariantImprint")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("http://example.com/1/2/3")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Estc")')->count());
     }
 
     /**
@@ -314,8 +336,13 @@ class InjunctionTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'injunction[title]' => 'New Title',
+            'injunction[uniformTitle]' => 'New UniformTitle',
+            'injunction[author]' => 'New Author',
+            'injunction[imprint]' => 'New Imprint',
+            'injunction[variantImprint]' => 'New VariantImprint',
+            'injunction[date]' => 'New Date',
             'injunction[description]' => 'New Description',
-            'injunction[estc]' => 'http://example.com/1/2/3',
+            'injunction[estc]' => 'New Estc',
         ]);
 
         $this->client->submit($form);
@@ -323,8 +350,13 @@ class InjunctionTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New VariantImprint")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("http://example.com/1/2/3")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("New Estc")')->count());
     }
 
     /**
