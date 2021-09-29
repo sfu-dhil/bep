@@ -40,59 +40,6 @@
             </td>
         </tr>
         <tr>
-            <th>Transaction</th>
-            <td>
-                {% if parish.transactions|length > 0 %}
-                    <ul>
-                        {% for transaction in parish.transactions %}
-                            <li>
-                                <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
-                                    {{ transaction }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Inventory</th>
-            <td>
-                {% if parish.inventories|length > 0 %}
-                    <ul>
-                        {% for inventory in parish.inventories %}
-                            <li>
-                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>{% include 'partial/short-date.html.twig' with {'entity': inventory} %}</a>
-                                {% if inventory.books | length > 0 %}
-                                    <ul>
-                                        {% for book in inventory.books %}
-                                            <li><a href='{{ path('book_show', {'id': book.id}) }}'>{{ book }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Surviving Text</th>
-            <td>
-                {% if parish.holdings|length > 0 %}
-                    <ul>
-                        {% for holding in parish.holdings %}
-                            <li>
-                                <a href='{{ path("holding_show", {"id":holding.id }) }}'>
-                                    {% include 'partial/short-date.html.twig' with {'entity': holding} %} {{ holding.book }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>Links</th>
             <td>
                 {% embed '@NinesMedia/link/partial/list.html.twig' with {
@@ -110,3 +57,29 @@
         </tr>
     {% endblock %}
 {% endembed %}
+
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#transactions" aria-controls="home" role="tab" data-toggle="tab">Transactions ({{ parish.transactions|length }})</a></li>
+        <li role="presentation"><a href="#inventories" aria-controls="profile" role="tab" data-toggle="tab">Inventories ({{ parish.inventories|length }})</a></li>
+        <li role="presentation"><a href="#surviving" aria-controls="messages" role="tab" data-toggle="tab">Surviving Texts ({{ parish.holdings|length }})</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active fade in" id="transactions">
+            {% embed 'transaction/partial/table.html.twig' with {'transactions': parish.transactions} %}
+            {% endembed %}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="inventories">
+            {% embed 'inventory/partial/table.html.twig' with {'inventories': parish.inventories} %}
+            {% endembed %}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="surviving">
+            {% embed 'holding/partial/table.html.twig' with {'holdings': parish.holdings} %}
+            {% endembed %}
+        </div>
+    </div>
+
+</div>
