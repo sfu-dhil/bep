@@ -7,7 +7,7 @@
             </td>
         </tr>
         <tr>
-            <th>SourceCategory</th>
+            <th>Source Category</th>
             <td>
                 {% if source.sourceCategory %}
                     <a href='{{ path("source_category_show", {"id": source.sourceCategory.id}) }}'>{{ source.sourceCategory }}</a>
@@ -23,38 +23,6 @@
             </td>
         </tr>
         <tr>
-            <th>Transactions</th>
-            <td>
-                {% if source.transactions|length > 0 %}
-                    <ul>
-                        {% for transaction in source.transactions %}
-                            <li>
-                                <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
-                                    {{ transaction }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Inventories</th>
-            <td>
-                {% if source.inventories|length > 0 %}
-                    <ul>
-                        {% for inventory in source.inventories %}
-                            <li>
-                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
-                                    {{ inventory|raw }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>Links</th>
             <td>
                 {% embed '@NinesMedia/link/partial/list.html.twig' with {
@@ -64,3 +32,24 @@
         </tr>
     {% endblock %}
 {% endembed %}
+
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#transactions" aria-controls="home" role="tab" data-toggle="tab">Transactions ({{ source.transactions|length }})</a></li>
+        <li role="presentation"><a href="#inventories" aria-controls="profile" role="tab" data-toggle="tab">Inventories ({{ source.inventories|length }})</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active fade in" id="transactions">
+            {% embed 'transaction/partial/table.html.twig' with {'transactions': source.transactions} %}
+            {% endembed %}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="inventories">
+            {% embed 'inventory/partial/table.html.twig' with {'inventories': source.inventories} %}
+            {% endembed %}
+        </div>
+    </div>
+
+</div>
