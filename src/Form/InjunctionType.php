@@ -48,7 +48,7 @@ class InjunctionType extends AbstractType {
         ]);
         $builder->add('variantTitles', CollectionType::class, [
             'label' => 'Variant Titles',
-            'required' => true,
+            'required' => false,
             'allow_add' => true,
             'allow_delete' => true,
             'delete_empty' => true,

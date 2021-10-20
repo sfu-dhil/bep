@@ -94,6 +94,7 @@ class Injunction extends AbstractEntity implements LinkableInterface {
         parent::__construct();
         $this->linkable_constructor();
         $this->transactions = new ArrayCollection();
+        $this->variantTitles = [];
     }
 
     /**
