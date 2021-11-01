@@ -26,9 +26,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  */
 class Inventory extends AbstractEntity implements ImageContainerInterface {
     use DatedTrait;
-
     use NotesTrait;
-
     use ImageContainerTrait;
 
     /**

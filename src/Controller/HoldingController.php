@@ -30,7 +30,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HoldingController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
-
     use ImageControllerTrait;
 
     /**
