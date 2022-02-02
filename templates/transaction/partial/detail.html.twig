@@ -39,6 +39,14 @@
             </td>
         </tr>
         <tr>
+            <th>Monarch</th>
+            <td>
+                {% if transaction.monarch %}
+                    <a href='{{ path('monarch_show', {'id': transaction.monarch.id}) }}'>{{ transaction.monarch }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Transcription</th>
             <td>
                 {{ transaction.transcription|raw }}
