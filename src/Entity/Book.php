@@ -69,6 +69,12 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $estc;
+
+    /**
+     * @var string
      * @ORM\Column(type="string", length=12, nullable=true)
      */
     private $date;
@@ -323,6 +329,18 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function setMonarch(?Monarch $monarch): self
     {
         $this->monarch = $monarch;
+
+        return $this;
+    }
+
+    public function getEstc(): ?string
+    {
+        return $this->estc;
+    }
+
+    public function setEstc(?string $estc): self
+    {
+        $this->estc = $estc;
 
         return $this;
     }

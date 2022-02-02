@@ -95,6 +95,14 @@ class BookType extends AbstractType {
             ],
         ]);
 
+        $builder->add('estc', TextType::class, [
+            'label' => 'Estc',
+            'required' => false,
+            'attr' => [
+                'help_block' => '',
+            ],
+        ]);
+
         $builder->add('monarch', Select2EntityType::class, [
             'label' => 'Monarch',
             'required' => false,
