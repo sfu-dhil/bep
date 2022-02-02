@@ -76,6 +76,12 @@ class Injunction extends AbstractEntity implements LinkableInterface {
      * @var string
      * @ORM\Column(type="text")
      */
+    private $physicalDescription;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
     private $description;
 
     /**
@@ -236,6 +242,18 @@ class Injunction extends AbstractEntity implements LinkableInterface {
     public function setMonarch(?Monarch $monarch): self
     {
         $this->monarch = $monarch;
+
+        return $this;
+    }
+
+    public function getPhysicalDescription(): ?string
+    {
+        return $this->physicalDescription;
+    }
+
+    public function setPhysicalDescription(string $physicalDescription): self
+    {
+        $this->physicalDescription = $physicalDescription;
 
         return $this;
     }

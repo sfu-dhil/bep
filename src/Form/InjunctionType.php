@@ -94,6 +94,15 @@ class InjunctionType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
+        $builder->add('physicalDescription', TextareaType::class, [
+            'label' => 'Physical Description',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Public description of the physicality of the item.',
+                'class' => 'tinymce',
+            ],
+        ]);
+
         $builder->add('description', TextareaType::class, [
             'label' => 'Description',
             'required' => true,
