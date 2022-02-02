@@ -32,7 +32,7 @@ class Injunction extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $title;
 
