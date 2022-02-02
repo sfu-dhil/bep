@@ -43,6 +43,12 @@
             </td>
         </tr>
         <tr>
+            <th>Physical Description</th>
+            <td>
+                {{ injunction.physicalDescription|raw }}
+            </td>
+        </tr>
+        <tr>
             <th>Description</th>
             <td>
                 {{ injunction.description|raw }}
@@ -52,6 +58,14 @@
             <th>Estc</th>
             <td>
                 {{ injunction.estc }}
+            </td>
+        </tr>
+        <tr>
+            <th>Monarch</th>
+            <td>
+                {% if injunction.monarch %}
+                    <a href='{{ path('monarch_show', {'id': injunction.monarch.id}) }}'>{{ book.monarch }}</a>
+                {% endif %}
             </td>
         </tr>
 

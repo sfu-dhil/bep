@@ -69,6 +69,12 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $estc;
+
+    /**
+     * @var string
      * @ORM\Column(type="string", length=12, nullable=true)
      */
     private $date;
@@ -80,10 +86,23 @@ class Book extends AbstractEntity implements LinkableInterface {
     private $description;
 
     /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $physicalDescription;
+
+    /**
      * @var Format
      * @ORM\ManyToOne(targetEntity="Format", inversedBy="books")
      */
     private $format;
+
+    /**
+     * @var Monarch
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="books")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $monarch;
 
     /**
      * @var Collection|Transaction[]
@@ -304,6 +323,42 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     public function setVariantImprint(?string $variantImprint) : self {
         $this->variantImprint = $variantImprint;
+
+        return $this;
+    }
+
+    public function getMonarch(): ?Monarch
+    {
+        return $this->monarch;
+    }
+
+    public function setMonarch(?Monarch $monarch): self
+    {
+        $this->monarch = $monarch;
+
+        return $this;
+    }
+
+    public function getEstc(): ?string
+    {
+        return $this->estc;
+    }
+
+    public function setEstc(?string $estc): self
+    {
+        $this->estc = $estc;
+
+        return $this;
+    }
+
+    public function getPhysicalDescription(): ?string
+    {
+        return $this->physicalDescription;
+    }
+
+    public function setPhysicalDescription(?string $physicalDescription): self
+    {
+        $this->physicalDescription = $physicalDescription;
 
         return $this;
     }

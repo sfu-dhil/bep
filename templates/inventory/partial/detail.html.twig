@@ -25,6 +25,14 @@
             <th>Date</th>
             <td>{% include 'partial/long-date.html.twig' with {'entity': inventory} %}</td>
         </tr>
+        <tr>
+            <th>Monarch</th>
+            <td>
+                {% if inventory.monarch %}
+                    <a href='{{ path('monarch_show', {'id': inventory.monarch.id}) }}'>{{ inventory.monarch }}</a>
+                {% endif %}
+            </td>
+        </tr>
 
         <tr>
             <th>Source</th>

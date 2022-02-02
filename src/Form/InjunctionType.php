@@ -12,6 +12,7 @@ namespace App\Form;
 
 use App\Entity\Injunction;
 
+use App\Entity\Monarch;
 use Nines\MediaBundle\Form\LinkableType;
 use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 /**
  * Injunction form.
@@ -92,12 +94,32 @@ class InjunctionType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
+        $builder->add('physicalDescription', TextareaType::class, [
+            'label' => 'Physical Description',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Public description of the physicality of the item.',
+                'class' => 'tinymce',
+            ],
+        ]);
+
         $builder->add('description', TextareaType::class, [
             'label' => 'Description',
             'required' => true,
             'attr' => [
                 'help_block' => 'Public description of the item.',
                 'class' => 'tinymce',
+            ],
+        ]);
+        $builder->add('monarch', Select2EntityType::class, [
+            'label' => 'Monarch',
+            'required' => false,
+            'class' => Monarch::class,
+            'remote_route' => 'monarch_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'monarch_new_popup',
+                'add_label' => 'Add Monarch',
             ],
         ]);
         $builder->add('estc', TextType::class, [
