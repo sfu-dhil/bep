@@ -6,15 +6,21 @@
             <th>Author</th>
             <th>Imprint</th>
             <th>Date</th>
+            <th>Monarch</th>
         </tr>
     </thead>
     <tbody>
         {% for book in books %}
             <tr>
                 <td>
-                    <a href="{{ path('book_show', { 'id': book.id }) }}">
-                        {{ book.title }}
-                    </a>
+                    <p>
+                        <a href="{{ path('book_show', { 'id': book.id }) }}">
+                            {{ book.title }}
+                        </a>
+                    </p>
+                    {% if book.estc %}
+                        <p>ESTC: {{ book.estc }}</p>
+                    {% endif %}
                 </td>
                 <td>
                     {{ book.uniformTitle }}
@@ -30,6 +36,9 @@
 
                 <td>
                     {{ book.date }}
+                </td>
+                <td>
+                    {{ book.monarch }}
                 </td>
             </tr>
         {% endfor %}
