@@ -86,6 +86,13 @@ class Book extends AbstractEntity implements LinkableInterface {
     private $format;
 
     /**
+     * @var Monarch
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="books")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $monarch;
+
+    /**
      * @var Collection|Transaction[]
      * @ORM\ManyToMany(targetEntity="App\Entity\Transaction", mappedBy="books")
      */
@@ -304,6 +311,18 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     public function setVariantImprint(?string $variantImprint) : self {
         $this->variantImprint = $variantImprint;
+
+        return $this;
+    }
+
+    public function getMonarch(): ?Monarch
+    {
+        return $this->monarch;
+    }
+
+    public function setMonarch(?Monarch $monarch): self
+    {
+        $this->monarch = $monarch;
 
         return $this;
     }

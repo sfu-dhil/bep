@@ -32,10 +32,17 @@ class Monarch extends AbstractTerm {
      */
     private $inventories;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Book", mappedBy="monarch")
+     */
+    private $books;
+
     public function __construct() {
         parent::__construct();
         $this->transactions = new ArrayCollection();
         $this->inventories = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -86,6 +93,36 @@ class Monarch extends AbstractTerm {
             // set the owning side to null (unless already changed)
             if ($inventory->getMonarch() === $this) {
                 $inventory->setMonarch(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setMonarch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getMonarch() === $this) {
+                $book->setMonarch(null);
             }
         }
 

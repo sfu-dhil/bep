@@ -45,6 +45,14 @@
             </td>
         </tr>
         <tr>
+            <th>Monarch</th>
+            <td>
+                {% if book.monarch %}
+                    <a href='{{ path('monarch_show', {'id': book.monarch.id}) }}'>{{ book.monarch }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Description</th>
             <td>
                 {{ book.description|raw }}

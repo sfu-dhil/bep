@@ -32,6 +32,22 @@
                 {% endif %}
             </td>
         </tr>
+        <tr>
+            <th>Books</th>
+            <td>
+                {% if monarch.books|length > 0 %}
+                    <ul>
+                        {% for book in monarch.books %}
+                            <li>
+                                <a href='{{ path("book_show", {"id":book.id }) }}'>
+                                    {{ book }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
     {% endblock %}
 {% endembed %}
 
