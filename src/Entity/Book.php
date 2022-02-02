@@ -86,6 +86,12 @@ class Book extends AbstractEntity implements LinkableInterface {
     private $description;
 
     /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $physicalDescription;
+
+    /**
      * @var Format
      * @ORM\ManyToOne(targetEntity="Format", inversedBy="books")
      */
@@ -341,6 +347,18 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function setEstc(?string $estc): self
     {
         $this->estc = $estc;
+
+        return $this;
+    }
+
+    public function getPhysicalDescription(): ?string
+    {
+        return $this->physicalDescription;
+    }
+
+    public function setPhysicalDescription(?string $physicalDescription): self
+    {
+        $this->physicalDescription = $physicalDescription;
 
         return $this;
     }
