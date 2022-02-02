@@ -54,6 +54,14 @@
                 {{ injunction.estc }}
             </td>
         </tr>
+        <tr>
+            <th>Monarch</th>
+            <td>
+                {% if injunction.monarch %}
+                    <a href='{{ path('monarch_show', {'id': injunction.monarch.id}) }}'>{{ book.monarch }}</a>
+                {% endif %}
+            </td>
+        </tr>
 
         <tr>
             <th>Transaction</th>

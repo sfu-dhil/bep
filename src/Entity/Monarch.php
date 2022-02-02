@@ -28,6 +28,12 @@ class Monarch extends AbstractTerm {
 
     /**
      * @var Collection
+     * @ORM\OneToMany(targetEntity="Injunction", mappedBy="monarch")
+     */
+    private $injunctions;
+
+    /**
+     * @var Collection
      * @ORM\OneToMany(targetEntity="Inventory", mappedBy="monarch")
      */
     private $inventories;
@@ -41,6 +47,7 @@ class Monarch extends AbstractTerm {
     public function __construct() {
         parent::__construct();
         $this->transactions = new ArrayCollection();
+        $this->injunctions = new ArrayCollection();
         $this->inventories = new ArrayCollection();
         $this->books = new ArrayCollection();
     }
@@ -123,6 +130,36 @@ class Monarch extends AbstractTerm {
             // set the owning side to null (unless already changed)
             if ($book->getMonarch() === $this) {
                 $book->setMonarch(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Injunction[]
+     */
+    public function getInjunctions(): Collection
+    {
+        return $this->injunctions;
+    }
+
+    public function addInjunction(Injunction $injunction): self
+    {
+        if (!$this->injunctions->contains($injunction)) {
+            $this->injunctions[] = $injunction;
+            $injunction->setMonarch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInjunction(Injunction $injunction): self
+    {
+        if ($this->injunctions->removeElement($injunction)) {
+            // set the owning side to null (unless already changed)
+            if ($injunction->getMonarch() === $this) {
+                $injunction->setMonarch(null);
             }
         }
 

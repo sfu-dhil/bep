@@ -17,6 +17,22 @@
             </td>
         </tr>
         <tr>
+            <th>Injunctions</th>
+            <td>
+                {% if monarch.injunctions|length > 0 %}
+                    <ul>
+                        {% for injunction in monarch.injunctions %}
+                            <li>
+                                <a href='{{ path("injunction_show", {"id":injunction.id }) }}'>
+                                    {{ injunction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Transactions</th>
             <td>
                 {% if monarch.transactions|length > 0 %}

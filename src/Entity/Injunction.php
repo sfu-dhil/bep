@@ -85,6 +85,13 @@ class Injunction extends AbstractEntity implements LinkableInterface {
     private $estc;
 
     /**
+     * @var Monarch
+     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="injunctions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $monarch;
+
+    /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="injunction")
      */
@@ -217,6 +224,18 @@ class Injunction extends AbstractEntity implements LinkableInterface {
                 $transaction->setInjunction(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMonarch(): ?Monarch
+    {
+        return $this->monarch;
+    }
+
+    public function setMonarch(?Monarch $monarch): self
+    {
+        $this->monarch = $monarch;
 
         return $this;
     }
