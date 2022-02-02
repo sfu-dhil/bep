@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Date</th>
+            <th>Date &amp; Source</th>
             <th>Value</th>
             <th>Books</th>
             <th>Parish</th>
@@ -19,11 +19,19 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('transaction_show', { 'id': transaction.id }) }}">
+                    <p>
+                        <a href="{{ path('transaction_show', { 'id': transaction.id }) }}">
                         {% include 'partial/short-date.html.twig' with {'entity': transaction} %}
-                    </a>
+                        </a>
+                    </p>
+                    <p>
+                        {% if transaction.source %}
+                            <a href='{{ path('source_show', {'id': transaction.source.id}) }}'>{{ transaction.source }}</a>
+                            {% if transaction.page %}<br>{{ transaction.page }}{% endif %}
+                        {% endif %}
+                    </p>
                 </td>
-                <td>
+                <td style='white-space: nowrap'>
                     {{ transaction.value(true) }}
                 </td>
 
