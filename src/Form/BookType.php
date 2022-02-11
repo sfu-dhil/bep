@@ -125,7 +125,7 @@ class BookType extends AbstractType {
         ]);
 
         $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
+            'label' => 'Transcribed Excerpt',
             'required' => false,
             'attr' => [
                 'help_block' => 'Public description of the item.',
