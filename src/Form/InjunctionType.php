@@ -76,11 +76,11 @@ class InjunctionType extends AbstractType {
             'required' => false,
             'attr' => [
                 'class' => 'tinymce',
-                'help_block' => 'A modern spelling imprint',
+                'help_block' => 'Imprint as noted on the ESTC',
             ],
         ]);
         $builder->add('variantImprint', TextareaType::class, [
-            'label' => 'Variant Imprint',
+            'label' => 'Imprint, Modern English',
             'required' => false,
             'attr' => [
                 'help_block' => 'Original spelling imprint and any variations of it',
@@ -104,7 +104,7 @@ class InjunctionType extends AbstractType {
         ]);
 
         $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
+            'label' => 'Transcribed Excerpt',
             'required' => true,
             'attr' => [
                 'help_block' => 'Public description of the item.',
@@ -123,7 +123,7 @@ class InjunctionType extends AbstractType {
             ],
         ]);
         $builder->add('estc', TextType::class, [
-            'label' => 'Estc',
+            'label' => 'ESTC',
             'required' => false,
             'attr' => [
                 'help_block' => '',
