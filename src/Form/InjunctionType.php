@@ -111,19 +111,8 @@ class InjunctionType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
-        $builder->add('monarch', Select2EntityType::class, [
-            'label' => 'Monarch',
-            'required' => false,
-            'class' => Monarch::class,
-            'remote_route' => 'monarch_typeahead',
-            'attr' => [
-                'help_block' => '',
-                'add_path' => 'monarch_new_popup',
-                'add_label' => 'Add Monarch',
-            ],
-        ]);
         $builder->add('estc', TextType::class, [
-            'label' => 'Estc',
+            'label' => 'ESTC',
             'required' => false,
             'attr' => [
                 'help_block' => '',
