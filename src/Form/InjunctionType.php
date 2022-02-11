@@ -80,7 +80,7 @@ class InjunctionType extends AbstractType {
             ],
         ]);
         $builder->add('variantImprint', TextareaType::class, [
-            'label' => 'Variant Imprint',
+            'label' => 'Imprint, Modern English',
             'required' => false,
             'attr' => [
                 'help_block' => 'Original spelling imprint and any variations of it',
