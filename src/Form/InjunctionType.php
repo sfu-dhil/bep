@@ -104,7 +104,7 @@ class InjunctionType extends AbstractType {
         ]);
 
         $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
+            'label' => 'Transcribed Excerpt',
             'required' => true,
             'attr' => [
                 'help_block' => 'Public description of the item.',
