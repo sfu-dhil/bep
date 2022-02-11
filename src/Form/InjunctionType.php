@@ -76,7 +76,7 @@ class InjunctionType extends AbstractType {
             'required' => false,
             'attr' => [
                 'class' => 'tinymce',
-                'help_block' => 'A modern spelling imprint',
+                'help_block' => 'imprint as noted on the ESTC',
             ],
         ]);
         $builder->add('variantImprint', TextareaType::class, [
