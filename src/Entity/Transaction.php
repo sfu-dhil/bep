@@ -337,7 +337,7 @@ class Transaction extends AbstractEntity {
         return $this->publicNotes;
     }
 
-    public function setPublicNotes(string $publicNotes) : void {
+    public function setPublicNotes(?string $publicNotes) : void {
         $this->publicNotes = $publicNotes;
     }
 }
