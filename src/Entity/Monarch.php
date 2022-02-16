@@ -107,16 +107,14 @@ class Monarch extends AbstractTerm {
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Book[]|Collection
      */
-    public function getBooks(): Collection
-    {
+    public function getBooks() : Collection {
         return $this->books;
     }
 
-    public function addBook(Book $book): self
-    {
-        if (!$this->books->contains($book)) {
+    public function addBook(Book $book) : self {
+        if ( ! $this->books->contains($book)) {
             $this->books[] = $book;
             $book->setMonarch($this);
         }
@@ -124,8 +122,7 @@ class Monarch extends AbstractTerm {
         return $this;
     }
 
-    public function removeBook(Book $book): self
-    {
+    public function removeBook(Book $book) : self {
         if ($this->books->removeElement($book)) {
             // set the owning side to null (unless already changed)
             if ($book->getMonarch() === $this) {
@@ -139,14 +136,12 @@ class Monarch extends AbstractTerm {
     /**
      * @return Collection|Injunction[]
      */
-    public function getInjunctions(): Collection
-    {
+    public function getInjunctions() : Collection {
         return $this->injunctions;
     }
 
-    public function addInjunction(Injunction $injunction): self
-    {
-        if (!$this->injunctions->contains($injunction)) {
+    public function addInjunction(Injunction $injunction) : self {
+        if ( ! $this->injunctions->contains($injunction)) {
             $this->injunctions[] = $injunction;
             $injunction->setMonarch($this);
         }
@@ -154,8 +149,7 @@ class Monarch extends AbstractTerm {
         return $this;
     }
 
-    public function removeInjunction(Injunction $injunction): self
-    {
+    public function removeInjunction(Injunction $injunction) : self {
         if ($this->injunctions->removeElement($injunction)) {
             // set the owning side to null (unless already changed)
             if ($injunction->getMonarch() === $this) {
