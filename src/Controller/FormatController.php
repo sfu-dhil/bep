@@ -78,7 +78,7 @@ class FormatController extends AbstractController implements PaginatorAwareInter
         }
         $data = [];
 
-        foreach ($formatRepository->typeaheadQuery($q) as $result) {
+        foreach ($formatRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

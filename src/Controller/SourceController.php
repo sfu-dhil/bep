@@ -78,7 +78,7 @@ class SourceController extends AbstractController implements PaginatorAwareInter
         }
         $data = [];
 
-        foreach ($sourceRepository->typeaheadQuery($q) as $result) {
+        foreach ($sourceRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

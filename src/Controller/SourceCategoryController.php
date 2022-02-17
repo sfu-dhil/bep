@@ -78,7 +78,7 @@ class SourceCategoryController extends AbstractController implements PaginatorAw
         }
         $data = [];
 
-        foreach ($sourceCategoryRepository->typeaheadQuery($q) as $result) {
+        foreach ($sourceCategoryRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

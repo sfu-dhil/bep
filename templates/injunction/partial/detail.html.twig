@@ -64,7 +64,7 @@
             <th>Monarch</th>
             <td>
                 {% if injunction.monarch %}
-                    <a href='{{ path('monarch_show', {'id': injunction.monarch.id}) }}'>{{ book.monarch }}</a>
+                    <a href='{{ path('monarch_show', {'id': injunction.monarch.id}) }}'>{{ injunction.monarch }}</a>
                 {% endif %}
             </td>
         </tr>

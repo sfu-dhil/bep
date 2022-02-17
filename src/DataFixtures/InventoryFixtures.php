@@ -12,39 +12,83 @@ namespace App\DataFixtures;
 
 use App\Entity\Inventory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Nines\MediaBundle\Entity\Image;
+use Nines\MediaBundle\Service\ImageManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class InventoryFixtures extends Fixture implements DependentFixtureInterface {
+class InventoryFixtures extends Fixture implements FixtureGroupInterface, DependentFixtureInterface {
+    public const IMAGE_FILES = [
+        '28213926366_4430448ff7_c.jpg',
+        '30191231240_4010f114ba_c.jpg',
+        '33519978964_c025c0da71_c.jpg',
+        '3632486652_b432f7b283_c.jpg',
+        '49654941212_6e3bb28a75_c.jpg',
+    ];
+
+    private ImageManager $imageManager;
+
+    public static function getGroups() : array {
+        return ['dev', 'test'];
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $em) : void {
-        for ($i = 1; $i <= 4; $i++) {
+    public function load(ObjectManager $manager) : void {
+        $this->imageManager->setCopy(true);
+        for ($i = 1; $i <= 5; $i++) {
             $fixture = new Inventory();
+            $fixture->setPageNumber("<p>This is paragraph {$i}</p>");
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
             $fixture->setModifications("<p>This is paragraph {$i}</p>");
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $fixture->setStartDate('1000-01-02');
-            $fixture->setEndDate('1000-01-04');
-
+            $fixture->setStartDate('1000-10-10');
+            $fixture->setEndDate('1050-12-23');
+            $fixture->setWrittenDate('WrittenDate ' . $i);
+            $fixture->setNotes("<p>This is paragraph {$i}</p>");
             $fixture->setSource($this->getReference('source.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
-            $fixture->addBook($this->getReference('book.' . $i));
-            $em->persist($fixture);
+            $fixture->setMonarch($this->getReference('monarch.' . $i));
+            $manager->persist($fixture);
+            $manager->flush();
+
+            $imageFile = self::IMAGE_FILES[$i - 1];
+            $upload = new UploadedFile(dirname(__FILE__, 3) . '/tests/data/image/' . $imageFile, $imageFile, 'image/jpeg', null, true);
+            $image = new Image();
+            $image->setFile($upload);
+            $image->setPublic(0 === $i % 2);
+            $image->setOriginalName($imageFile);
+            $image->setDescription("<p>This is paragraph {$i}</p>");
+            $image->setLicense("<p>This is paragraph {$i}</p>");
+            $image->setEntity($fixture);
+            $manager->persist($image);
+
+            $manager->flush();
             $this->setReference('inventory.' . $i, $fixture);
         }
-        $em->flush();
+        $this->imageManager->setCopy(false);
+    }
+
+    /**
+     * @required
+     */
+    public function setImageManager(ImageManager $imageManager) : void {
+        $this->imageManager = $imageManager;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return array<string>
      */
-    public function getDependencies() {
+    public function getDependencies() : array {
         return [
             SourceFixtures::class,
             ParishFixtures::class,
-            BookFixtures::class,
+            MonarchFixtures::class,
         ];
     }
 }

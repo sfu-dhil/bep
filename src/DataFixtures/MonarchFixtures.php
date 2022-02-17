@@ -12,21 +12,26 @@ namespace App\DataFixtures;
 
 use App\Entity\Monarch;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class MonarchFixtures extends Fixture {
+class MonarchFixtures extends Fixture implements FixtureGroupInterface {
+    public static function getGroups() : array {
+        return ['dev', 'test'];
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $em) : void {
-        for ($i = 1; $i <= 4; $i++) {
+    public function load(ObjectManager $manager) : void {
+        for ($i = 1; $i <= 5; $i++) {
             $fixture = new Monarch();
             $fixture->setName('Name ' . $i);
             $fixture->setLabel('Label ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $em->persist($fixture);
+            $manager->persist($fixture);
             $this->setReference('monarch.' . $i, $fixture);
         }
-        $em->flush();
+        $manager->flush();
     }
 }

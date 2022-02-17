@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\Holding;
 use App\Form\HoldingType;
 use App\Repository\HoldingRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
@@ -143,10 +144,10 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @Route("/{id}/new_image", name="holding_new_image", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
-     * @Template(template="@NinesMedia/image/new.html.twig")
+     * @Template("holding/new_image.html.twig")
      */
-    public function newImage(Request $request, Holding $holding) {
-        return $this->newImageAction($request, $holding, 'holding_show');
+    public function newImage(Request $request, EntityManagerInterface $em, holding $holding) {
+        return $this->newImageAction($request, $em, $holding, 'holding_show');
     }
 
     /**
@@ -154,10 +155,10 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @ParamConverter("image", options={"id": "image_id"})
      *
-     * @Template(template="@NinesMedia/image/edit.html.twig")
+     * @Template("holding/edit_image.html.twig")
      */
-    public function editImage(Request $request, Holding $holding, Image $image) {
-        return $this->editImageAction($request, $holding, $image, 'holding_show');
+    public function editImage(Request $request, EntityManagerInterface $em, holding $holding, Image $image) {
+        return $this->editImageAction($request, $em, $holding, $image, 'holding_show');
     }
 
     /**
@@ -165,7 +166,7 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @ParamConverter("image", options={"id": "image_id"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteImage(Request $request, Holding $holding, Image $image) {
-        return $this->deleteImageAction($request, $holding, $image, 'holding_show');
+    public function deleteImage(Request $request, EntityManagerInterface $em, holding $holding, Image $image) {
+        return $this->deleteImageAction($request, $em, $holding, $image, 'holding_show');
     }
 }

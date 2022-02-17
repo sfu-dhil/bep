@@ -27,7 +27,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Injunction extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
-
     }
 
     /**

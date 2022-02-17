@@ -27,7 +27,9 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Inventory extends AbstractEntity implements ImageContainerInterface {
     use DatedTrait;
     use NotesTrait;
-    use ImageContainerTrait;
+    use ImageContainerTrait {
+        ImageContainerTrait::__construct as protected trait_constructor;
+    }
 
     /**
      * @var string
@@ -82,6 +84,7 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function __construct() {
         parent::__construct();
+        $this->trait_constructor();
         $this->books = new ArrayCollection();
     }
 

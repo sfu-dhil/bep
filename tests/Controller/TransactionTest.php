@@ -10,95 +10,59 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\DataFixtures\TransactionFixtures;
-use App\Repository\TransactionRepository;
 use Nines\UserBundle\DataFixtures\UserFixtures;
-use Nines\UtilBundle\Tests\ControllerBaseCase;
+use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class TransactionTest extends ControllerBaseCase {
+class TransactionTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    protected function fixtures() : array {
-        return [
-            TransactionFixtures::class,
-            UserFixtures::class,
-        ];
-    }
+    private const TYPEAHEAD_QUERY = 'transaction';
 
-    /**
-     * @group anon
-     * @group index
-     */
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/transaction/');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group user
-     * @group index
-     */
     public function testUserIndex() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/transaction/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group admin
-     * @group index
-     */
     public function testAdminIndex() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/transaction/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group anon
-     * @group show
-     */
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/transaction/1');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group user
-     * @group show
-     */
     public function testUserShow() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/transaction/1');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group admin
-     * @group show
-     */
     public function testAdminShow() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/transaction/1');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
 
     public function testAnonSearch() : void {
-        $repo = $this->createMock(TransactionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
-
         $crawler = $this->client->request('GET', '/transaction/search');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
             return;
@@ -113,14 +77,9 @@ class TransactionTest extends ControllerBaseCase {
     }
 
     public function testUserSearch() : void {
-        $repo = $this->createMock(TransactionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
-
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/transaction/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
             'q' => 'transaction',
@@ -131,14 +90,9 @@ class TransactionTest extends ControllerBaseCase {
     }
 
     public function testAdminSearch() : void {
-        $repo = $this->createMock(TransactionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('transaction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . TransactionRepository::class, $repo);
-
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/transaction/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
             'q' => 'transaction',
@@ -148,177 +102,138 @@ class TransactionTest extends ControllerBaseCase {
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group anon
-     * @group edit
-     */
     public function testAnonEdit() : void {
         $crawler = $this->client->request('GET', '/transaction/1/edit');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group user
-     * @group edit
-     */
     public function testUserEdit() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/transaction/1/edit');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group admin
-     * @group edit
-     */
     public function testAdminEdit() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $formCrawler = $this->client->request('GET', '/transaction/1/edit');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'transaction[l]' => 2,
-            'transaction[copies]' => 3,
-            'transaction[modernTranscription]' => 'Updated Description',
-            'transaction[sl]' => 3,
-            'transaction[page]' => 'p. 6',
-            'transaction[writtenDate]' => 'In the year of swans',
+            'transaction[l]' => 1,
+            'transaction[s]' => 2,
+            'transaction[d]' => 3,
+            'transaction[sl]' => 1,
+            'transaction[ss]' => 2,
+            'transaction[sd]' => 3,
+            'transaction[copies]' => 10,
+            'transaction[location]' => 'Updated Location',
+            'transaction[page]' => 'Updated Page',
+            'transaction[transcription]' => '<p>Updated Text</p>',
+            'transaction[modernTranscription]' => '<p>Updated Text</p>',
+            'transaction[publicNotes]' => '<p>Updated Text</p>',
+            'transaction[startDate]' => '1258-11-08',
+            'transaction[endDate]' => '1259-12-08',
+            'transaction[writtenDate]' => 'Updated WrittenDate',
+            'transaction[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['transaction[parish]']->disableValidation()->setValue(1);
-        $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
+        $form['transaction[parish]']->disableValidation()->setValue(2);
+        $form['transaction[source]']->disableValidation()->setValue(2);
+        $form['transaction[injunction]']->disableValidation()->setValue(2);
+        $form['transaction[monarch]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect('/transaction/1'));
+        $this->assertResponseRedirects('/transaction/1', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("£2")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("£3")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("p. 6")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * @group anon
-     * @group new
-     */
     public function testAnonNew() : void {
         $crawler = $this->client->request('GET', '/transaction/new');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group anon
-     * @group new
-     */
     public function testAnonNewPopup() : void {
         $crawler = $this->client->request('GET', '/transaction/new_popup');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group user
-     * @group new
-     */
     public function testUserNew() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/transaction/new');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group user
-     * @group new
-     */
     public function testUserNewPopup() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/transaction/new_popup');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group admin
-     * @group new
-     */
     public function testAdminNew() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $formCrawler = $this->client->request('GET', '/transaction/new');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 1,
-            'transaction[copies]' => 1,
-            'transaction[modernTranscription]' => 'New Description',
-            'transaction[sl]' => 3,
-            'transaction[page]' => 'p. 6',
-            'transaction[writtenDate]' => 'In the year of swans',
+            'transaction[s]' => 2,
+            'transaction[d]' => 3,
+            'transaction[sl]' => 1,
+            'transaction[ss]' => 2,
+            'transaction[sd]' => 3,
+            'transaction[copies]' => 10,
+            'transaction[location]' => 'Updated Location',
+            'transaction[page]' => 'Updated Page',
+            'transaction[transcription]' => '<p>Updated Text</p>',
+            'transaction[modernTranscription]' => '<p>Updated Text</p>',
+            'transaction[publicNotes]' => '<p>Updated Text</p>',
+            'transaction[startDate]' => '1258-11-08',
+            'transaction[endDate]' => '1259-12-08',
+            'transaction[writtenDate]' => 'Updated WrittenDate',
+            'transaction[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['transaction[parish]']->disableValidation()->setValue(1);
-        $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
+        $form['transaction[parish]']->disableValidation()->setValue(2);
+        $form['transaction[source]']->disableValidation()->setValue(2);
+        $form['transaction[injunction]']->disableValidation()->setValue(2);
+        $form['transaction[monarch]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/transaction/6', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("£1")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("p. 6")')->count());
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * @group admin
-     * @group new
-     */
     public function testAdminNewPopup() : void {
-        $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/transaction/new_popup');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->login(UserFixtures::ADMIN);
+        $formCrawler = $this->client->request('GET', '/transaction/new');
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
             'transaction[l]' => 1,
-            'transaction[copies]' => 1,
-            'transaction[modernTranscription]' => 'New Description',
-            'transaction[sl]' => 3,
-            'transaction[page]' => 'p. 6',
-            'transaction[writtenDate]' => 'In the year of swans',
+            'transaction[s]' => 2,
+            'transaction[d]' => 3,
+            'transaction[sl]' => 1,
+            'transaction[ss]' => 2,
+            'transaction[sd]' => 3,
+            'transaction[copies]' => 10,
+            'transaction[location]' => 'Updated Location',
+            'transaction[page]' => 'Updated Page',
+            'transaction[transcription]' => '<p>Updated Text</p>',
+            'transaction[modernTranscription]' => '<p>Updated Text</p>',
+            'transaction[publicNotes]' => '<p>Updated Text</p>',
+            'transaction[startDate]' => '1258-11-08',
+            'transaction[endDate]' => '1259-12-08',
+            'transaction[writtenDate]' => 'Updated WrittenDate',
+            'transaction[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['transaction[parish]']->disableValidation()->setValue(1);
-        $form['transaction[source]']->disableValidation()->setValue(1);
-        $form['transaction[transactionCategories]']->disableValidation()->setValue([1]);
+        $form['transaction[parish]']->disableValidation()->setValue(2);
+        $form['transaction[source]']->disableValidation()->setValue(2);
+        $form['transaction[injunction]']->disableValidation()->setValue(2);
+        $form['transaction[monarch]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/transaction/7', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("£1")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("p. 6")')->count());
-    }
-
-    /**
-     * @group admin
-     * @group delete
-     */
-    public function testAdminDelete() : void {
-        $repo = self::$container->get(TransactionRepository::class);
-        $preCount = count($repo->findAll());
-
-        $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/transaction/1');
-        $form = $crawler->selectButton('Delete')->form();
-        $this->client->submit($form);
-
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $this->entityManager->clear();
-        $postCount = count($repo->findAll());
-        $this->assertSame($preCount - 1, $postCount);
+        $this->assertResponseIsSuccessful();
     }
 }

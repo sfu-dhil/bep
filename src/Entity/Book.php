@@ -27,7 +27,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Book extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
-
     }
     use NotesTrait;
 

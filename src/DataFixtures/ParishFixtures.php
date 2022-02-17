@@ -12,34 +12,50 @@ namespace App\DataFixtures;
 
 use App\Entity\Parish;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Nines\MediaBundle\Entity\Link;
 
-class ParishFixtures extends Fixture implements DependentFixtureInterface {
+class ParishFixtures extends Fixture implements FixtureGroupInterface, DependentFixtureInterface {
+    public static function getGroups() : array {
+        return ['dev', 'test'];
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $em) : void {
-        for ($i = 1; $i <= 4; $i++) {
+    public function load(ObjectManager $manager) : void {
+        for ($i = 1; $i <= 5; $i++) {
             $fixture = new Parish();
             $fixture->setName('Name ' . $i);
             $fixture->setLabel('Label ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
+            $fixture->setLatitude((string) ($i + 0.5));
+            $fixture->setLongitude((string) ($i + 0.5));
+            $fixture->setAddress("<p>This is paragraph {$i}</p>");
             $fixture->setArchdeaconry($this->getReference('archdeaconry.' . $i));
             $fixture->setTown($this->getReference('town.' . $i));
-            $fixture->setLatitude("5{$i}.29406616821392");
-            $fixture->setLongitude("-{$i}.2530476504677621");
-            $fixture->setAddress("{$i} Some St, Buckden");
-            $em->persist($fixture);
+            $manager->persist($fixture);
+            $manager->flush();
+
+            $link = new Link();
+            $link->setText('Link ' . $i);
+            $link->setUrl('https://example.com/path/to/' . $i);
+            $fixture->addLink($link);
+            $manager->persist($link);
+            $manager->flush();
+
             $this->setReference('parish.' . $i, $fixture);
         }
-        $em->flush();
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return array<string>
      */
-    public function getDependencies() {
+    public function getDependencies() : array {
         return [
             ArchdeaconryFixtures::class,
             TownFixtures::class,

@@ -12,37 +12,29 @@ namespace App\Repository;
 
 use App\Entity\Inventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method null|Inventory find($id, $lockMode = null, $lockVersion = null)
- * @method null|Inventory findOneBy(array $criteria, array $orderBy = null)
  * @method Inventory[] findAll()
  * @method Inventory[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method null|Inventory findOneBy(array $criteria, array $orderBy = null)
+ * @phpstan-extends ServiceEntityRepository<Inventory>
  */
 class InventoryRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Inventory::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery() : Query {
         return $this->createQueryBuilder('inventory')
             ->orderBy('inventory.id')
             ->getQuery()
         ;
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Collection|Inventory[]|Query
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('inventory');
         $qb->addSelect('MATCH (inventory.transcription, inventory.modifications, inventory.description, inventory.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

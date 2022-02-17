@@ -78,7 +78,7 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
         }
         $data = [];
 
-        foreach ($archiveRepository->typeaheadQuery($q) as $result) {
+        foreach ($archiveRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

@@ -10,142 +10,92 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\DataFixtures\InjunctionFixtures;
-use App\Repository\InjunctionRepository;
 use Nines\UserBundle\DataFixtures\UserFixtures;
-use Nines\UtilBundle\Tests\ControllerBaseCase;
+use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class InjunctionTest extends ControllerBaseCase {
+class InjunctionTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
     private const TYPEAHEAD_QUERY = 'title';
 
-    protected function fixtures() : array {
-        return [
-            InjunctionFixtures::class,
-            UserFixtures::class,
-        ];
-    }
-
-    /**
-     * @group anon
-     * @group index
-     */
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/injunction/');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group user
-     * @group index
-     */
     public function testUserIndex() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/injunction/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group admin
-     * @group index
-     */
     public function testAdminIndex() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/injunction/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group anon
-     * @group show
-     */
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/injunction/1');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group user
-     * @group show
-     */
     public function testUserShow() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/injunction/1');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group admin
-     * @group show
-     */
     public function testAdminShow() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/injunction/1');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group anon
-     * @group typeahead
-     */
     public function testAnonTypeahead() : void {
         $this->client->request('GET', '/injunction/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
             return;
         }
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
-    /**
-     * @group user
-     * @group typeahead
-     */
     public function testUserTypeahead() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $this->client->request('GET', '/injunction/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
-    /**
-     * @group admin
-     * @group typeahead
-     */
     public function testAdminTypeahead() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $this->client->request('GET', '/injunction/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
     public function testAnonSearch() : void {
-        $repo = $this->createMock(InjunctionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('injunction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . InjunctionRepository::class, $repo);
-
         $crawler = $this->client->request('GET', '/injunction/search');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
             return;
@@ -160,14 +110,9 @@ class InjunctionTest extends ControllerBaseCase {
     }
 
     public function testUserSearch() : void {
-        $repo = $this->createMock(InjunctionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('injunction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . InjunctionRepository::class, $repo);
-
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/injunction/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
             'q' => 'injunction',
@@ -178,14 +123,9 @@ class InjunctionTest extends ControllerBaseCase {
     }
 
     public function testAdminSearch() : void {
-        $repo = $this->createMock(InjunctionRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('injunction.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . InjunctionRepository::class, $repo);
-
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/injunction/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
             'q' => 'injunction',
@@ -195,190 +135,108 @@ class InjunctionTest extends ControllerBaseCase {
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group anon
-     * @group edit
-     */
     public function testAnonEdit() : void {
         $crawler = $this->client->request('GET', '/injunction/1/edit');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group user
-     * @group edit
-     */
     public function testUserEdit() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/injunction/1/edit');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group admin
-     * @group edit
-     */
     public function testAdminEdit() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $formCrawler = $this->client->request('GET', '/injunction/1/edit');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'injunction[title]' => 'Updated Title',
-            'injunction[uniformTitle]' => 'Updated UniformTitle',
-            'injunction[variantTitles]' => ['Updated VariantTitles'],
+            'injunction[title]' => '<p>Updated Text</p>',
+            'injunction[uniformTitle]' => '<p>Updated Text</p>',
             'injunction[author]' => 'Updated Author',
-            'injunction[imprint]' => 'Updated Imprint',
-            'injunction[variantImprint]' => 'Updated VariantImprint',
+            'injunction[imprint]' => '<p>Updated Text</p>',
+            'injunction[variantImprint]' => '<p>Updated Text</p>',
             'injunction[date]' => 'Updated Date',
-            'injunction[description]' => 'Updated Description',
+            'injunction[physicalDescription]' => '<p>Updated Text</p>',
+            'injunction[description]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
+        $form['injunction[monarch]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect('/injunction/1'));
+        $this->assertResponseRedirects('/injunction/1', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Title")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated UniformTitle")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantTitles")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Imprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated VariantImprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Date")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Estc")')->count());
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * @group anon
-     * @group new
-     */
     public function testAnonNew() : void {
         $crawler = $this->client->request('GET', '/injunction/new');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group anon
-     * @group new
-     */
     public function testAnonNewPopup() : void {
         $crawler = $this->client->request('GET', '/injunction/new_popup');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group user
-     * @group new
-     */
     public function testUserNew() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/injunction/new');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group user
-     * @group new
-     */
     public function testUserNewPopup() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/injunction/new_popup');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group admin
-     * @group new
-     */
     public function testAdminNew() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $formCrawler = $this->client->request('GET', '/injunction/new');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'injunction[title]' => 'New Title',
-            'injunction[uniformTitle]' => 'New UniformTitle',
-            'injunction[author]' => 'New Author',
-            'injunction[imprint]' => 'New Imprint',
-            'injunction[variantImprint]' => 'New VariantImprint',
-            'injunction[date]' => 'New Date',
-            'injunction[description]' => 'New Description',
-            'injunction[estc]' => 'New Estc',
+            'injunction[title]' => '<p>Updated Text</p>',
+            'injunction[uniformTitle]' => '<p>Updated Text</p>',
+            'injunction[author]' => 'Updated Author',
+            'injunction[imprint]' => '<p>Updated Text</p>',
+            'injunction[variantImprint]' => '<p>Updated Text</p>',
+            'injunction[date]' => 'Updated Date',
+            'injunction[physicalDescription]' => '<p>Updated Text</p>',
+            'injunction[description]' => '<p>Updated Text</p>',
+            'injunction[estc]' => 'Updated Estc',
         ]);
+        $form['injunction[monarch]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/injunction/6', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New VariantImprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Estc")')->count());
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * @group admin
-     * @group new
-     */
     public function testAdminNewPopup() : void {
-        $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/injunction/new_popup');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->login(UserFixtures::ADMIN);
+        $formCrawler = $this->client->request('GET', '/injunction/new');
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'injunction[title]' => 'New Title',
-            'injunction[uniformTitle]' => 'New UniformTitle',
-            'injunction[author]' => 'New Author',
-            'injunction[imprint]' => 'New Imprint',
-            'injunction[variantImprint]' => 'New VariantImprint',
-            'injunction[date]' => 'New Date',
-            'injunction[description]' => 'New Description',
-            'injunction[estc]' => 'New Estc',
+            'injunction[title]' => '<p>Updated Text</p>',
+            'injunction[uniformTitle]' => '<p>Updated Text</p>',
+            'injunction[author]' => 'Updated Author',
+            'injunction[imprint]' => '<p>Updated Text</p>',
+            'injunction[variantImprint]' => '<p>Updated Text</p>',
+            'injunction[date]' => 'Updated Date',
+            'injunction[physicalDescription]' => '<p>Updated Text</p>',
+            'injunction[description]' => '<p>Updated Text</p>',
+            'injunction[estc]' => 'Updated Estc',
         ]);
+        $form['injunction[monarch]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/injunction/7', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Title")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New UniformTitle")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Author")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Imprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New VariantImprint")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Date")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Estc")')->count());
-    }
-
-    /**
-     * @group admin
-     * @group delete
-     */
-    public function testAdminDelete() : void {
-        $repo = self::$container->get(InjunctionRepository::class);
-        $preCount = count($repo->findAll());
-
-        $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/injunction/1');
-        $form = $crawler->selectButton('Delete')->form();
-        $this->client->submit($form);
-
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $this->entityManager->clear();
-        $postCount = count($repo->findAll());
-        $this->assertSame($preCount - 1, $postCount);
+        $this->assertResponseIsSuccessful();
     }
 }

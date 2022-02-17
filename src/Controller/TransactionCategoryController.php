@@ -78,7 +78,7 @@ class TransactionCategoryController extends AbstractController implements Pagina
         }
         $data = [];
 
-        foreach ($transactionCategoryRepository->typeaheadQuery($q) as $result) {
+        foreach ($transactionCategoryRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

@@ -37,11 +37,11 @@
         </div>
         <div class='clearfix'></div>
     {% endif %}
-    {% embed '@NinesMedia/image/partial/list.html.twig' with {
-        'images': holding.images,
+    {% embed '@NinesMedia/image/ui/list.html.twig' with {
+        'container': holding,
+        'path_new': 'holding_new_image',
         'path_delete': 'holding_delete_image',
         'path_edit': 'holding_edit_image',
-        'entity_id': holding.id,
     } %}
     {% endembed %}
 
