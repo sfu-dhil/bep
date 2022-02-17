@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -15,23 +14,6 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-/.idea
-/public/yarn
-/public/yarn/.yarn-integrity
-/templates/jquery.collection.html.twig
-
-# deployment
-/config/deploy.yaml
-
-# backups
-*.sql
-
-# public things managed by other things.
-/public/docs
-/public/images/blog
-public/js/jquery.collection.js
-data
-
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
@@ -41,3 +23,20 @@ data
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+/.idea
+/public/yarn
+/templates/jquery.collection.html.twig
+
+# deployment
+/config/deploy.yaml
+
+# backups
+*.sql
+
+# public things managed by other things.
+/public/dev
+/public/docs
+/public/images/blog
+/public/js/jquery.collection.js
+/data

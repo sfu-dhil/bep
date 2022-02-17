@@ -172,9 +172,6 @@ class HoldingTest extends ControllerTestCase {
         $this->assertResponseIsSuccessful();
     }
 
-
-
-
     public function testAnonNewImage() : void {
         $crawler = $this->client->request('GET', '/holding/1/new_image');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);

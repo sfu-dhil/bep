@@ -212,8 +212,6 @@ class InventoryTest extends ControllerTestCase {
         $this->assertResponseIsSuccessful();
     }
 
-
-
     public function testAnonNewImage() : void {
         $crawler = $this->client->request('GET', '/inventory/1/new_image');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
