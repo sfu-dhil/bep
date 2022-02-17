@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\Inventory;
 use App\Form\InventoryType;
 use App\Repository\InventoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
@@ -167,8 +168,8 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      *
      * @Template(template="@NinesMedia/image/new.html.twig")
      */
-    public function newImage(Request $request, Inventory $inventory) {
-        return $this->newImageAction($request, $inventory, 'inventory_show');
+    public function newImage(Request $request, EntityManagerInterface $em, Inventory $inventory) {
+        return $this->newImageAction($request, $em, $inventory, 'inventory_show');
     }
 
     /**
@@ -178,8 +179,8 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      *
      * @Template(template="@NinesMedia/image/edit.html.twig")
      */
-    public function editImage(Request $request, Inventory $inventory, Image $image) {
-        return $this->editImageAction($request, $inventory, $image, 'inventory_show');
+    public function editImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) {
+        return $this->editImageAction($request, $em, $inventory, $image, 'inventory_show');
     }
 
     /**
@@ -187,7 +188,7 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      * @ParamConverter("image", options={"id": "image_id"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      */
-    public function deleteImage(Request $request, Inventory $inventory, Image $image) {
-        return $this->deleteImageAction($request, $inventory, $image, 'inventory_show');
+    public function deleteImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) {
+        return $this->deleteImageAction($request, $em, $inventory, $image, 'inventory_show');
     }
 }
