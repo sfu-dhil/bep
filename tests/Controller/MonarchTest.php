@@ -154,6 +154,8 @@ class MonarchTest extends ControllerTestCase {
         $form = $formCrawler->selectButton('Save')->form([
             'monarch[label]' => 'Updated Label',
             'monarch[description]' => '<p>Updated Text</p>',
+            'monarch[startDate]' => '1200-01-01',
+            'monarch[endDate]' => '1202-12-12',
         ]);
 
         $this->client->submit($form);
@@ -192,6 +194,8 @@ class MonarchTest extends ControllerTestCase {
         $form = $formCrawler->selectButton('Save')->form([
             'monarch[label]' => 'Updated Label',
             'monarch[description]' => '<p>Updated Text</p>',
+            'monarch[startDate]' => '1200-01-01',
+            'monarch[endDate]' => '1202-12-12',
         ]);
 
         $this->client->submit($form);
@@ -208,6 +212,8 @@ class MonarchTest extends ControllerTestCase {
         $form = $formCrawler->selectButton('Save')->form([
             'monarch[label]' => 'Updated Label',
             'monarch[description]' => '<p>Updated Text</p>',
+            'monarch[startDate]' => '1200-01-01',
+            'monarch[endDate]' => '1202-12-12',
         ]);
 
         $this->client->submit($form);

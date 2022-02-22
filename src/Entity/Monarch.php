@@ -15,11 +15,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MonarchRepository::class)
  */
 class Monarch extends AbstractTerm {
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Date(message="{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.")
+     */
+    private $startDate;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Date(message="{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.")
+     */
+    private $endDate;
+
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="Transaction", mappedBy="monarch")
@@ -156,6 +171,30 @@ class Monarch extends AbstractTerm {
                 $injunction->setMonarch(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStartDate(): ?string
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(?string $startDate): self
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?string
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?string $endDate): self
+    {
+        $this->endDate = $endDate;
 
         return $this;
     }

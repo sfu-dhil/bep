@@ -29,6 +29,8 @@ class MonarchFixtures extends Fixture implements FixtureGroupInterface {
             $fixture->setName('Name ' . $i);
             $fixture->setLabel('Label ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
+            $fixture->setStartDate("10{$i}0-01-01");
+            $fixture->setStartDate("10{$i}9-12-31");
             $manager->persist($fixture);
             $this->setReference('monarch.' . $i, $fixture);
         }

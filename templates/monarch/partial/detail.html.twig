@@ -1,6 +1,10 @@
 {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': monarch} %}
     {% block callback %}
         <tr>
+            <th>Reign</th>
+            <td>{% if monarch.startDate or monarch.endDate %}{{ monarch.startDate }} - {{ monarch.endDate }}{% endif %}</td>
+        </tr>
+        <tr>
             <th>Inventories</th>
             <td>
                 {% if monarch.inventories|length > 0 %}
