@@ -78,7 +78,7 @@ class NationController extends AbstractController implements PaginatorAwareInter
         }
         $data = [];
 
-        foreach ($nationRepository->typeaheadQuery($q) as $result) {
+        foreach ($nationRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

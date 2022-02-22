@@ -27,7 +27,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Book extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
-
     }
     use NotesTrait;
 
@@ -327,37 +326,31 @@ class Book extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function getMonarch(): ?Monarch
-    {
+    public function getMonarch() : ?Monarch {
         return $this->monarch;
     }
 
-    public function setMonarch(?Monarch $monarch): self
-    {
+    public function setMonarch(?Monarch $monarch) : self {
         $this->monarch = $monarch;
 
         return $this;
     }
 
-    public function getEstc(): ?string
-    {
+    public function getEstc() : ?string {
         return $this->estc;
     }
 
-    public function setEstc(?string $estc): self
-    {
+    public function setEstc(?string $estc) : self {
         $this->estc = $estc;
 
         return $this;
     }
 
-    public function getPhysicalDescription(): ?string
-    {
+    public function getPhysicalDescription() : ?string {
         return $this->physicalDescription;
     }
 
-    public function setPhysicalDescription(?string $physicalDescription): self
-    {
+    public function setPhysicalDescription(?string $physicalDescription) : self {
         $this->physicalDescription = $physicalDescription;
 
         return $this;

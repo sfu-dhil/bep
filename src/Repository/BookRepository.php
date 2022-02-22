@@ -12,54 +12,41 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method null|Book find($id, $lockMode = null, $lockVersion = null)
- * @method null|Book findOneBy(array $criteria, array $orderBy = null)
  * @method Book[] findAll()
  * @method Book[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method null|Book findOneBy(array $criteria, array $orderBy = null)
+ * @phpstan-extends ServiceEntityRepository<Book>
  */
 class BookRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Book::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery() : Query {
+        return $this->createQueryBuilder('book')
+            ->orderBy('book.title')
+            ->addOrderBy('book.id')
+            ->getQuery()
+        ;
+    }
+
+    public function typeaheadQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('book');
+        $qb->where('book.title LIKE :q');
+        $qb->orWhere('book.variantTitles LIKE :q');
         $qb->orderBy('book.title');
         $qb->addOrderBy('book.id');
+        $qb->setParameter('q', "%{$q}%");
 
         return $qb->getQuery();
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Book[]|Collection
-     */
-    public function typeaheadQuery($q) {
-        $qb = $this->createQueryBuilder('book');
-        $qb->where('book.title LIKE :q');
-        $qb->orWhere('book.variantTitles LIKE :q');
-        $qb->orderBy('book.variantTitles');
-        $qb->addOrderBy('book.id');
-        $qb->setParameter('q', "%{$q}%");
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * @param string $q
-     *
-     * @return Book[]|Collection|Query
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('book');
         $qb->addSelect('MATCH (book.title, book.uniformTitle, book.variantTitles, book.description, book.author, book.imprint, book.variantImprint, book.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

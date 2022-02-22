@@ -10,142 +10,92 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\DataFixtures\DioceseFixtures;
-use App\Repository\DioceseRepository;
 use Nines\UserBundle\DataFixtures\UserFixtures;
-use Nines\UtilBundle\Tests\ControllerBaseCase;
+use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class DioceseTest extends ControllerBaseCase {
+class DioceseTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
     private const TYPEAHEAD_QUERY = 'label';
 
-    protected function fixtures() : array {
-        return [
-            DioceseFixtures::class,
-            UserFixtures::class,
-        ];
-    }
-
-    /**
-     * @group anon
-     * @group index
-     */
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/diocese/');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group user
-     * @group index
-     */
     public function testUserIndex() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/diocese/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group admin
-     * @group index
-     */
     public function testAdminIndex() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/diocese/');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('New')->count());
     }
 
-    /**
-     * @group anon
-     * @group show
-     */
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/diocese/1');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group user
-     * @group show
-     */
     public function testUserShow() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/diocese/1');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group admin
-     * @group show
-     */
     public function testAdminShow() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/diocese/1');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
 
-    /**
-     * @group anon
-     * @group typeahead
-     */
     public function testAnonTypeahead() : void {
         $this->client->request('GET', '/diocese/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
             return;
         }
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
-    /**
-     * @group user
-     * @group typeahead
-     */
     public function testUserTypeahead() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $this->client->request('GET', '/diocese/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
-    /**
-     * @group admin
-     * @group typeahead
-     */
     public function testAdminTypeahead() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $this->client->request('GET', '/diocese/typeahead?q=' . self::TYPEAHEAD_QUERY);
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
     public function testAnonSearch() : void {
-        $repo = $this->createMock(DioceseRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('diocese.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . DioceseRepository::class, $repo);
-
         $crawler = $this->client->request('GET', '/diocese/search');
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
             return;
@@ -160,14 +110,9 @@ class DioceseTest extends ControllerBaseCase {
     }
 
     public function testUserSearch() : void {
-        $repo = $this->createMock(DioceseRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('diocese.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . DioceseRepository::class, $repo);
-
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/diocese/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
             'q' => 'diocese',
@@ -178,14 +123,9 @@ class DioceseTest extends ControllerBaseCase {
     }
 
     public function testAdminSearch() : void {
-        $repo = $this->createMock(DioceseRepository::class);
-        $repo->method('searchQuery')->willReturn([$this->getReference('diocese.1')]);
-        $this->client->disableReboot();
-        $this->client->getContainer()->set('test.' . DioceseRepository::class, $repo);
-
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/diocese/search');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
             'q' => 'diocese',
@@ -195,155 +135,87 @@ class DioceseTest extends ControllerBaseCase {
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group anon
-     * @group edit
-     */
     public function testAnonEdit() : void {
         $crawler = $this->client->request('GET', '/diocese/1/edit');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group user
-     * @group edit
-     */
     public function testUserEdit() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/diocese/1/edit');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group admin
-     * @group edit
-     */
     public function testAdminEdit() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $formCrawler = $this->client->request('GET', '/diocese/1/edit');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
             'diocese[label]' => 'Updated Label',
-            'diocese[description]' => 'Updated Description',
+            'diocese[description]' => '<p>Updated Text</p>',
         ]);
-        $form['diocese[province]']->disableValidation()->setValue(1);
+        $form['diocese[province]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect('/diocese/1'));
+        $this->assertResponseRedirects('/diocese/1', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Label")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * @group anon
-     * @group new
-     */
     public function testAnonNew() : void {
         $crawler = $this->client->request('GET', '/diocese/new');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group anon
-     * @group new
-     */
     public function testAnonNewPopup() : void {
         $crawler = $this->client->request('GET', '/diocese/new_popup');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    /**
-     * @group user
-     * @group new
-     */
     public function testUserNew() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/diocese/new');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group user
-     * @group new
-     */
     public function testUserNewPopup() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/diocese/new_popup');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group admin
-     * @group new
-     */
     public function testAdminNew() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $formCrawler = $this->client->request('GET', '/diocese/new');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'diocese[label]' => 'New Label',
-            'diocese[description]' => 'New Description',
+            'diocese[label]' => 'Updated Label',
+            'diocese[description]' => '<p>Updated Text</p>',
         ]);
-        $form['diocese[province]']->disableValidation()->setValue(1);
+        $form['diocese[province]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/diocese/6', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Label")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * @group admin
-     * @group new
-     */
     public function testAdminNewPopup() : void {
-        $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/diocese/new_popup');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->login(UserFixtures::ADMIN);
+        $formCrawler = $this->client->request('GET', '/diocese/new');
+        $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'diocese[label]' => 'New Label',
-            'diocese[description]' => 'New Description',
+            'diocese[label]' => 'Updated Label',
+            'diocese[description]' => '<p>Updated Text</p>',
         ]);
-        $form['diocese[province]']->disableValidation()->setValue(1);
+        $form['diocese[province]']->disableValidation()->setValue(2);
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertResponseRedirects('/diocese/7', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Label")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-    }
-
-    /**
-     * @group admin
-     * @group delete
-     */
-    public function testAdminDelete() : void {
-        $repo = self::$container->get(DioceseRepository::class);
-        $preCount = count($repo->findAll());
-
-        $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/diocese/1');
-        $form = $crawler->selectButton('Delete')->form();
-        $this->client->submit($form);
-
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $this->entityManager->clear();
-        $postCount = count($repo->findAll());
-        $this->assertSame($preCount - 1, $postCount);
+        $this->assertResponseIsSuccessful();
     }
 }

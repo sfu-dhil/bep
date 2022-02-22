@@ -78,7 +78,7 @@ class TownController extends AbstractController implements PaginatorAwareInterfa
         }
         $data = [];
 
-        foreach ($townRepository->typeaheadQuery($q) as $result) {
+        foreach ($townRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

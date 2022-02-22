@@ -12,28 +12,47 @@ namespace App\DataFixtures;
 
 use App\Entity\Injunction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class InjunctionFixtures extends Fixture {
+class InjunctionFixtures extends Fixture implements FixtureGroupInterface, DependentFixtureInterface {
+    public static function getGroups() : array {
+        return ['dev', 'test'];
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $em) : void {
-        for ($i = 1; $i <= 4; $i++) {
+    public function load(ObjectManager $manager) : void {
+        for ($i = 1; $i <= 5; $i++) {
             $fixture = new Injunction();
-            $fixture->setTitle('Title ' . $i);
-            $fixture->setUniformTitle("<p>This is paragraph {$i}</p>");
+            $fixture->setTitle("Title {$i}");
+            $fixture->setUniformTitle("Uniform TItle {$i}");
             $fixture->setVariantTitles(['VariantTitles ' . $i]);
             $fixture->setAuthor('Author ' . $i);
             $fixture->setImprint("<p>This is paragraph {$i}</p>");
             $fixture->setVariantImprint("<p>This is paragraph {$i}</p>");
             $fixture->setDate('Date ' . $i);
+            $fixture->setPhysicalDescription("<p>This is paragraph {$i}</p>");
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $fixture->setEstc('Estc ' . $i);
 
-            $em->persist($fixture);
+            $fixture->setMonarch($this->getReference('monarch.' . $i));
+            $manager->persist($fixture);
             $this->setReference('injunction.' . $i, $fixture);
         }
-        $em->flush();
+        $manager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array<string>
+     */
+    public function getDependencies() : array {
+        return [
+            MonarchFixtures::class,
+        ];
     }
 }

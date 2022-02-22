@@ -1,11 +1,15 @@
 nines_util:
     trim_length: 50
+    sender: 'donotreply@%router.request_context.host%'
     routing:
+        - { class: App\Entity\Archive, route: archive_show }
         - { class: App\Entity\Archdeaconry, route: archdeaconry_show }
         - { class: App\Entity\Book, route: book_show }
         - { class: App\Entity\County, route: county_show }
         - { class: App\Entity\Diocese, route: diocese_show }
+        - { class: App\Entity\Injunction, route: injunction_show }
         - { class: App\Entity\Parish, route: parish_show }
         - { class: App\Entity\Province, route: province_show }
         - { class: App\Entity\Town, route: town_show }
         - { class: App\Entity\Holding, route: holding_show }
+        - { class: App\Entity\Source, route: source_show }

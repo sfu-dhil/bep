@@ -24,7 +24,6 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class Archdeaconry extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
-
     }
 
     /**

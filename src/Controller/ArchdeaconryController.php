@@ -78,7 +78,7 @@ class ArchdeaconryController extends AbstractController implements PaginatorAwar
         }
         $data = [];
 
-        foreach ($archdeaconryRepository->typeaheadQuery($q) as $result) {
+        foreach ($archdeaconryRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

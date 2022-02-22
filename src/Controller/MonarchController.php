@@ -78,7 +78,7 @@ class MonarchController extends AbstractController implements PaginatorAwareInte
             return new JsonResponse([]);
         }
         $data = [];
-        foreach ($monarchRepository->typeaheadQuery($q) as $result) {
+        foreach ($monarchRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

@@ -12,43 +12,54 @@ namespace App\DataFixtures;
 
 use App\Entity\Transaction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class TransactionFixtures extends Fixture implements DependentFixtureInterface {
+class TransactionFixtures extends Fixture implements FixtureGroupInterface, DependentFixtureInterface {
+    public static function getGroups() : array {
+        return ['dev', 'test'];
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $em) : void {
-        for ($i = 1; $i <= 4; $i++) {
+    public function load(ObjectManager $manager) : void {
+        for ($i = 1; $i <= 5; $i++) {
             $fixture = new Transaction();
             $fixture->setValue($i);
-            $fixture->setShippingValue($i * 2);
+            $fixture->setShipping($i);
             $fixture->setCopies($i);
+            $fixture->setLocation('Location ' . $i);
+            $fixture->setPage('Page ' . $i);
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
             $fixture->setModernTranscription("<p>This is paragraph {$i}</p>");
-            $fixture->addBook($this->getReference('book.' . $i));
+            $fixture->setPublicNotes("<p>This is paragraph {$i}</p>");
+            $fixture->setStartDate('1000-10-10');
+            $fixture->setEndDate('1050-12-23');
+            $fixture->setWrittenDate('WrittenDate ' . $i);
+            $fixture->setNotes("<p>This is paragraph {$i}</p>");
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setSource($this->getReference('source.' . $i));
-            $fixture->setPage("p. {$i}");
-            $fixture->addTransactionCategory($this->getReference('transactioncategory.' . $i));
             $fixture->setInjunction($this->getReference('injunction.' . $i));
-            $em->persist($fixture);
+            $fixture->setMonarch($this->getReference('monarch.' . $i));
+            $manager->persist($fixture);
             $this->setReference('transaction.' . $i, $fixture);
         }
-        $em->flush();
+        $manager->flush();
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return array<string>
      */
-    public function getDependencies() {
+    public function getDependencies() : array {
         return [
-            BookFixtures::class,
             ParishFixtures::class,
             SourceFixtures::class,
-            TransactionCategoryFixtures::class,
             InjunctionFixtures::class,
+            MonarchFixtures::class,
         ];
     }
 }

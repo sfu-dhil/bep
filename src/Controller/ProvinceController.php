@@ -78,7 +78,7 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
         }
         $data = [];
 
-        foreach ($provinceRepository->typeaheadQuery($q) as $result) {
+        foreach ($provinceRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

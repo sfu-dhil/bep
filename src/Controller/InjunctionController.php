@@ -78,7 +78,7 @@ class InjunctionController extends AbstractController implements PaginatorAwareI
             return new JsonResponse([]);
         }
         $data = [];
-        foreach ($injunctionRepository->typeaheadQuery($q) as $result) {
+        foreach ($injunctionRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

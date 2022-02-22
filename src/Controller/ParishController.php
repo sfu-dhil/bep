@@ -78,7 +78,7 @@ class ParishController extends AbstractController implements PaginatorAwareInter
         }
         $data = [];
 
-        foreach ($parishRepository->typeaheadQuery($q) as $result) {
+        foreach ($parishRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

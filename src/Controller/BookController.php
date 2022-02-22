@@ -78,7 +78,7 @@ class BookController extends AbstractController implements PaginatorAwareInterfa
         }
         $data = [];
 
-        foreach ($bookRepository->typeaheadQuery($q) as $result) {
+        foreach ($bookRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => implode(', ', array_map(fn ($s) => '"' . $s . '"', array_merge([$result->getTitle()], $result->getVariantTitles()))),

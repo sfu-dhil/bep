@@ -12,25 +12,22 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method null|Transaction find($id, $lockMode = null, $lockVersion = null)
- * @method null|Transaction findOneBy(array $criteria, array $orderBy = null)
  * @method Transaction[] findAll()
  * @method Transaction[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method null|Transaction findOneBy(array $criteria, array $orderBy = null)
+ * @phpstan-extends ServiceEntityRepository<Transaction>
  */
 class TransactionRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Transaction::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery() : Query {
         return $this->createQueryBuilder('transaction')
             ->orderBy('transaction.startDate')
             ->addOrderBy('transaction.endDate')
@@ -39,12 +36,7 @@ class TransactionRepository extends ServiceEntityRepository {
         ;
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Collection|Query|Transaction[]
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('transaction');
         $qb->addSelect('MATCH (transaction.transcription, transaction.modernTranscription, transaction.notes) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

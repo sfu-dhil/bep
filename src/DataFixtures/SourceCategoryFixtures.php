@@ -12,21 +12,26 @@ namespace App\DataFixtures;
 
 use App\Entity\SourceCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class SourceCategoryFixtures extends Fixture {
+class SourceCategoryFixtures extends Fixture implements FixtureGroupInterface {
+    public static function getGroups() : array {
+        return ['dev', 'test'];
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $em) : void {
-        for ($i = 1; $i <= 4; $i++) {
+    public function load(ObjectManager $manager) : void {
+        for ($i = 1; $i <= 5; $i++) {
             $fixture = new SourceCategory();
             $fixture->setName('Name ' . $i);
             $fixture->setLabel('Label ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $em->persist($fixture);
+            $manager->persist($fixture);
             $this->setReference('sourcecategory.' . $i, $fixture);
         }
-        $em->flush();
+        $manager->flush();
     }
 }

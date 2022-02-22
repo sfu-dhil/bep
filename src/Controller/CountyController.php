@@ -78,7 +78,7 @@ class CountyController extends AbstractController implements PaginatorAwareInter
         }
         $data = [];
 
-        foreach ($countyRepository->typeaheadQuery($q) as $result) {
+        foreach ($countyRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

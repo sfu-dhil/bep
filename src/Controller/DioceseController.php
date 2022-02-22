@@ -78,7 +78,7 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
         }
         $data = [];
 
-        foreach ($dioceseRepository->typeaheadQuery($q) as $result) {
+        foreach ($dioceseRepository->typeaheadQuery($q)->execute() as $result) {
             $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,

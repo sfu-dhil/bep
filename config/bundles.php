@@ -16,7 +16,8 @@ return [
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
-    Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
+    DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
+
     Nines\BlogBundle\NinesBlogBundle::class => ['all' => true],
     Nines\EditorBundle\NinesEditorBundle::class => ['all' => true],
     Nines\MakerBundle\NinesMakerBundle::class => ['dev' => true],

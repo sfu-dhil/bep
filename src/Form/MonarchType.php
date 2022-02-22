@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Monarch;
 
 use Nines\UtilBundle\Form\TermType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +26,22 @@ class MonarchType extends TermType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         parent::buildForm($builder, $options);
+        $builder->add('startDate', TextType::class, [
+            'label' => 'Start Date',
+            'required' => true,
+            'attr' => [
+                'placeholder' => 'yyyy-mm-dd',
+                'help_block' => 'Enter the date or earliest possible date.',
+            ],
+        ]);
+        $builder->add('endDate', TextType::class, [
+            'label' => 'End Date',
+            'required' => true,
+            'attr' => [
+                'placeholder' => 'yyyy-mm-dd',
+                'help_block' => 'Enter the latest possible date if the date is uncertain.',
+            ],
+        ]);
     }
 
     /**
