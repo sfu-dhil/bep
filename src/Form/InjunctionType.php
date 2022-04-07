@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Injunction;
 
 use App\Entity\Monarch;
+use App\Form\Partial\NotesType;
 use Nines\MediaBundle\Form\LinkableType;
 use Nines\MediaBundle\Form\Mapper\LinkableMapper;
 use Symfony\Component\Form\AbstractType;
@@ -129,6 +130,7 @@ class InjunctionType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
+        NotesType::add($builder,$options);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
     }

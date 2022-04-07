@@ -12,10 +12,9 @@ namespace App\Entity;
 
 trait NotesTrait {
     /**
-     * @var string
      * @ORM\Column(type="text", nullable=true)
      */
-    private $notes;
+    private ?string $notes = null;
 
     public function getNotes() : ?string {
         return $this->notes;

@@ -70,7 +70,7 @@
         </tr>
 
         <tr>
-            <th>Transaction</th>
+            <th>Transactions</th>
             <td>
                 {% if injunction.transactions|length > 0 %}
                     <ul>
@@ -85,6 +85,9 @@
                 {% endif %}
             </td>
         </tr>
+        {% include 'partial/notes.html.twig' with {
+            'item': injunction
+        } %}
         <tr>
             <th>Links</th>
             <td>

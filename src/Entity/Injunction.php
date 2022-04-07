@@ -28,6 +28,7 @@ class Injunction extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
     }
+    use NotesTrait;
 
     /**
      * @var string
@@ -247,7 +248,7 @@ class Injunction extends AbstractEntity implements LinkableInterface {
         return $this->physicalDescription;
     }
 
-    public function setPhysicalDescription(string $physicalDescription) : self {
+    public function setPhysicalDescription(?string $physicalDescription) : self {
         $this->physicalDescription = $physicalDescription;
 
         return $this;
