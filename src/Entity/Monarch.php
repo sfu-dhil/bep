@@ -175,25 +175,21 @@ class Monarch extends AbstractTerm {
         return $this;
     }
 
-    public function getStartDate(): ?string
-    {
+    public function getStartDate() : ?string {
         return $this->startDate;
     }
 
-    public function setStartDate(?string $startDate): self
-    {
+    public function setStartDate(?string $startDate) : self {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    public function getEndDate(): ?string
-    {
+    public function getEndDate() : ?string {
         return $this->endDate;
     }
 
-    public function setEndDate(?string $endDate): self
-    {
+    public function setEndDate(?string $endDate) : self {
         $this->endDate = $endDate;
 
         return $this;

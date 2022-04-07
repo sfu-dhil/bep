@@ -16,17 +16,19 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220222190958 extends AbstractMigration {
+final class Version20220407173601 extends AbstractMigration {
     public function getDescription() : string {
         return '';
     }
 
     public function up(Schema $schema) : void {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE monarch ADD start_date VARCHAR(10) DEFAULT NULL, ADD end_date VARCHAR(10) DEFAULT NULL');
+        $this->addSql('DROP INDEX injunction_ft ON injunction');
+        $this->addSql('ALTER TABLE injunction CHANGE description transcription LONGTEXT DEFAULT NULL');
+        $this->addSql('CREATE FULLTEXT INDEX injunction_ft ON injunction (title, uniform_title, variant_titles, transcription, author, imprint, variant_imprint)');
     }
 
     public function down(Schema $schema) : void {
-        $this->addSql('ALTER TABLE monarch DROP start_date, DROP end_date');
+        $this->throwIrreversibleMigrationException();
     }
 }

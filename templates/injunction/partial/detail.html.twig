@@ -49,9 +49,9 @@
             </td>
         </tr>
         <tr>
-            <th>Description</th>
+            <th>Transcription</th>
             <td>
-                {{ injunction.description|raw }}
+                {{ injunction.transcription|raw }}
             </td>
         </tr>
         <tr>
@@ -70,7 +70,7 @@
         </tr>
 
         <tr>
-            <th>Transaction</th>
+            <th>Transactions</th>
             <td>
                 {% if injunction.transactions|length > 0 %}
                     <ul>
@@ -83,6 +83,17 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+            </td>
+        </tr>
+        {% include 'partial/notes.html.twig' with {
+            'item': injunction
+        } %}
+        <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': injunction } %}
+                {% endembed %}
             </td>
         </tr>
         <tr>
