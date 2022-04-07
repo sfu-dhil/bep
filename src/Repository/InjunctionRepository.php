@@ -45,7 +45,7 @@ class InjunctionRepository extends ServiceEntityRepository {
 
     public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('injunction');
-        $qb->addSelect('MATCH (injunction.title, injunction.uniformTitle, injunction.variantTitles, injunction.description, injunction.author, injunction.imprint, injunction.variantImprint) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->addSelect('MATCH (injunction.title, injunction.uniformTitle, injunction.variantTitles, injunction.transcription, injunction.author, injunction.imprint, injunction.variantImprint) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');
         $qb->orderBy('score', 'DESC');
         $qb->setParameter('q', $q);

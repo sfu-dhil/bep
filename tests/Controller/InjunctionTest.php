@@ -159,7 +159,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[variantImprint]' => '<p>Updated Text</p>',
             'injunction[date]' => 'Updated Date',
             'injunction[physicalDescription]' => '<p>Updated Text</p>',
-            'injunction[description]' => '<p>Updated Text</p>',
+            'injunction[transcription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
         $form['injunction[monarch]']->disableValidation()->setValue(2);
@@ -205,7 +205,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[variantImprint]' => '<p>Updated Text</p>',
             'injunction[date]' => 'Updated Date',
             'injunction[physicalDescription]' => '<p>Updated Text</p>',
-            'injunction[description]' => '<p>Updated Text</p>',
+            'injunction[transcription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
         $form['injunction[monarch]']->disableValidation()->setValue(2);
@@ -229,7 +229,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[variantImprint]' => '<p>Updated Text</p>',
             'injunction[date]' => 'Updated Date',
             'injunction[physicalDescription]' => '<p>Updated Text</p>',
-            'injunction[description]' => '<p>Updated Text</p>',
+            'injunction[transcription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
         $form['injunction[monarch]']->disableValidation()->setValue(2);

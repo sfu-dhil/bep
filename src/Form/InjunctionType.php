@@ -103,11 +103,11 @@ class InjunctionType extends AbstractType {
             ],
         ]);
 
-        $builder->add('description', TextareaType::class, [
+        $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcribed Excerpt',
             'required' => true,
             'attr' => [
-                'help_block' => 'Public description of the item.',
+                'help_block' => 'Public transcription of the item.',
                 'class' => 'tinymce',
             ],
         ]);
