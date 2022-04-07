@@ -86,6 +86,14 @@
             </td>
         </tr>
         <tr>
+            <th>Links</th>
+            <td>
+                {% embed '@NinesMedia/link/partial/list.html.twig' with {
+                    'entity': injunction } %}
+                {% endembed %}
+            </td>
+        </tr>
+        <tr>
             <th>Created</th>
             <td>{{ injunction.created|date }}</td>
         </tr>
