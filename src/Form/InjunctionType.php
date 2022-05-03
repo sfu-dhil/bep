@@ -130,7 +130,7 @@ class InjunctionType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        NotesType::add($builder,$options);
+        NotesType::add($builder, $options);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
     }
