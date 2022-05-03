@@ -43,7 +43,7 @@ class Book extends AbstractEntity implements LinkableInterface {
     private $uniformTitle;
 
     /**
-     * @var string
+     * @var string[]
      * @ORM\Column(type="array")
      */
     private $variantTitles;
@@ -187,7 +187,7 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function addTransaction(Transaction $transaction) : self {
         if ( ! $this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
-            $transaction->setBook($this);
+            $transaction->addBook($this);
         }
 
         return $this;
@@ -196,8 +196,8 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function removeTransaction(Transaction $transaction) : self {
         if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
-            if ($transaction->getBook() === $this) {
-                $transaction->setBook(null);
+            if ($transaction->getBooks()->contains($this)) {
+                $transaction->removeBook($this);
             }
         }
 
@@ -272,7 +272,7 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function addInventory(Inventory $inventory) : self {
         if ( ! $this->inventories->contains($inventory)) {
             $this->inventories[] = $inventory;
-            $inventory->setBook($this);
+            $inventory->addBook($this);
         }
 
         return $this;
@@ -281,8 +281,8 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function removeInventory(Inventory $inventory) : self {
         if ($this->inventories->removeElement($inventory)) {
             // set the owning side to null (unless already changed)
-            if ($inventory->getBook() === $this) {
-                $inventory->setBook(null);
+            if ($inventory->getBooks()->contains($this)) {
+                $inventory->removeBook($this);
             }
         }
 
@@ -299,7 +299,7 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function addHolding(Holding $holding) : self {
         if ( ! $this->holdings->contains($holding)) {
             $this->holdings[] = $holding;
-            $holding->setBook($this);
+            $holding->addBook($this);
         }
 
         return $this;
@@ -308,8 +308,8 @@ class Book extends AbstractEntity implements LinkableInterface {
     public function removeHolding(Holding $holding) : self {
         if ($this->holdings->removeElement($holding)) {
             // set the owning side to null (unless already changed)
-            if ($holding->getBook() === $this) {
-                $holding->setBook(null);
+            if ($holding->getBooks()->contains($this)) {
+                $holding->removeBook($this);
             }
         }
 

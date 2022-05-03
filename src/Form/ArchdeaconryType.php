@@ -23,7 +23,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Archdeaconry form.
  */
 class ArchdeaconryType extends TermType {
-    private LinkableMapper $mapper;
+    private ?LinkableMapper $mapper = null;
 
     /**
      * Add form fields to $builder.

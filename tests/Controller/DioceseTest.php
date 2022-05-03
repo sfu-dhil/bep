@@ -155,7 +155,7 @@ class DioceseTest extends ControllerTestCase {
             'diocese[label]' => 'Updated Label',
             'diocese[description]' => '<p>Updated Text</p>',
         ]);
-        $form['diocese[province]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'diocese[province]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/diocese/1', Response::HTTP_FOUND);
@@ -194,7 +194,7 @@ class DioceseTest extends ControllerTestCase {
             'diocese[label]' => 'Updated Label',
             'diocese[description]' => '<p>Updated Text</p>',
         ]);
-        $form['diocese[province]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'diocese[province]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/diocese/6', Response::HTTP_FOUND);
@@ -211,7 +211,7 @@ class DioceseTest extends ControllerTestCase {
             'diocese[label]' => 'Updated Label',
             'diocese[description]' => '<p>Updated Text</p>',
         ]);
-        $form['diocese[province]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'diocese[province]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/diocese/7', Response::HTTP_FOUND);

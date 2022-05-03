@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class TransactionCategoryRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private TransactionCategoryRepository $repo;
+    private ?TransactionCategoryRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(TransactionCategoryRepository::class, $this->repo);

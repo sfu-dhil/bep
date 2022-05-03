@@ -14,7 +14,7 @@ use App\Repository\HoldingRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class HoldingRepositoryTest extends ServiceTestCase {
-    private HoldingRepository $repo;
+    private ?HoldingRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(HoldingRepository::class, $this->repo);

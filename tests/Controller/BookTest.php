@@ -164,8 +164,8 @@ class BookTest extends ControllerTestCase {
             'book[physicalDescription]' => '<p>Updated Text</p>',
             'book[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['book[format]']->disableValidation()->setValue(2);
-        $form['book[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'book[format]', 2);
+        $this->overrideField($form, 'book[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/book/1', Response::HTTP_FOUND);
@@ -212,8 +212,8 @@ class BookTest extends ControllerTestCase {
             'book[physicalDescription]' => '<p>Updated Text</p>',
             'book[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['book[format]']->disableValidation()->setValue(2);
-        $form['book[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'book[format]', 2);
+        $this->overrideField($form, 'book[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/book/6', Response::HTTP_FOUND);
@@ -238,8 +238,8 @@ class BookTest extends ControllerTestCase {
             'book[physicalDescription]' => '<p>Updated Text</p>',
             'book[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['book[format]']->disableValidation()->setValue(2);
-        $form['book[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'book[format]', 2);
+        $this->overrideField($form, 'book[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/book/7', Response::HTTP_FOUND);

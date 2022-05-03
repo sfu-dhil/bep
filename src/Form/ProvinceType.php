@@ -23,7 +23,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Province form.
  */
 class ProvinceType extends TermType {
-    private LinkableMapper $mapper;
+    private ?LinkableMapper $mapper = null;
 
     /**
      * Add form fields to $builder.

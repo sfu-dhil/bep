@@ -155,7 +155,7 @@ class CountyTest extends ControllerTestCase {
             'county[label]' => 'Updated Label',
             'county[description]' => '<p>Updated Text</p>',
         ]);
-        $form['county[nation]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'county[nation]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/county/1', Response::HTTP_FOUND);
@@ -194,7 +194,7 @@ class CountyTest extends ControllerTestCase {
             'county[label]' => 'Updated Label',
             'county[description]' => '<p>Updated Text</p>',
         ]);
-        $form['county[nation]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'county[nation]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/county/6', Response::HTTP_FOUND);
@@ -211,7 +211,7 @@ class CountyTest extends ControllerTestCase {
             'county[label]' => 'Updated Label',
             'county[description]' => '<p>Updated Text</p>',
         ]);
-        $form['county[nation]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'county[nation]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/county/7', Response::HTTP_FOUND);

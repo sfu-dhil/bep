@@ -101,7 +101,7 @@ class Transaction extends AbstractEntity {
     private $source;
 
     /**
-     * @var TransactionCategory
+     * @var Collection|TransactionCategory[]
      * @ORM\ManyToMany(targetEntity="App\Entity\TransactionCategory", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -134,7 +134,10 @@ class Transaction extends AbstractEntity {
         return sprintf('%05d', $this->id);
     }
 
-    public function getValue($format = false, $list = false) {
+    /**
+     * @return array|float|string
+     */
+    public function getValue(bool $format = false, bool $list = false) {
         if ($format) {
             $l = floor($this->value / 240);
             $s = floor(($this->value - $l * 240) / 12);
@@ -221,7 +224,10 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    public function getShippingValue($format = false, $list = false) {
+    /**
+     * @return array|float|string
+     */
+    public function getShippingValue(bool $format = false, bool $list = false) {
         if ($format) {
             $l = floor($this->shipping / 240);
             $s = floor(($this->shipping - $l * 240) / 12);

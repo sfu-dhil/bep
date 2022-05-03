@@ -68,13 +68,13 @@ class Monarch extends AbstractTerm {
     }
 
     /**
-     * @return Collection|transaction[]
+     * @return Collection|Transaction[]
      */
     public function getTransactions() : Collection {
         return $this->transactions;
     }
 
-    public function addTransaction(transaction $transaction) : self {
+    public function addTransaction(Transaction $transaction) : self {
         if ( ! $this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
             $transaction->setMonarch($this);
@@ -83,7 +83,7 @@ class Monarch extends AbstractTerm {
         return $this;
     }
 
-    public function removeTransaction(transaction $transaction) : self {
+    public function removeTransaction(Transaction $transaction) : self {
         if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
             if ($transaction->getMonarch() === $this) {
@@ -95,13 +95,13 @@ class Monarch extends AbstractTerm {
     }
 
     /**
-     * @return Collection|inventory[]
+     * @return Collection|Inventory[]
      */
     public function getInventories() : Collection {
         return $this->inventories;
     }
 
-    public function addInventory(inventory $inventory) : self {
+    public function addInventory(Inventory $inventory) : self {
         if ( ! $this->inventories->contains($inventory)) {
             $this->inventories[] = $inventory;
             $inventory->setMonarch($this);
@@ -110,7 +110,7 @@ class Monarch extends AbstractTerm {
         return $this;
     }
 
-    public function removeInventory(inventory $inventory) : self {
+    public function removeInventory(Inventory $inventory) : self {
         if ($this->inventories->removeElement($inventory)) {
             // set the owning side to null (unless already changed)
             if ($inventory->getMonarch() === $this) {

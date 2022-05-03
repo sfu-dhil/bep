@@ -28,7 +28,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Book form.
  */
 class BookType extends AbstractType {
-    private LinkableMapper $mapper;
+    private ?LinkableMapper $mapper = null;
 
     /**
      * Add form fields to $builder.

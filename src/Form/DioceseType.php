@@ -23,7 +23,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Diocese form.
  */
 class DioceseType extends TermType {
-    private LinkableMapper $mapper;
+    private ?LinkableMapper $mapper = null;
 
     /**
      * Add form fields to $builder.

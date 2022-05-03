@@ -162,7 +162,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[transcription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
-        $form['injunction[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'injunction[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/injunction/1', Response::HTTP_FOUND);
@@ -208,7 +208,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[transcription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
-        $form['injunction[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'injunction[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/injunction/6', Response::HTTP_FOUND);
@@ -232,7 +232,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[transcription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
-        $form['injunction[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'injunction[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/injunction/7', Response::HTTP_FOUND);

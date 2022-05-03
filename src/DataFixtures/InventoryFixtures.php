@@ -28,7 +28,7 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
         '49654941212_6e3bb28a75_c.jpg',
     ];
 
-    private ImageManager $imageManager;
+    private ?ImageManager $imageManager = null;
 
     public static function getGroups() : array {
         return ['dev', 'test'];

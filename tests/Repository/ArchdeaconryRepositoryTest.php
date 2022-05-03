@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class ArchdeaconryRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private ArchdeaconryRepository $repo;
+    private ?ArchdeaconryRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(ArchdeaconryRepository::class, $this->repo);

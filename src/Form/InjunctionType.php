@@ -28,7 +28,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Injunction form.
  */
 class InjunctionType extends AbstractType {
-    private LinkableMapper $mapper;
+    private ?LinkableMapper $mapper = null;
 
     /**
      * Add form fields to $builder.

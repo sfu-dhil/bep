@@ -99,8 +99,8 @@ class HoldingTest extends ControllerTestCase {
             'holding[writtenDate]' => 'Updated WrittenDate',
             'holding[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['holding[parish]']->disableValidation()->setValue(2);
-        $form['holding[archive]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'holding[parish]', 2);
+        $this->overrideField($form, 'holding[archive]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/1', Response::HTTP_FOUND);
@@ -142,8 +142,8 @@ class HoldingTest extends ControllerTestCase {
             'holding[writtenDate]' => 'Updated WrittenDate',
             'holding[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['holding[parish]']->disableValidation()->setValue(2);
-        $form['holding[archive]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'holding[parish]', 2);
+        $this->overrideField($form, 'holding[archive]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/6', Response::HTTP_FOUND);
@@ -163,8 +163,8 @@ class HoldingTest extends ControllerTestCase {
             'holding[writtenDate]' => 'Updated WrittenDate',
             'holding[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['holding[parish]']->disableValidation()->setValue(2);
-        $form['holding[archive]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'holding[parish]', 2);
+        $this->overrideField($form, 'holding[archive]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/7', Response::HTTP_FOUND);

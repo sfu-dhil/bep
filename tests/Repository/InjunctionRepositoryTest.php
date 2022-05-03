@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class InjunctionRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'title';
 
-    private InjunctionRepository $repo;
+    private ?InjunctionRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(InjunctionRepository::class, $this->repo);

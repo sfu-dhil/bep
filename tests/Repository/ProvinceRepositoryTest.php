@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class ProvinceRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private ProvinceRepository $repo;
+    private ?ProvinceRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(ProvinceRepository::class, $this->repo);

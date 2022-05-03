@@ -156,8 +156,8 @@ class SourceTest extends ControllerTestCase {
             'source[description]' => '<p>Updated Text</p>',
             'source[callNumber]' => 'Updated CallNumber',
         ]);
-        $form['source[sourceCategory]']->disableValidation()->setValue(2);
-        $form['source[archive]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'source[sourceCategory]', 2);
+        $this->overrideField($form, 'source[archive]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/source/1', Response::HTTP_FOUND);
@@ -197,8 +197,8 @@ class SourceTest extends ControllerTestCase {
             'source[description]' => '<p>Updated Text</p>',
             'source[callNumber]' => 'Updated CallNumber',
         ]);
-        $form['source[sourceCategory]']->disableValidation()->setValue(2);
-        $form['source[archive]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'source[sourceCategory]', 2);
+        $this->overrideField($form, 'source[archive]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/source/6', Response::HTTP_FOUND);
@@ -216,8 +216,8 @@ class SourceTest extends ControllerTestCase {
             'source[description]' => '<p>Updated Text</p>',
             'source[callNumber]' => 'Updated CallNumber',
         ]);
-        $form['source[sourceCategory]']->disableValidation()->setValue(2);
-        $form['source[archive]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'source[sourceCategory]', 2);
+        $this->overrideField($form, 'source[archive]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/source/7', Response::HTTP_FOUND);

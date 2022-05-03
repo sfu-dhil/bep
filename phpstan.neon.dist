@@ -19,5 +19,20 @@ parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingCallableSignature: true
-#     dynamicConstantNames:
-#         - App\Tests\Controller\CategoryTest::ANON_RESPONSE_CODE
+    dynamicConstantNames:
+        - App\Tests\Controller\ArchdeaconryTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\ArchiveTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\BookTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\CountyTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\DioceseTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\FormatTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\HoldingTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\InjunctionTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\MonarchTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\NationTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\ParishTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\ProvinceTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\SourceCategoryTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\TownTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\TransactionCategoryTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\TransactionTest::ANON_RESPONSE_CODE

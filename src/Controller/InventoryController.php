@@ -14,6 +14,7 @@ use App\Entity\Inventory;
 use App\Form\InventoryType;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
@@ -166,6 +167,10 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      * @Route("/{id}/new_image", name="inventory_new_image", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
+     * @throws Exception
+     *
+     * @return array<string,mixed>|RedirectResponse
+     *
      * @Template(template="@NinesMedia/image/new.html.twig")
      */
     public function newImage(Request $request, EntityManagerInterface $em, Inventory $inventory) {
@@ -177,6 +182,10 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @ParamConverter("image", options={"id": "image_id"})
      *
+     * @throws Exception
+     *
+     * @return array<string,mixed>|RedirectResponse
+     *
      * @Template(template="@NinesMedia/image/edit.html.twig")
      */
     public function editImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) {
@@ -187,6 +196,10 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
      * @Route("/{id}/delete_image/{image_id}", name="inventory_delete_image", methods={"DELETE"})
      * @ParamConverter("image", options={"id": "image_id"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @throws Exception
+     *
+     * @return RedirectResponse
      */
     public function deleteImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) {
         return $this->deleteImageAction($request, $em, $inventory, $image, 'inventory_show');

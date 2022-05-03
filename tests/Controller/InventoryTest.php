@@ -20,8 +20,6 @@ class InventoryTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'inventory';
-
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/inventory/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
@@ -130,9 +128,9 @@ class InventoryTest extends ControllerTestCase {
             'inventory[writtenDate]' => 'Updated WrittenDate',
             'inventory[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['inventory[source]']->disableValidation()->setValue(2);
-        $form['inventory[parish]']->disableValidation()->setValue(2);
-        $form['inventory[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'inventory[source]', 2);
+        $this->overrideField($form, 'inventory[parish]', 2);
+        $this->overrideField($form, 'inventory[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/1', Response::HTTP_FOUND);
@@ -177,9 +175,9 @@ class InventoryTest extends ControllerTestCase {
             'inventory[writtenDate]' => 'Updated WrittenDate',
             'inventory[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['inventory[source]']->disableValidation()->setValue(2);
-        $form['inventory[parish]']->disableValidation()->setValue(2);
-        $form['inventory[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'inventory[source]', 2);
+        $this->overrideField($form, 'inventory[parish]', 2);
+        $this->overrideField($form, 'inventory[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/6', Response::HTTP_FOUND);
@@ -202,9 +200,9 @@ class InventoryTest extends ControllerTestCase {
             'inventory[writtenDate]' => 'Updated WrittenDate',
             'inventory[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['inventory[source]']->disableValidation()->setValue(2);
-        $form['inventory[parish]']->disableValidation()->setValue(2);
-        $form['inventory[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'inventory[source]', 2);
+        $this->overrideField($form, 'inventory[parish]', 2);
+        $this->overrideField($form, 'inventory[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/7', Response::HTTP_FOUND);

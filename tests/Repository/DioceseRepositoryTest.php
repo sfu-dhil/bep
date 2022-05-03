@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class DioceseRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private DioceseRepository $repo;
+    private ?DioceseRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(DioceseRepository::class, $this->repo);

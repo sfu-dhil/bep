@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Archive;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Nines\UtilBundle\Repository\TermRepository;
 
@@ -20,7 +19,6 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method Archive[] findAll()
  * @method Archive[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|Archive findOneBy(array $criteria, array $orderBy = null)
- * @phpstan-extends ServiceEntityRepository<Archive>
  */
 class ArchiveRepository extends TermRepository {
     public function __construct(ManagerRegistry $registry) {

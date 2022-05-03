@@ -18,8 +18,6 @@ class TransactionTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'transaction';
-
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/transaction/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
@@ -136,10 +134,10 @@ class TransactionTest extends ControllerTestCase {
             'transaction[writtenDate]' => 'Updated WrittenDate',
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['transaction[parish]']->disableValidation()->setValue(2);
-        $form['transaction[source]']->disableValidation()->setValue(2);
-        $form['transaction[injunction]']->disableValidation()->setValue(2);
-        $form['transaction[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'transaction[parish]', 2);
+        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[injunction]', 2);
+        $this->overrideField($form, 'transaction[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/transaction/1', Response::HTTP_FOUND);
@@ -192,10 +190,10 @@ class TransactionTest extends ControllerTestCase {
             'transaction[writtenDate]' => 'Updated WrittenDate',
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['transaction[parish]']->disableValidation()->setValue(2);
-        $form['transaction[source]']->disableValidation()->setValue(2);
-        $form['transaction[injunction]']->disableValidation()->setValue(2);
-        $form['transaction[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'transaction[parish]', 2);
+        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[injunction]', 2);
+        $this->overrideField($form, 'transaction[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/transaction/6', Response::HTTP_FOUND);
@@ -226,10 +224,10 @@ class TransactionTest extends ControllerTestCase {
             'transaction[writtenDate]' => 'Updated WrittenDate',
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
-        $form['transaction[parish]']->disableValidation()->setValue(2);
-        $form['transaction[source]']->disableValidation()->setValue(2);
-        $form['transaction[injunction]']->disableValidation()->setValue(2);
-        $form['transaction[monarch]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'transaction[parish]', 2);
+        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[injunction]', 2);
+        $this->overrideField($form, 'transaction[monarch]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/transaction/7', Response::HTTP_FOUND);

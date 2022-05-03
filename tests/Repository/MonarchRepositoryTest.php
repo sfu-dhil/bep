@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class MonarchRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private MonarchRepository $repo;
+    private ?MonarchRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(MonarchRepository::class, $this->repo);
