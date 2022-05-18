@@ -47,7 +47,7 @@ class Builder extends AbstractBuilder {
             $menu->addChild('Transaction Categories', ['route' => 'transaction_category_index']);
         }
 
-        return $menu;
+        return $menu->getParent();
     }
 
     /**
