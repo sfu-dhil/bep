@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/*
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -10,15 +16,12 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220518211321 extends AbstractMigration
-{
-    public function getDescription(): string
-    {
+final class Version20220518211321 extends AbstractMigration {
+    public function getDescription() : string {
         return '';
     }
 
-    public function up(Schema $schema): void
-    {
+    public function up(Schema $schema) : void {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('RENAME TABLE source TO manuscript_source');
         $this->addSql('ALTER TABLE inventory DROP FOREIGN KEY FK_B12D4A36953C1C61');
@@ -50,8 +53,7 @@ final class Version20220518211321 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_FA42B7F6320375DF ON transact (manuscript_source_id)');
     }
 
-    public function down(Schema $schema): void
-    {
+    public function down(Schema $schema) : void {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('RENAME TABLE manuscript_source TO source');
         $this->addSql('ALTER TABLE inventory DROP FOREIGN KEY FK_B12D4A36320375DF');
