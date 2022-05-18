@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -86,6 +87,23 @@ class TransactionController extends AbstractController implements PaginatorAware
             return $this->redirectToRoute('transaction_show', ['id' => $transaction->getId()]);
         }
 
+        return [
+            'transaction' => $transaction,
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * Displays a form to copy a transaction
+     *
+     * @Route("/{id}/copy", name="transaction_copy", methods={"GET"})
+     * @Template
+     * @isGranted("ROLE_CONTENT_ADMIN")
+     */
+    public function copy(Request $request, Transaction $transaction, EntityManagerInterface $em) : array {
+        $form = $this->createForm(TransactionType::class, $transaction, [
+            'action' => $this->generateUrl('transaction_new'),
+        ]);
         return [
             'transaction' => $transaction,
             'form' => $form->createView(),
