@@ -94,7 +94,7 @@ class TransactionController extends AbstractController implements PaginatorAware
     }
 
     /**
-     * Displays a form to copy a transaction
+     * Displays a form to copy a transaction.
      *
      * @Route("/{id}/copy", name="transaction_copy", methods={"GET"})
      * @Template
@@ -104,6 +104,7 @@ class TransactionController extends AbstractController implements PaginatorAware
         $form = $this->createForm(TransactionType::class, $transaction, [
             'action' => $this->generateUrl('transaction_new'),
         ]);
+
         return [
             'transaction' => $transaction,
             'form' => $form->createView(),
