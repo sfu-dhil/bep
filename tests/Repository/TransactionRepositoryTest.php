@@ -14,7 +14,7 @@ use App\Repository\TransactionRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class TransactionRepositoryTest extends ServiceTestCase {
-    private TransactionRepository $repo;
+    private ?TransactionRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(TransactionRepository::class, $this->repo);

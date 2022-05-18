@@ -155,7 +155,7 @@ class ArchdeaconryTest extends ControllerTestCase {
             'archdeaconry[label]' => 'Updated Label',
             'archdeaconry[description]' => '<p>Updated Text</p>',
         ]);
-        $form['archdeaconry[diocese]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'archdeaconry[diocese]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/archdeaconry/1', Response::HTTP_FOUND);
@@ -194,7 +194,7 @@ class ArchdeaconryTest extends ControllerTestCase {
             'archdeaconry[label]' => 'Updated Label',
             'archdeaconry[description]' => '<p>Updated Text</p>',
         ]);
-        $form['archdeaconry[diocese]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'archdeaconry[diocese]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/archdeaconry/6', Response::HTTP_FOUND);
@@ -211,7 +211,7 @@ class ArchdeaconryTest extends ControllerTestCase {
             'archdeaconry[label]' => 'Updated Label',
             'archdeaconry[description]' => '<p>Updated Text</p>',
         ]);
-        $form['archdeaconry[diocese]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'archdeaconry[diocese]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/archdeaconry/7', Response::HTTP_FOUND);

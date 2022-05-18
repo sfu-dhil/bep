@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class ArchiveRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private ArchiveRepository $repo;
+    private ?ArchiveRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(ArchiveRepository::class, $this->repo);

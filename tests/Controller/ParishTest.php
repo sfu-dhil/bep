@@ -158,8 +158,8 @@ class ParishTest extends ControllerTestCase {
             'parish[longitude]' => 12.50,
             'parish[address]' => '<p>Updated Text</p>',
         ]);
-        $form['parish[archdeaconry]']->disableValidation()->setValue(2);
-        $form['parish[town]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'parish[archdeaconry]', 2);
+        $this->overrideField($form, 'parish[town]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/parish/1', Response::HTTP_FOUND);
@@ -201,8 +201,8 @@ class ParishTest extends ControllerTestCase {
             'parish[longitude]' => 12.50,
             'parish[address]' => '<p>Updated Text</p>',
         ]);
-        $form['parish[archdeaconry]']->disableValidation()->setValue(2);
-        $form['parish[town]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'parish[archdeaconry]', 2);
+        $this->overrideField($form, 'parish[town]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/parish/6', Response::HTTP_FOUND);
@@ -222,8 +222,8 @@ class ParishTest extends ControllerTestCase {
             'parish[longitude]' => 12.50,
             'parish[address]' => '<p>Updated Text</p>',
         ]);
-        $form['parish[archdeaconry]']->disableValidation()->setValue(2);
-        $form['parish[town]']->disableValidation()->setValue(2);
+        $this->overrideField($form, 'parish[archdeaconry]', 2);
+        $this->overrideField($form, 'parish[town]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/parish/7', Response::HTTP_FOUND);

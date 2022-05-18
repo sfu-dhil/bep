@@ -42,7 +42,7 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
     private $parish;
 
     /**
-     * @var Book
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="holdings")
      */
     private $books;

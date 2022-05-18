@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class SourceCategoryRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private SourceCategoryRepository $repo;
+    private ?SourceCategoryRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(SourceCategoryRepository::class, $this->repo);

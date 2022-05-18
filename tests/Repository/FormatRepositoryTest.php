@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class FormatRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private FormatRepository $repo;
+    private ?FormatRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(FormatRepository::class, $this->repo);

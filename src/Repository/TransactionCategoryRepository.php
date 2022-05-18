@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\TransactionCategory;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Nines\UtilBundle\Repository\TermRepository;
 
@@ -20,7 +19,6 @@ use Nines\UtilBundle\Repository\TermRepository;
  * @method TransactionCategory[] findAll()
  * @method TransactionCategory[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|TransactionCategory findOneBy(array $criteria, array $orderBy = null)
- * @phpstan-extends ServiceEntityRepository<TransactionCategory>
  */
 class TransactionCategoryRepository extends TermRepository {
     public function __construct(ManagerRegistry $registry) {

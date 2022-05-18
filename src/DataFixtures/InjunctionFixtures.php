@@ -36,6 +36,7 @@ class InjunctionFixtures extends Fixture implements FixtureGroupInterface, Depen
             $fixture->setDate('Date ' . $i);
             $fixture->setPhysicalDescription("<p>This is paragraph {$i}</p>");
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
+            $fixture->setModernTranscription("<p>This is paragraph {$i}</p>");
             $fixture->setEstc('Estc ' . $i);
 
             $fixture->setMonarch($this->getReference('monarch.' . $i));

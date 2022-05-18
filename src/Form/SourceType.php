@@ -25,7 +25,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Source form.
  */
 class SourceType extends TermType {
-    private LinkableMapper $mapper;
+    private ?LinkableMapper $mapper = null;
 
     /**
      * Add form fields to $builder.

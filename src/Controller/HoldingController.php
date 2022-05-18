@@ -14,6 +14,7 @@ use App\Entity\Holding;
 use App\Form\HoldingType;
 use App\Repository\HoldingRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
@@ -144,6 +145,10 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @Route("/{id}/new_image", name="holding_new_image", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
+     * @throws Exception
+     *
+     * @return array<string,mixed>|RedirectResponse
+     *
      * @Template("holding/new_image.html.twig")
      */
     public function newImage(Request $request, EntityManagerInterface $em, holding $holding) {
@@ -155,6 +160,10 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @ParamConverter("image", options={"id": "image_id"})
      *
+     * @throws Exception
+     *
+     * @return array<string,mixed>|RedirectResponse
+     *
      * @Template("holding/edit_image.html.twig")
      */
     public function editImage(Request $request, EntityManagerInterface $em, holding $holding, Image $image) {
@@ -165,6 +174,8 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
      * @Route("/{id}/delete_image/{image_id}", name="holding_delete_image", methods={"DELETE"})
      * @ParamConverter("image", options={"id": "image_id"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @return RedirectResponse
      */
     public function deleteImage(Request $request, EntityManagerInterface $em, holding $holding, Image $image) {
         return $this->deleteImageAction($request, $em, $holding, $image, 'holding_show');

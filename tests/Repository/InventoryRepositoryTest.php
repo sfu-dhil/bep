@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class InventoryRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'paragraph';
 
-    private InventoryRepository $repo;
+    private ?InventoryRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(InventoryRepository::class, $this->repo);
