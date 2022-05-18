@@ -160,6 +160,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[date]' => 'Updated Date',
             'injunction[physicalDescription]' => '<p>Updated Text</p>',
             'injunction[transcription]' => '<p>Updated Text</p>',
+            'injunction[modernTranscription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
         $this->overrideField($form, 'injunction[monarch]', 2);
@@ -206,6 +207,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[date]' => 'Updated Date',
             'injunction[physicalDescription]' => '<p>Updated Text</p>',
             'injunction[transcription]' => '<p>Updated Text</p>',
+            'injunction[modernTranscription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
         $this->overrideField($form, 'injunction[monarch]', 2);
@@ -230,6 +232,7 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[date]' => 'Updated Date',
             'injunction[physicalDescription]' => '<p>Updated Text</p>',
             'injunction[transcription]' => '<p>Updated Text</p>',
+            'injunction[modernTranscription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
         $this->overrideField($form, 'injunction[monarch]', 2);

@@ -112,6 +112,16 @@ class InjunctionType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
+
+        $builder->add('modernTranscription', TextareaType::class, [
+            'label' => 'Modern English',
+            'required' => false,
+            'attr' => [
+                'help_block' => 'Provide a modern English equivalent of the manuscript entry',
+                'class' => 'tinymce',
+            ],
+        ]);
+
         $builder->add('monarch', Select2EntityType::class, [
             'label' => 'Monarch',
             'required' => false,

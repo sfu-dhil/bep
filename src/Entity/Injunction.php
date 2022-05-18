@@ -21,7 +21,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=InjunctionRepository::class)
  * @ORM\Table(indexes={
- *     @ORM\Index(name="injunction_ft", columns={"title", "uniform_title", "variant_titles", "transcription", "author", "imprint", "variant_imprint"}, flags={"fulltext"})
+ *     @ORM\Index(name="injunction_ft", columns={"title", "uniform_title", "variant_titles", "transcription", "modern_transcription", "author", "imprint", "variant_imprint"}, flags={"fulltext"})
  * })
  */
 class Injunction extends AbstractEntity implements LinkableInterface {
@@ -83,6 +83,12 @@ class Injunction extends AbstractEntity implements LinkableInterface {
      * @ORM\Column(type="text", nullable=true)
      */
     private $transcription;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $modernTranscription;
 
     /**
      * @var string
@@ -193,6 +199,16 @@ class Injunction extends AbstractEntity implements LinkableInterface {
 
     public function setTranscription(string $transcription) : self {
         $this->transcription = $transcription;
+
+        return $this;
+    }
+
+    public function getModernTranscription() : ?string {
+        return $this->modernTranscription;
+    }
+
+    public function setModernTranscription(?string $modernTranscription) : self {
+        $this->modernTranscription = $modernTranscription;
 
         return $this;
     }
