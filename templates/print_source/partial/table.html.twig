@@ -1,0 +1,30 @@
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Author</th>
+            <th>Publisher</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for print_source in print_sources %}
+            <tr>
+                <td>
+                    <a href="{{ path('print_source_show', { 'id': print_source.id }) }}">
+                        {{ print_source.title }}
+                    </a>
+                </td>
+                <td>
+                    {{ print_source.date }}
+                </td>
+                <td>
+                    {{ print_source.author }}
+                </td>
+                <td>
+                    {{ print_source.publisher }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

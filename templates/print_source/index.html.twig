@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Source List{% endblock %}
+{% block title %}Print Source List{% endblock %}
 
 {% block pageheader %}
-    <h1>Manuscript Source List</h1>
+    <h1>Print Source List</h1>
     <p class="count">
-        Displaying {{ sources|length }} sources of {{ sources.getTotalItemCount }} total.
+        Displaying {{ print_sources|length }} print_sources of {{ print_sources.getTotalItemCount }} total.
     </p>
 {% endblock %}
 
@@ -14,20 +14,20 @@
     <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
             {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('manuscript_source_new') }}" class="btn btn-default">
+                <a href="{{ path('print_source_new') }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus"></span> New </a>
             {% endif %}
 
-            <a href="{{ path('manuscript_source_search') }}" class="btn btn-default">
+            <a href="{{ path('print_source_search') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-search"></span> Search </a>
         </div>
     </div>
 
-    {% embed 'manuscript_source/partial/table.html.twig' %}
+    {% embed 'print_source/partial/table.html.twig' %}
     {% endembed %}
 
     <div class="navigation">
-        {{ knp_pagination_render(sources) }}
+        {{ knp_pagination_render(print_sources) }}
     </div>
 
 {% endblock %}

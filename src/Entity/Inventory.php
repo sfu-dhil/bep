@@ -58,9 +58,16 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     /**
      * @var ManuscriptSource
      * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $manuscriptSource;
+
+    /**
+     * @var PrintSource
+     * @ORM\ManyToOne(targetEntity="PrintSource", inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $printSource;
 
     /**
      * @var Parish
@@ -182,6 +189,16 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function setPageNumber(?string $pageNumber) : self {
         $this->pageNumber = $pageNumber;
+
+        return $this;
+    }
+
+    public function getPrintSource() : ?PrintSource {
+        return $this->printSource;
+    }
+
+    public function setPrintSource(?PrintSource $printSource) : self {
+        $this->printSource = $printSource;
 
         return $this;
     }

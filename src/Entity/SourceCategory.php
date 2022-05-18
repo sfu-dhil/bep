@@ -26,9 +26,16 @@ class SourceCategory extends AbstractTerm {
      */
     private $manuscriptSources;
 
+    /**
+     * @var Collection|PrintSource[]
+     * @ORM\OneToMany(targetEntity="PrintSource", mappedBy="sourceCategory")
+     */
+    private $printSources;
+
     public function __construct() {
         parent::__construct();
         $this->manuscriptSources = new ArrayCollection();
+        $this->printSources = new ArrayCollection();
     }
 
     /**
@@ -52,6 +59,44 @@ class SourceCategory extends AbstractTerm {
             // set the owning side to null (unless already changed)
             if ($manuscriptSource->getSourceCategory() === $this) {
                 $manuscriptSource->setSourceCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeManuscriptSource(ManuscriptSource $manuscriptSource) : self {
+        if ($this->manuscriptSources->removeElement($manuscriptSource)) {
+            // set the owning side to null (unless already changed)
+            if ($manuscriptSource->getSourceCategory() === $this) {
+                $manuscriptSource->setSourceCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PrintSource>
+     */
+    public function getPrintSources() : Collection {
+        return $this->printSources;
+    }
+
+    public function addPrintSource(PrintSource $printSource) : self {
+        if ( ! $this->printSources->contains($printSource)) {
+            $this->printSources[] = $printSource;
+            $printSource->setSourceCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrintSource(PrintSource $printSource) : self {
+        if ($this->printSources->removeElement($printSource)) {
+            // set the owning side to null (unless already changed)
+            if ($printSource->getSourceCategory() === $this) {
+                $printSource->setSourceCategory(null);
             }
         }
 

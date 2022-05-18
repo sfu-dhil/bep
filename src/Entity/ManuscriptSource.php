@@ -41,7 +41,7 @@ class ManuscriptSource extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var Archive
-     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="sources")
+     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="manuscriptSources")
      * @ORM\JoinColumn(nullable=false)
      */
     private $archive;

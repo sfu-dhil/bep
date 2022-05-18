@@ -21,10 +21,19 @@
                     </a>
                 </td>
                 <td>
-                    <a href='{{ path('manuscript_source_show', {'id': inventory.manuscriptSource.id}) }}'>
-                        {{ inventory.manuscriptSource }}
-                    </a>
-                    {{ inventory.pageNumber }}
+                    {% if inventory.manuscriptSource %}
+                        <a href='{{ path('manuscript_source_show', {'id': inventory.manuscriptSource.id}) }}'>
+                            {{ inventory.manuscriptSource }}
+                        </a>
+                        {{ inventory.pageNumber }}
+                    {% endif %}
+                    <br>
+                    {% if inventory.printSource %}
+                        <a href='{{ path('print_source_show', {'id': inventory.printSource.id}) }}'>
+                            {{ inventory.printSource }}
+                        </a>
+                        {{ inventory.pageNumber }}
+                    {% endif %}
                 </td>
                 <td>
                     {{ inventory.books|length }}

@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Source Search{% endblock %}
+{% block title %}Print Source Search{% endblock %}
 
  {% block pageheader %}
-     <h1>Manuscript Source Search</h1>
-     {% if sources|length %}
+     <h1>Print Source Search</h1>
+     {% if print_sources|length %}
          <p class="count">
-             Displaying {{ sources|length }} sources of {{ sources.getTotalItemCount }} total.
+             Displaying {{ print_sources|length }} print_sources of {{ print_sources.getTotalItemCount }} total.
          </p>
      {% endif %}
  {% endblock %}
 
 {% block body %}
 
-    <form method="get" action="{{ path('manuscript_source_search') }}" class="form-horizontal">
+    <form method="get" action="{{ path('print_source_search') }}" class="form-horizontal">
         <fieldset>
             <legend>Search</legend>
             <div class='form-group'>
@@ -36,19 +36,19 @@
                 <li><code>shakes*</code> - words starting with shakes should be present</li>
                 <li><code>+agnes</code> - agnes must be present</li>
                 <li><code>-fisher</code> - fisher must not be present</li>
-                <li>Combinations are OK: <code>+agnes -fisher</code> finds Anges who isn't a Fisher</li>
+                <li>Combinations are OK: <code>+agnes -fisher</code> finds Agnes who isn't a Fisher</li>
                 <li>Phrases are OK: <code>"nee agnes"</code> finds rows that contain the literal phrase.
             </ul>
         </fieldset>
     </form>
 
-    {% if sources|length %}
+    {% if print_sources|length %}
 
-        {% embed 'manuscript_source/partial/table.html.twig' %}
+        {% embed 'print_source/partial/table.html.twig' %}
         {% endembed %}
 
         <div class="navigation">
-            {{ knp_pagination_render(sources) }}
+            {{ knp_pagination_render(print_sources) }}
         </div>
     {% endif %}
 

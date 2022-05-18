@@ -35,10 +35,18 @@
         </tr>
 
         <tr>
-            <th>Source</th>
+            <th>Manuscript Source</th>
             <td>
                 {% if inventory.manuscriptSource %}
                     <a href='{{ path("manuscript_source_show", {"id": inventory.manuscriptSource.id}) }}'>{{ inventory.manuscriptSource }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Print Source</th>
+            <td>
+                {% if inventory.printSource %}
+                    <a href='{{ path("print_source_show", {"id": inventory.printSource.id}) }}'>{{ inventory.printSource }}</a>
                 {% endif %}
             </td>
         </tr>

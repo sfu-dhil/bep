@@ -96,9 +96,16 @@ class Transaction extends AbstractEntity {
     /**
      * @var ManuscriptSource
      * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $manuscriptSource;
+
+    /**
+     * @var PrintSource
+     * @ORM\ManyToOne(targetEntity="PrintSource", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $printSource;
 
     /**
      * @var Collection|TransactionCategory[]
@@ -345,5 +352,15 @@ class Transaction extends AbstractEntity {
 
     public function setPublicNotes(?string $publicNotes) : void {
         $this->publicNotes = $publicNotes;
+    }
+
+    public function getPrintSource() : ?PrintSource {
+        return $this->printSource;
+    }
+
+    public function setPrintSource(?PrintSource $printSource) : self {
+        $this->printSource = $printSource;
+
+        return $this;
     }
 }

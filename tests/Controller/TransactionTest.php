@@ -136,6 +136,7 @@ class TransactionTest extends ControllerTestCase {
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
         $this->overrideField($form, 'transaction[manuscriptSource]', 2);
+        $this->overrideField($form, 'transaction[printSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 
@@ -181,6 +182,7 @@ class TransactionTest extends ControllerTestCase {
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
         $this->overrideField($form, 'transaction[manuscriptSource]', 2);
+        $this->overrideField($form, 'transaction[printSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 
@@ -237,6 +239,7 @@ class TransactionTest extends ControllerTestCase {
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
         $this->overrideField($form, 'transaction[manuscriptSource]', 2);
+        $this->overrideField($form, 'transaction[printSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 
@@ -271,6 +274,7 @@ class TransactionTest extends ControllerTestCase {
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
         $this->overrideField($form, 'transaction[manuscriptSource]', 2);
+        $this->overrideField($form, 'transaction[printSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 

@@ -43,6 +43,7 @@ class TransactionFixtures extends Fixture implements FixtureGroupInterface, Depe
             $fixture->setManuscriptSource($this->getReference('manuscript_source.' . $i));
             $fixture->setInjunction($this->getReference('injunction.' . $i));
             $fixture->setMonarch($this->getReference('monarch.' . $i));
+            $fixture->setPrintSource($this->getReference('print_source.' . $i));
             $manager->persist($fixture);
             $this->setReference('transaction.' . $i, $fixture);
         }
@@ -60,6 +61,7 @@ class TransactionFixtures extends Fixture implements FixtureGroupInterface, Depe
             ManuscriptSourceFixtures::class,
             InjunctionFixtures::class,
             MonarchFixtures::class,
+            PrintSourceFixtures::class,
         ];
     }
 }

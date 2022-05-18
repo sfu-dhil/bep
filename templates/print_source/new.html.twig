@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}New Print Source {% endblock %}
+
+    {% block body %}
+        <h1>New Print Source</h1>
+
+        {% embed 'print_source/partial/form.html.twig' %}
+        {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}
