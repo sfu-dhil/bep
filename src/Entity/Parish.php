@@ -49,7 +49,7 @@ class Parish extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var Archdeaconry
-     * @ORM\ManyToOne(targetEntity="App\Entity\Archdeaconry", inversedBy="parishes")
+     * @ORM\ManyToOne(targetEntity="Archdeaconry", inversedBy="parishes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $archdeaconry;
@@ -58,26 +58,26 @@ class Parish extends AbstractTerm implements LinkableInterface {
      * A county outside City of London, or a ward inside London.
      *
      * @var Town
-     * @ORM\ManyToOne(targetEntity="App\Entity\Town", inversedBy="parishes")
+     * @ORM\ManyToOne(targetEntity="Town", inversedBy="parishes")
      * @ORM\JoinColumn(nullable=true)
      */
     private $town;
 
     /**
      * @var Collection|Transaction[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="parish")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="parish")
      */
     private $transactions;
 
     /**
      * @var Collection|Inventory[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="parish")
+     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="parish")
      */
     private $inventories;
 
     /**
      * @var Collection|Holding[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Holding", mappedBy="parish")
+     * @ORM\OneToMany(targetEntity="Holding", mappedBy="parish")
      */
     private $holdings;
 

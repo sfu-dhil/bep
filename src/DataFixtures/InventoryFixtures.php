@@ -49,7 +49,7 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
             $fixture->setEndDate('1050-12-23');
             $fixture->setWrittenDate('WrittenDate ' . $i);
             $fixture->setNotes("<p>This is paragraph {$i}</p>");
-            $fixture->setSource($this->getReference('source.' . $i));
+            $fixture->setManuscriptSource($this->getReference('manuscript_source.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setMonarch($this->getReference('monarch.' . $i));
             $manager->persist($fixture);
@@ -86,7 +86,7 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
      */
     public function getDependencies() : array {
         return [
-            SourceFixtures::class,
+            ManuscriptSourceFixtures::class,
             ParishFixtures::class,
             MonarchFixtures::class,
         ];

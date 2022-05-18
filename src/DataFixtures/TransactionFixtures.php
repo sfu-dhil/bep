@@ -40,7 +40,7 @@ class TransactionFixtures extends Fixture implements FixtureGroupInterface, Depe
             $fixture->setWrittenDate('WrittenDate ' . $i);
             $fixture->setNotes("<p>This is paragraph {$i}</p>");
             $fixture->setParish($this->getReference('parish.' . $i));
-            $fixture->setSource($this->getReference('source.' . $i));
+            $fixture->setManuscriptSource($this->getReference('manuscript_source.' . $i));
             $fixture->setInjunction($this->getReference('injunction.' . $i));
             $fixture->setMonarch($this->getReference('monarch.' . $i));
             $manager->persist($fixture);
@@ -57,7 +57,7 @@ class TransactionFixtures extends Fixture implements FixtureGroupInterface, Depe
     public function getDependencies() : array {
         return [
             ParishFixtures::class,
-            SourceFixtures::class,
+            ManuscriptSourceFixtures::class,
             InjunctionFixtures::class,
             MonarchFixtures::class,
         ];

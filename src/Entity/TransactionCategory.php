@@ -22,7 +22,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class TransactionCategory extends AbstractTerm {
     /**
      * @var Collection|Transaction[]
-     * @ORM\ManyToMany(targetEntity="App\Entity\Transaction", mappedBy="transactionCategories")
+     * @ORM\ManyToMany(targetEntity="Transaction", mappedBy="transactionCategories")
      */
     private $transactions;
 

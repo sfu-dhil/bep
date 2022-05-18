@@ -14,16 +14,16 @@
     <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
             {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('source_new') }}" class="btn btn-default">
+                <a href="{{ path('manuscript_source_new') }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus"></span> New </a>
             {% endif %}
 
-            <a href="{{ path('source_search') }}" class="btn btn-default">
+            <a href="{{ path('manuscript_source_search') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-search"></span> Search </a>
         </div>
     </div>
 
-    {% embed 'source/partial/table.html.twig' %}
+    {% embed 'manuscript_source/partial/table.html.twig' %}
     {% endembed %}
 
     <div class="navigation">

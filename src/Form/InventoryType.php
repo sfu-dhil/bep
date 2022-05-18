@@ -14,7 +14,7 @@ use App\Entity\Book;
 use App\Entity\Inventory;
 use App\Entity\Monarch;
 use App\Entity\Parish;
-use App\Entity\Source;
+use App\Entity\ManuscriptSource;
 use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
@@ -43,14 +43,14 @@ class InventoryType extends AbstractType {
                 'add_label' => 'Add Parish',
             ],
         ]);
-        $builder->add('source', Select2EntityType::class, [
+        $builder->add('manuscriptSource', Select2EntityType::class, [
             'label' => 'Source',
             'required' => true,
-            'class' => Source::class,
-            'remote_route' => 'source_typeahead',
+            'class' => ManuscriptSource::class,
+            'remote_route' => 'manuscript_source_typeahead',
             'attr' => [
                 'help_block' => '',
-                'add_path' => 'source_new_popup',
+                'add_path' => 'manuscript_source_new_popup',
                 'add_label' => 'Add Source',
             ],
         ]);

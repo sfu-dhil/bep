@@ -3,11 +3,11 @@
         <tr>
             <th>Sources</th>
             <td>
-                {% if archive.sources|length > 0 %}
+                {% if archive.manuscriptSources|length > 0 %}
                     <ul>
-                        {% for source in archive.sources %}
+                        {% for source in archive.manuscriptSources %}
                             <li>
-                                <a href='{{ path("source_show", {"id":source.id }) }}'>
+                                <a href='{{ path("manuscript_source_show", {"id":source.id }) }}'>
                                     {{ source }}
                                 </a>
                             </li>

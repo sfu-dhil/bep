@@ -135,7 +135,7 @@ class TransactionTest extends ControllerTestCase {
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
-        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[manuscriptSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 
@@ -180,7 +180,7 @@ class TransactionTest extends ControllerTestCase {
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
-        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[manuscriptSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 
@@ -236,7 +236,7 @@ class TransactionTest extends ControllerTestCase {
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
-        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[manuscriptSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 
@@ -270,7 +270,7 @@ class TransactionTest extends ControllerTestCase {
             'transaction[notes]' => '<p>Updated Text</p>',
         ]);
         $this->overrideField($form, 'transaction[parish]', 2);
-        $this->overrideField($form, 'transaction[source]', 2);
+        $this->overrideField($form, 'transaction[manuscriptSource]', 2);
         $this->overrideField($form, 'transaction[injunction]', 2);
         $this->overrideField($form, 'transaction[monarch]', 2);
 

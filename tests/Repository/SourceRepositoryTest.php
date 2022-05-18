@@ -10,16 +10,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
-use App\Repository\SourceRepository;
+use App\Repository\ManuscriptSourceRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class SourceRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'label';
 
-    private ?SourceRepository $repo = null;
+    private ?ManuscriptSourceRepository $repo = null;
 
     public function testSetUp() : void {
-        $this->assertInstanceOf(SourceRepository::class, $this->repo);
+        $this->assertInstanceOf(ManuscriptSourceRepository::class, $this->repo);
     }
 
     public function testIndexQuery() : void {
@@ -39,6 +39,6 @@ class SourceRepositoryTest extends ServiceTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->repo = self::$container->get(SourceRepository::class);
+        $this->repo = self::$container->get(ManuscriptSourceRepository::class);
     }
 }

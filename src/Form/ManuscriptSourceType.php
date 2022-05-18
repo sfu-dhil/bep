@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Archive;
-use App\Entity\Source;
+use App\Entity\ManuscriptSource;
 use App\Entity\SourceCategory;
 use Nines\MediaBundle\Form\LinkableType;
 use Nines\MediaBundle\Form\Mapper\LinkableMapper;
@@ -24,7 +24,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 /**
  * Source form.
  */
-class SourceType extends TermType {
+class ManuscriptSourceType extends TermType {
     private ?LinkableMapper $mapper = null;
 
     /**
@@ -82,7 +82,7 @@ class SourceType extends TermType {
      */
     public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => Source::class,
+            'data_class' => ManuscriptSource::class,
         ]);
     }
 }

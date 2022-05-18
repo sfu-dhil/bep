@@ -25,8 +25,8 @@
                         </a>
                     </p>
                     <p>
-                        {% if transaction.source %}
-                            <a href='{{ path('source_show', {'id': transaction.source.id}) }}'>{{ transaction.source }}</a>
+                        {% if transaction.manuscriptSource %}
+                            <a href='{{ path('manuscript_source_show', {'id': transaction.manuscriptSource.id}) }}'>{{ transaction.manuscriptSource }}</a>
                             {% if transaction.page %}<br>{{ transaction.page }}{% endif %}
                         {% endif %}
                     </p>

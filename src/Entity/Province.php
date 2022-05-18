@@ -35,7 +35,7 @@ class Province extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var Collection|Diocese[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Diocese", mappedBy="province")
+     * @ORM\OneToMany(targetEntity="Diocese", mappedBy="province")
      */
     private $dioceses;
 

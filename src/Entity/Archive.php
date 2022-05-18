@@ -27,45 +27,45 @@ class Archive extends AbstractTerm implements LinkableInterface {
     }
 
     /**
-     * @var Collection|Source[]
-     * @ORM\OneToMany(targetEntity="Source", mappedBy="archive")
+     * @var Collection|ManuscriptSource[]
+     * @ORM\OneToMany(targetEntity="ManuscriptSource", mappedBy="archive")
      */
-    private $sources;
+    private $manuscriptSources;
 
     /**
      * @var Collection|Holding[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Holding", mappedBy="archive")
+     * @ORM\OneToMany(targetEntity="Holding", mappedBy="archive")
      */
     private $holdings;
 
     public function __construct() {
         parent::__construct();
         $this->linkable_constructor();
-        $this->sources = new ArrayCollection();
+        $this->manuscriptSources = new ArrayCollection();
         $this->holdings = new ArrayCollection();
     }
 
     /**
-     * @return Collection|Source[]
+     * @return Collection|ManuscriptSource[]
      */
-    public function getSources() : Collection {
-        return $this->sources;
+    public function getManuscriptSources() : Collection {
+        return $this->manuscriptSources;
     }
 
-    public function addSource(Source $source) : self {
-        if ( ! $this->sources->contains($source)) {
-            $this->sources[] = $source;
-            $source->setArchive($this);
+    public function addManuscriptSource(ManuscriptSource $manuscriptSource) : self {
+        if ( ! $this->manuscriptSources->contains($manuscriptSource)) {
+            $this->manuscriptSources[] = $manuscriptSource;
+            $manuscriptSource->setArchive($this);
         }
 
         return $this;
     }
 
-    public function removeSource(Source $source) : self {
-        if ($this->sources->removeElement($source)) {
+    public function removeManuscriptSource(ManuscriptSource $manuscriptSource) : self {
+        if ($this->manuscriptSources->removeElement($manuscriptSource)) {
             // set the owning side to null (unless already changed)
-            if ($source->getArchive() === $this) {
-                $source->setArchive(null);
+            if ($manuscriptSource->getArchive() === $this) {
+                $manuscriptSource->setArchive(null);
             }
         }
 

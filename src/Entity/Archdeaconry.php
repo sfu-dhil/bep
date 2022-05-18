@@ -28,14 +28,14 @@ class Archdeaconry extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var Diocese
-     * @ORM\ManyToOne(targetEntity="App\Entity\Diocese", inversedBy="archdeaconries")
+     * @ORM\ManyToOne(targetEntity="Diocese", inversedBy="archdeaconries")
      * @ORM\JoinColumn(nullable=false)
      */
     private $diocese;
 
     /**
      * @var Collection|Parish[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Parish", mappedBy="archdeaconry")
+     * @ORM\OneToMany(targetEntity="Parish", mappedBy="archdeaconry")
      */
     private $parishes;
 

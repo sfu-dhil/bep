@@ -56,15 +56,15 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     private $description;
 
     /**
-     * @var Source
-     * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="inventories")
+     * @var ManuscriptSource
+     * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="inventories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $source;
+    private $manuscriptSource;
 
     /**
      * @var Parish
-     * @ORM\ManyToOne(targetEntity="App\Entity\Parish", inversedBy="inventories")
+     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="inventories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $parish;
@@ -78,7 +78,7 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     /**
      * @var Book[]|Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="inventories")
+     * @ORM\ManyToMany(targetEntity="Book", inversedBy="inventories")
      */
     private $books;
 
@@ -125,12 +125,12 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
         return $this;
     }
 
-    public function getSource() : ?Source {
-        return $this->source;
+    public function getManuscriptSource() : ?ManuscriptSource {
+        return $this->manuscriptSource;
     }
 
-    public function setSource(?Source $source) : self {
-        $this->source = $source;
+    public function setManuscriptSource(?ManuscriptSource $manuscriptSource) : self {
+        $this->manuscriptSource = $manuscriptSource;
 
         return $this;
     }
