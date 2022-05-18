@@ -30,7 +30,7 @@ class SourceCategoryFixtures extends Fixture implements FixtureGroupInterface {
             $fixture->setLabel('Label ' . $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $manager->persist($fixture);
-            $this->setReference('sourcecategory.' . $i, $fixture);
+            $this->setReference('source_category.' . $i, $fixture);
         }
         $manager->flush();
     }

@@ -3,7 +3,7 @@
 {% block title %}Source Search{% endblock %}
 
  {% block pageheader %}
-     <h1>Source Search</h1>
+     <h1>Manuscript Source Search</h1>
      {% if sources|length %}
          <p class="count">
              Displaying {{ sources|length }} sources of {{ sources.getTotalItemCount }} total.
@@ -13,7 +13,7 @@
 
 {% block body %}
 
-    <form method="get" action="{{ path('source_search') }}" class="form-horizontal">
+    <form method="get" action="{{ path('manuscript_source_search') }}" class="form-horizontal">
         <fieldset>
             <legend>Search</legend>
             <div class='form-group'>
@@ -44,7 +44,7 @@
 
     {% if sources|length %}
 
-        {% embed 'source/partial/table.html.twig' %}
+        {% embed 'manuscript_source/partial/table.html.twig' %}
         {% endembed %}
 
         <div class="navigation">
@@ -53,4 +53,3 @@
     {% endif %}
 
 {% endblock %}
-

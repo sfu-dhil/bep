@@ -22,7 +22,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 class Format extends AbstractTerm {
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Book", mappedBy="format")
+     * @ORM\OneToMany(targetEntity="Book", mappedBy="format")
      */
     private $books;
 

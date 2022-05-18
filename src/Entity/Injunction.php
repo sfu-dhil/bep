@@ -105,7 +105,7 @@ class Injunction extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="injunction")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="injunction")
      */
     private $transactions;
 

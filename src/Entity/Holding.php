@@ -36,20 +36,20 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
 
     /**
      * @var Parish
-     * @ORM\ManyToOne(targetEntity="App\Entity\Parish", inversedBy="holdings")
+     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="holdings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $parish;
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="holdings")
+     * @ORM\ManyToMany(targetEntity="Book", inversedBy="holdings")
      */
     private $books;
 
     /**
      * @var Archive
-     * @ORM\ManyToOne(targetEntity="App\Entity\Archive", inversedBy="holdings")
+     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="holdings")
      */
     private $archive;
 

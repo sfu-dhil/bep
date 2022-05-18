@@ -128,7 +128,8 @@ class InventoryTest extends ControllerTestCase {
             'inventory[writtenDate]' => 'Updated WrittenDate',
             'inventory[notes]' => '<p>Updated Text</p>',
         ]);
-        $this->overrideField($form, 'inventory[source]', 2);
+        $this->overrideField($form, 'inventory[manuscriptSource]', 2);
+        $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
 
@@ -175,7 +176,8 @@ class InventoryTest extends ControllerTestCase {
             'inventory[writtenDate]' => 'Updated WrittenDate',
             'inventory[notes]' => '<p>Updated Text</p>',
         ]);
-        $this->overrideField($form, 'inventory[source]', 2);
+        $this->overrideField($form, 'inventory[manuscriptSource]', 2);
+        $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
 
@@ -200,7 +202,8 @@ class InventoryTest extends ControllerTestCase {
             'inventory[writtenDate]' => 'Updated WrittenDate',
             'inventory[notes]' => '<p>Updated Text</p>',
         ]);
-        $this->overrideField($form, 'inventory[source]', 2);
+        $this->overrideField($form, 'inventory[manuscriptSource]', 2);
+        $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
 

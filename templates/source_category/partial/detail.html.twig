@@ -1,13 +1,13 @@
 {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': source_category} %}
     {% block callback %}
         <tr>
-            <th>Sources</th>
+            <th>Manuscript Sources</th>
             <td>
-                {% if source_category.sources|length > 0 %}
+                {% if source_category.manuscriptSources|length > 0 %}
                     <ul>
-                        {% for source in source_category.sources %}
+                        {% for source in source_category.manuscriptSources %}
                             <li>
-                                <a href='{{ path("source_show", {"id":source.id }) }}'>
+                                <a href='{{ path("manuscript_source_show", {"id":source.id }) }}'>
                                     {{ source }}
                                 </a>
                             </li>

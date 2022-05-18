@@ -56,15 +56,22 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     private $description;
 
     /**
-     * @var Source
-     * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=false)
+     * @var ManuscriptSource
+     * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $source;
+    private $manuscriptSource;
+
+    /**
+     * @var PrintSource
+     * @ORM\ManyToOne(targetEntity="PrintSource", inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $printSource;
 
     /**
      * @var Parish
-     * @ORM\ManyToOne(targetEntity="App\Entity\Parish", inversedBy="inventories")
+     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="inventories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $parish;
@@ -78,7 +85,7 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     /**
      * @var Book[]|Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="inventories")
+     * @ORM\ManyToMany(targetEntity="Book", inversedBy="inventories")
      */
     private $books;
 
@@ -125,12 +132,12 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
         return $this;
     }
 
-    public function getSource() : ?Source {
-        return $this->source;
+    public function getManuscriptSource() : ?ManuscriptSource {
+        return $this->manuscriptSource;
     }
 
-    public function setSource(?Source $source) : self {
-        $this->source = $source;
+    public function setManuscriptSource(?ManuscriptSource $manuscriptSource) : self {
+        $this->manuscriptSource = $manuscriptSource;
 
         return $this;
     }
@@ -182,6 +189,16 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function setPageNumber(?string $pageNumber) : self {
         $this->pageNumber = $pageNumber;
+
+        return $this;
+    }
+
+    public function getPrintSource() : ?PrintSource {
+        return $this->printSource;
+    }
+
+    public function setPrintSource(?PrintSource $printSource) : self {
+        $this->printSource = $printSource;
 
         return $this;
     }

@@ -105,19 +105,19 @@ class Book extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var Collection|Transaction[]
-     * @ORM\ManyToMany(targetEntity="App\Entity\Transaction", mappedBy="books")
+     * @ORM\ManyToMany(targetEntity="Transaction", mappedBy="books")
      */
     private $transactions;
 
     /**
      * @var Collection|Inventory[]
-     * @ORM\ManyToMany(targetEntity="App\Entity\Inventory", mappedBy="books")
+     * @ORM\ManyToMany(targetEntity="Inventory", mappedBy="books")
      */
     private $inventories;
 
     /**
      * @var Collection|Holding[]
-     * @ORM\ManyToMany(targetEntity="App\Entity\Holding", mappedBy="books")
+     * @ORM\ManyToMany(targetEntity="Holding", mappedBy="books")
      */
     private $holdings;
 

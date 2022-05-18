@@ -41,7 +41,7 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
         $this->imageManager->setCopy(true);
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Inventory();
-            $fixture->setPageNumber("<p>This is paragraph {$i}</p>");
+            $fixture->setPageNumber("Page {$i}");
             $fixture->setTranscription("<p>This is paragraph {$i}</p>");
             $fixture->setModifications("<p>This is paragraph {$i}</p>");
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
@@ -49,9 +49,10 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
             $fixture->setEndDate('1050-12-23');
             $fixture->setWrittenDate('WrittenDate ' . $i);
             $fixture->setNotes("<p>This is paragraph {$i}</p>");
-            $fixture->setSource($this->getReference('source.' . $i));
+            $fixture->setManuscriptSource($this->getReference('manuscript_source.' . $i));
             $fixture->setParish($this->getReference('parish.' . $i));
             $fixture->setMonarch($this->getReference('monarch.' . $i));
+            $fixture->setPrintSource($this->getReference('print_source.' . $i));
             $manager->persist($fixture);
             $manager->flush();
 
@@ -86,9 +87,10 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
      */
     public function getDependencies() : array {
         return [
-            SourceFixtures::class,
+            ManuscriptSourceFixtures::class,
             ParishFixtures::class,
             MonarchFixtures::class,
+            PrintSourceFixtures::class,
         ];
     }
 }

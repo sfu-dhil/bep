@@ -7,7 +7,6 @@
             <th>Books</th>
             <th>Parish</th>
             <th>Modern English</th>
-
         </tr>
     </thead>
     <tbody>
@@ -25,8 +24,14 @@
                         </a>
                     </p>
                     <p>
-                        {% if transaction.source %}
-                            <a href='{{ path('source_show', {'id': transaction.source.id}) }}'>{{ transaction.source }}</a>
+                        {% if transaction.manuscriptSource %}
+                            <a href='{{ path('manuscript_source_show', {'id': transaction.manuscriptSource.id}) }}'>{{ transaction.manuscriptSource }}</a>
+                            {% if transaction.page %}<br>{{ transaction.page }}{% endif %}
+                        {% endif %}
+                    </p>
+                    <p>
+                        {% if transaction.printSource %}
+                            <a href='{{ path('print_source_show', {'id': transaction.printSource.id}) }}'>{{ transaction.printSource }}</a>
                             {% if transaction.page %}<br>{{ transaction.page }}{% endif %}
                         {% endif %}
                     </p>

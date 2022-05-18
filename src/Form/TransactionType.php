@@ -12,9 +12,10 @@ namespace App\Form;
 
 use App\Entity\Book;
 use App\Entity\Injunction;
+use App\Entity\ManuscriptSource;
 use App\Entity\Monarch;
 use App\Entity\Parish;
-use App\Entity\Source;
+use App\Entity\PrintSource;
 use App\Entity\Transaction;
 use App\Entity\TransactionCategory;
 use App\Form\Mapper\LsdMapper;
@@ -147,16 +148,28 @@ class TransactionType extends AbstractType {
             ],
         ]);
 
-        $builder->add('source', Select2EntityType::class, [
+        $builder->add('manuscriptSource', Select2EntityType::class, [
             'label' => 'Source',
-            'class' => Source::class,
-            'remote_route' => 'source_typeahead',
-            'allow_clear' => false,
-            'required' => true,
+            'class' => ManuscriptSource::class,
+            'remote_route' => 'manuscript_source_typeahead',
+            'allow_clear' => true,
+            'required' => false,
             'attr' => [
                 'help_block' => '',
-                'add_path' => 'source_new_popup',
-                'add_label' => 'Add Source',
+                'add_path' => 'manuscript_source_new_popup',
+                'add_label' => 'Add MS Source',
+            ],
+        ]);
+        $builder->add('printSource', Select2EntityType::class, [
+            'label' => 'Source',
+            'required' => false,
+            'allow_clear' => true,
+            'class' => PrintSource::class,
+            'remote_route' => 'print_source_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'print_source_new_popup',
+                'add_label' => 'Add Print Source',
             ],
         ]);
         $builder->add('page', TextType::class, [

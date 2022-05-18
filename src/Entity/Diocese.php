@@ -28,14 +28,14 @@ class Diocese extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var Province
-     * @ORM\ManyToOne(targetEntity="App\Entity\Province", inversedBy="dioceses")
+     * @ORM\ManyToOne(targetEntity="Province", inversedBy="dioceses")
      * @ORM\JoinColumn(nullable=false)
      */
     private $province;
 
     /**
      * @var Archdeaconry[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Archdeaconry", mappedBy="diocese")
+     * @ORM\OneToMany(targetEntity="Archdeaconry", mappedBy="diocese")
      */
     private $archdeaconries;
 

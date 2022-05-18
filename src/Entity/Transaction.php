@@ -82,27 +82,34 @@ class Transaction extends AbstractEntity {
 
     /**
      * @var Book[]|Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Book", inversedBy="transactions")
+     * @ORM\ManyToMany(targetEntity="Book", inversedBy="transactions")
      */
     private $books;
 
     /**
      * @var Parish
-     * @ORM\ManyToOne(targetEntity="App\Entity\Parish", inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $parish;
 
     /**
-     * @var Source
-     * @ORM\ManyToOne(targetEntity="Source", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
+     * @var ManuscriptSource
+     * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $source;
+    private $manuscriptSource;
+
+    /**
+     * @var PrintSource
+     * @ORM\ManyToOne(targetEntity="PrintSource", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $printSource;
 
     /**
      * @var Collection|TransactionCategory[]
-     * @ORM\ManyToMany(targetEntity="App\Entity\TransactionCategory", inversedBy="transactions")
+     * @ORM\ManyToMany(targetEntity="TransactionCategory", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $transactionCategories;
@@ -204,12 +211,12 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    public function getSource() : ?Source {
-        return $this->source;
+    public function getManuscriptSource() : ?ManuscriptSource {
+        return $this->manuscriptSource;
     }
 
-    public function setSource(?Source $source) : self {
-        $this->source = $source;
+    public function setManuscriptSource(?ManuscriptSource $manuscriptSource) : self {
+        $this->manuscriptSource = $manuscriptSource;
 
         return $this;
     }
@@ -345,5 +352,15 @@ class Transaction extends AbstractEntity {
 
     public function setPublicNotes(?string $publicNotes) : void {
         $this->publicNotes = $publicNotes;
+    }
+
+    public function getPrintSource() : ?PrintSource {
+        return $this->printSource;
+    }
+
+    public function setPrintSource(?PrintSource $printSource) : self {
+        $this->printSource = $printSource;
+
+        return $this;
     }
 }

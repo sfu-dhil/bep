@@ -31,11 +31,12 @@ class Builder extends AbstractBuilder {
         $menu->addChild('Dioceses', ['route' => 'diocese_index']);
         $menu->addChild('Injunctions', ['route' => 'injunction_index']);
         $menu->addChild('Inventories', ['route' => 'inventory_index']);
+        $menu->addChild('Manuscript Sources', ['route' => 'manuscript_source_index']);
         $menu->addChild('Monarchs', ['route' => 'monarch_index']);
         $menu->addChild('Nations', ['route' => 'nation_index']);
         $menu->addChild('Parishes', ['route' => 'parish_index']);
+        $menu->addChild('Print Sources', ['route' => 'print_source_index']);
         $menu->addChild('Provinces', ['route' => 'province_index']);
-        $menu->addChild('Sources', ['route' => 'source_index']);
         $menu->addChild('Towns', ['route' => 'town_index']);
         $menu->addChild('Transactions', ['route' => 'transaction_index']);
         $menu->addChild('Surviving Texts', ['route' => 'holding_index']);

@@ -35,7 +35,7 @@ class County extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var Collection|Town[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Town", mappedBy="county")
+     * @ORM\OneToMany(targetEntity="Town", mappedBy="county")
      */
     private $towns;
 

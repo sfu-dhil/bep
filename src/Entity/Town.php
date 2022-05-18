@@ -34,14 +34,14 @@ class Town extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var County
-     * @ORM\ManyToOne(targetEntity="App\Entity\County", inversedBy="towns")
+     * @ORM\ManyToOne(targetEntity="County", inversedBy="towns")
      * @ORM\JoinColumn(nullable=false)
      */
     private $county;
 
     /**
      * @var Collection|Parish[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Parish", mappedBy="town")
+     * @ORM\OneToMany(targetEntity="Parish", mappedBy="town")
      */
     private $parishes;
 

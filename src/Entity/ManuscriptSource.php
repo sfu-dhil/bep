@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\SourceRepository;
+use App\Repository\ManuscriptSourceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,9 +19,9 @@ use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * @ORM\Entity(repositoryClass=SourceRepository::class)
+ * @ORM\Entity(repositoryClass=ManuscriptSourceRepository::class)
  */
-class Source extends AbstractTerm implements LinkableInterface {
+class ManuscriptSource extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
@@ -34,27 +34,27 @@ class Source extends AbstractTerm implements LinkableInterface {
 
     /**
      * @var SourceCategory
-     * @ORM\ManyToOne(targetEntity="SourceCategory", inversedBy="sources")
+     * @ORM\ManyToOne(targetEntity="SourceCategory", inversedBy="manuscriptSources")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sourceCategory;
 
     /**
      * @var Archive
-     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="sources")
+     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="manuscriptSources")
      * @ORM\JoinColumn(nullable=false)
      */
     private $archive;
 
     /**
      * @var Collection|Transaction[]
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="source")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="manuscriptSource")
      */
     private $transactions;
 
     /**
      * @var Collection|Inventory[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="source")
+     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="manuscriptSource")
      */
     private $inventories;
 
@@ -105,7 +105,7 @@ class Source extends AbstractTerm implements LinkableInterface {
     public function addTransaction(Transaction $transaction) : self {
         if ( ! $this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
-            $transaction->setSource($this);
+            $transaction->setManuscriptSource($this);
         }
 
         return $this;
@@ -114,8 +114,8 @@ class Source extends AbstractTerm implements LinkableInterface {
     public function removeTransaction(Transaction $transaction) : self {
         if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
-            if ($transaction->getSource() === $this) {
-                $transaction->setSource(null);
+            if ($transaction->getManuscriptSource() === $this) {
+                $transaction->setManuscriptSource(null);
             }
         }
 
@@ -132,7 +132,7 @@ class Source extends AbstractTerm implements LinkableInterface {
     public function addInventory(Inventory $inventory) : self {
         if ( ! $this->inventories->contains($inventory)) {
             $this->inventories[] = $inventory;
-            $inventory->setSource($this);
+            $inventory->setManuscriptSource($this);
         }
 
         return $this;
@@ -141,8 +141,8 @@ class Source extends AbstractTerm implements LinkableInterface {
     public function removeInventory(Inventory $inventory) : self {
         if ($this->inventories->removeElement($inventory)) {
             // set the owning side to null (unless already changed)
-            if ($inventory->getSource() === $this) {
-                $inventory->setSource(null);
+            if ($inventory->getManuscriptSource() === $this) {
+                $inventory->setManuscriptSource(null);
             }
         }
 
