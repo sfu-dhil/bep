@@ -3391,26 +3391,26 @@
         },
         {
             "name": "soundasleep/html2text",
-            "version": "1.1.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/soundasleep/html2text.git",
-                "reference": "3243a7107878a61685d2eccf99918d6479e039fc"
+                "reference": "aa214620d7beecd5cef8b1c32102a9204edb82f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/soundasleep/html2text/zipball/3243a7107878a61685d2eccf99918d6479e039fc",
-                "reference": "3243a7107878a61685d2eccf99918d6479e039fc",
+                "url": "https://api.github.com/repos/soundasleep/html2text/zipball/aa214620d7beecd5cef8b1c32102a9204edb82f5",
+                "reference": "aa214620d7beecd5cef8b1c32102a9204edb82f5",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "php": ">=7.0"
+                "php": "^7.0|^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~7.0",
-                "soundasleep/component-tests": "~0.2"
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "soundasleep/component-tests": "^0.2"
             },
             "type": "library",
             "autoload": {
@@ -3440,9 +3440,9 @@
             "support": {
                 "email": "support@jevon.org",
                 "issues": "https://github.com/soundasleep/html2text/issues",
-                "source": "https://github.com/soundasleep/html2text/tree/master"
+                "source": "https://github.com/soundasleep/html2text/tree/2.0.0"
             },
-            "time": "2019-02-15T01:44:54+00:00"
+            "time": "2022-01-29T19:05:09+00:00"
         },
         {
             "name": "symfony/asset",
@@ -8870,12 +8870,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ubermichael/nines-bundles.git",
-                "reference": "d258cec325279ae815f2116fbc523f5e4dd16170"
+                "reference": "48ae62862938b556c9b7c450c4f64d28d0c0d6da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ubermichael/nines-bundles/zipball/d258cec325279ae815f2116fbc523f5e4dd16170",
-                "reference": "d258cec325279ae815f2116fbc523f5e4dd16170",
+                "url": "https://api.github.com/repos/ubermichael/nines-bundles/zipball/48ae62862938b556c9b7c450c4f64d28d0c0d6da",
+                "reference": "48ae62862938b556c9b7c450c4f64d28d0c0d6da",
                 "shasum": ""
             },
             "require": {
@@ -8893,7 +8893,7 @@
                 "php": ">=7.4.0",
                 "sensio/framework-extra-bundle": "^5.1|^6.2",
                 "solarium/solarium": "^6.0",
-                "soundasleep/html2text": "^1.1",
+                "soundasleep/html2text": "^2.0",
                 "twig/string-extra": "^3.0"
             },
             "require-dev": {
@@ -8931,7 +8931,7 @@
                 "source": "https://github.com/ubermichael/nines-bundles/tree/4.x-up",
                 "issues": "https://github.com/ubermichael/nines-bundles/issues"
             },
-            "time": "2022-06-23T19:22:24+00:00"
+            "time": "2022-06-27T17:22:50+00:00"
         },
         {
             "name": "webmozart/assert",
