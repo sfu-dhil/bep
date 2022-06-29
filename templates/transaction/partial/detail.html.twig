@@ -92,8 +92,8 @@
             <td>
                 {% if transaction.manuscriptSource %}
                     <a href='{{ path("manuscript_source_show", {"id": transaction.manuscriptSource.id}) }}'>{{ transaction.manuscriptSource }}</a>
+                    {{ transaction.page }}
                 {% endif %}
-                {{ transaction.page }}
             </td>
         </tr>
         <tr>
@@ -101,8 +101,8 @@
             <td>
                 {% if transaction.printSource %}
                     <a href='{{ path("print_source_show", {"id": transaction.printSource.id}) }}'>{{ transaction.printSource }}</a>
+                    {{ transaction.page }}
                 {% endif %}
-                {{ transaction.page }}
             </td>
         </tr>
         <tr>

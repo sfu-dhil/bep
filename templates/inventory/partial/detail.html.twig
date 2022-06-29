@@ -1,6 +1,12 @@
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
+            <th>ID</th>
+            <td>
+                {{ "%05d"|format(inventory.id) }}
+            </td>
+        </tr>
+        <tr>
             <th>Transcription</th>
             <td>
                 {{ inventory.transcription|raw }}
@@ -73,6 +79,14 @@
                         </li>
                     {% endfor %}
                 </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Injunction</th>
+            <td>
+                {% if inventory.injunction %}
+                    <a href='{{ path("injunction_show", {"id": inventory.injunction.id}) }}'>{{ inventory.injunction }}</a>
                 {% endif %}
             </td>
         </tr>

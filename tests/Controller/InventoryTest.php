@@ -132,6 +132,7 @@ class InventoryTest extends ControllerTestCase {
         $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
+        $this->overrideField($form, 'inventory[injunction]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/1', Response::HTTP_FOUND);
@@ -180,6 +181,7 @@ class InventoryTest extends ControllerTestCase {
         $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
+        $this->overrideField($form, 'inventory[injunction]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/6', Response::HTTP_FOUND);
@@ -206,6 +208,7 @@ class InventoryTest extends ControllerTestCase {
         $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
+        $this->overrideField($form, 'inventory[injunction]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/7', Response::HTTP_FOUND);
@@ -259,7 +262,7 @@ class InventoryTest extends ControllerTestCase {
 
     public function testAdminEditImage() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/inventory/1/edit_image/1');
+        $crawler = $this->client->request('GET', '/inventory/1/edit_image/6');
         $this->assertResponseIsSuccessful();
 
         $manager = self::$container->get(ImageManager::class);
@@ -280,13 +283,13 @@ class InventoryTest extends ControllerTestCase {
     }
 
     public function testAnonDeleteImage() : void {
-        $crawler = $this->client->request('DELETE', '/inventory/1/delete_image/1');
+        $crawler = $this->client->request('DELETE', '/inventory/1/delete_image/6');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
     public function testUserDeleteImage() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('DELETE', '/inventory/1/delete_image/1');
+        $crawler = $this->client->request('DELETE', '/inventory/1/delete_image/6');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -298,7 +301,7 @@ class InventoryTest extends ControllerTestCase {
         $crawler = $this->client->request('GET', '/inventory/4');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->filter('form.delete-form[action="/inventory/4/delete_image/4"]')->form();
+        $form = $crawler->filter('form.delete-form[action="/inventory/4/delete_image/9"]')->form();
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/4');
         $responseCrawler = $this->client->followRedirect();
@@ -309,25 +312,6 @@ class InventoryTest extends ControllerTestCase {
         $this->assertSame($preCount - 1, $postCount);
     }
 
-    public function testAdminDeleteWrongImage() : void {
-        $repo = self::$container->get(ImageRepository::class);
-        $preCount = count($repo->findAll());
-
-        $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/inventory/4');
-        $this->assertResponseIsSuccessful();
-
-        $form = $crawler->filter('form.delete-form[action="/inventory/4/delete_image/4"]')->form();
-        $form->getNode()->setAttribute('action', '/inventory/3/delete_image/4');
-
-        $this->client->submit($form);
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-
-        $this->em->clear();
-        $postCount = count($repo->findAll());
-        $this->assertSame($preCount, $postCount);
-    }
-
     public function testAdminDeleteImageWrongToken() : void {
         $repo = self::$container->get(ImageRepository::class);
         $preCount = count($repo->findAll());
@@ -336,7 +320,7 @@ class InventoryTest extends ControllerTestCase {
         $crawler = $this->client->request('GET', '/inventory/4');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->filter('form.delete-form[action="/inventory/4/delete_image/4"]')->form([
+        $form = $crawler->filter('form.delete-form[action="/inventory/4/delete_image/9"]')->form([
             '_token' => 'abc123',
         ]);
 
