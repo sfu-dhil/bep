@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Book;
+use App\Entity\Injunction;
 use App\Entity\Inventory;
 use App\Entity\ManuscriptSource;
 use App\Entity\Monarch;
@@ -72,6 +73,18 @@ class InventoryType extends AbstractType {
             'required' => false,
             'attr' => [
                 'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
+            ],
+        ]);
+
+        $builder->add('injunction', Select2EntityType::class, [
+            'label' => 'Injunction',
+            'class' => Injunction::class,
+            'remote_route' => 'injunction_typeahead',
+            'allow_clear' => true,
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'injunction_new_popup',
+                'add_label' => 'Add Injunction',
             ],
         ]);
 

@@ -77,6 +77,14 @@
             </td>
         </tr>
         <tr>
+            <th>Injunction</th>
+            <td>
+                {% if inventory.injunction %}
+                    <a href='{{ path("injunction_show", {"id": inventory.injunction.id}) }}'>{{ inventory.injunction }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Created</th>
             <td>{{ inventory.created|date }}</td>
         </tr>

@@ -84,6 +84,12 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
     private $monarch;
 
     /**
+     * @var Injunction
+     * @ORM\ManyToOne(targetEntity="Injunction", inversedBy="inventories")
+     */
+    private $injunction;
+
+    /**
      * @var Book[]|Collection
      * @ORM\ManyToMany(targetEntity="Book", inversedBy="inventories")
      */
@@ -199,6 +205,18 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
 
     public function setPrintSource(?PrintSource $printSource) : self {
         $this->printSource = $printSource;
+
+        return $this;
+    }
+
+    public function getInjunction(): ?Injunction
+    {
+        return $this->injunction;
+    }
+
+    public function setInjunction(?Injunction $injunction): self
+    {
+        $this->injunction = $injunction;
 
         return $this;
     }

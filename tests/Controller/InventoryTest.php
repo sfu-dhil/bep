@@ -132,6 +132,7 @@ class InventoryTest extends ControllerTestCase {
         $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
+        $this->overrideField($form, 'inventory[injunction]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/1', Response::HTTP_FOUND);
@@ -180,6 +181,7 @@ class InventoryTest extends ControllerTestCase {
         $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
+        $this->overrideField($form, 'inventory[injunction]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/6', Response::HTTP_FOUND);
@@ -206,6 +208,7 @@ class InventoryTest extends ControllerTestCase {
         $this->overrideField($form, 'inventory[printSource]', 2);
         $this->overrideField($form, 'inventory[parish]', 2);
         $this->overrideField($form, 'inventory[monarch]', 2);
+        $this->overrideField($form, 'inventory[injunction]', 2);
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/inventory/7', Response::HTTP_FOUND);

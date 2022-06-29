@@ -91,6 +91,24 @@
                 {% endif %}
             </td>
         </tr>
+
+        <tr>
+            <th>Inventories</th>
+            <td>
+                {% if injunction.inventories|length > 0 %}
+                    <ul>
+                        {% for inventory in injunction.inventories %}
+                            <li>
+                                <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                    {{ inventory }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+
         {% include 'partial/notes.html.twig' with {
             'item': injunction
         } %}

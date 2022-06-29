@@ -109,11 +109,18 @@ class Injunction extends AbstractEntity implements LinkableInterface {
      */
     private $transactions;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="injunction")
+     */
+    private $inventories;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_constructor();
         $this->transactions = new ArrayCollection();
         $this->variantTitles = [];
+        $this->inventories = new ArrayCollection();
     }
 
     /**
@@ -266,6 +273,36 @@ class Injunction extends AbstractEntity implements LinkableInterface {
 
     public function setPhysicalDescription(?string $physicalDescription) : self {
         $this->physicalDescription = $physicalDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inventory>
+     */
+    public function getInventories(): Collection
+    {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory): self
+    {
+        if (!$this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setInjunction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory): self
+    {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getInjunction() === $this) {
+                $inventory->setInjunction(null);
+            }
+        }
 
         return $this;
     }
