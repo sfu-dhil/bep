@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -39,10 +39,17 @@ class Province extends AbstractTerm implements LinkableInterface {
      */
     private $dioceses;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Injunction", mappedBy="province")
+     */
+    private $injunctions;
+
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->dioceses = new ArrayCollection();
+        $this->injunctions = new ArrayCollection();
     }
 
     /**
@@ -78,6 +85,33 @@ class Province extends AbstractTerm implements LinkableInterface {
 
     public function setNation(?Nation $nation) : self {
         $this->nation = $nation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Injunction>
+     */
+    public function getInjunctions() : Collection {
+        return $this->injunctions;
+    }
+
+    public function addInjunction(Injunction $injunction) : self {
+        if ( ! $this->injunctions->contains($injunction)) {
+            $this->injunctions[] = $injunction;
+            $injunction->setProvince($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInjunction(Injunction $injunction) : self {
+        if ($this->injunctions->removeElement($injunction)) {
+            // set the owning side to null (unless already changed)
+            if ($injunction->getProvince() === $this) {
+                $injunction->setProvince(null);
+            }
+        }
 
         return $this;
     }

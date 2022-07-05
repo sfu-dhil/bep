@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -95,6 +95,34 @@ class Injunction extends AbstractEntity implements LinkableInterface {
      * @ORM\Column(type="string", nullable=true)
      */
     private $estc;
+
+    /**
+     * @var Nation
+     * @ORM\ManyToOne(targetEntity="Nation", inversedBy="injunctions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $nation;
+
+    /**
+     * @var Diocese
+     * @ORM\ManyToOne(targetEntity="Diocese", inversedBy="injunctions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $diocese;
+
+    /**
+     * @var Province
+     * @ORM\ManyToOne(targetEntity="Province", inversedBy="injunctions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $province;
+
+    /**
+     * @var Archdeaconry
+     * @ORM\ManyToOne(targetEntity="Archdeaconry", inversedBy="injunctions")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $archdeaconry;
 
     /**
      * @var Monarch
@@ -280,14 +308,12 @@ class Injunction extends AbstractEntity implements LinkableInterface {
     /**
      * @return Collection<int, Inventory>
      */
-    public function getInventories(): Collection
-    {
+    public function getInventories() : Collection {
         return $this->inventories;
     }
 
-    public function addInventory(Inventory $inventory): self
-    {
-        if (!$this->inventories->contains($inventory)) {
+    public function addInventory(Inventory $inventory) : self {
+        if ( ! $this->inventories->contains($inventory)) {
             $this->inventories[] = $inventory;
             $inventory->setInjunction($this);
         }
@@ -295,14 +321,53 @@ class Injunction extends AbstractEntity implements LinkableInterface {
         return $this;
     }
 
-    public function removeInventory(Inventory $inventory): self
-    {
+    public function removeInventory(Inventory $inventory) : self {
         if ($this->inventories->removeElement($inventory)) {
             // set the owning side to null (unless already changed)
             if ($inventory->getInjunction() === $this) {
                 $inventory->setInjunction(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNation() : ?Nation {
+        return $this->nation;
+    }
+
+    public function setNation(?Nation $nation) : self {
+        $this->nation = $nation;
+
+        return $this;
+    }
+
+    public function getDiocese() : ?Diocese {
+        return $this->diocese;
+    }
+
+    public function setDiocese(?Diocese $diocese) : self {
+        $this->diocese = $diocese;
+
+        return $this;
+    }
+
+    public function getProvince() : ?Province {
+        return $this->province;
+    }
+
+    public function setProvince(?Province $province) : self {
+        $this->province = $province;
+
+        return $this;
+    }
+
+    public function getArchdeaconry() : ?Archdeaconry {
+        return $this->archdeaconry;
+    }
+
+    public function setArchdeaconry(?Archdeaconry $archdeaconry) : self {
+        $this->archdeaconry = $archdeaconry;
 
         return $this;
     }

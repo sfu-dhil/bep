@@ -9,6 +9,22 @@
             </td>
         </tr>
         <tr>
+            <th>Injunctions</th>
+            <td>
+                {% if diocese.injunctions|length > 0 %}
+                    <ul>
+                        {% for injunction in diocese.injunctions %}
+                            <li>
+                                <a href='{{ path('injunction_show', {'id': injunction.id}) }}'>
+                                    {{ injunction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Archdeaconries</th>
             <td>
                 {% if diocese.archdeaconries|length > 0 %}

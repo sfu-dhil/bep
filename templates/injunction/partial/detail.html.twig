@@ -67,6 +67,38 @@
             </td>
         </tr>
         <tr>
+            <th>Nation</th>
+            <td>
+                {% if injunction.nation %}
+                <a href='{{ path('nation_show', {'id': injunction.nation.id}) }}'>{{ injunction.nation }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Diocese</th>
+            <td>
+                {% if injunction.diocese %}
+                <a href='{{ path('diocese_show', {'id': injunction.diocese.id}) }}'>{{ injunction.diocese }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Province</th>
+            <td>
+                {% if injunction.province %}
+                <a href='{{ path('province_show', {'id': injunction.province.id}) }}'>{{ injunction.province }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Archdeaconry</th>
+            <td>
+                {% if injunction.archdeaconry %}
+                <a href='{{ path('archdeaconry_show', {'id': injunction.archdeaconry.id}) }}'>{{ injunction.archdeaconry }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Monarch</th>
             <td>
                 {% if injunction.monarch %}
@@ -74,7 +106,6 @@
                 {% endif %}
             </td>
         </tr>
-
         <tr>
             <th>Transactions</th>
             <td>
