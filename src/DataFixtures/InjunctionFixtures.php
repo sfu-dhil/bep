@@ -28,7 +28,7 @@ class InjunctionFixtures extends Fixture implements FixtureGroupInterface, Depen
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Injunction();
             $fixture->setTitle("Title {$i}");
-            $fixture->setUniformTitle("Uniform TItle {$i}");
+            $fixture->setUniformTitle("Uniform Title {$i}");
             $fixture->setVariantTitles(['VariantTitles ' . $i]);
             $fixture->setAuthor('Author ' . $i);
             $fixture->setImprint("<p>This is paragraph {$i}</p>");
