@@ -25,6 +25,22 @@
             </td>
         </tr>
         <tr>
+            <th>Injunctions</th>
+            <td>
+                {% if archdeaconry.injunctions|length > 0 %}
+                    <ul>
+                        {% for injunction in archdeaconry.injunctions %}
+                            <li>
+                                <a href='{{ path('injunction_show', {'id': injunction.id}) }}'>
+                                    {{ injunction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Links</th>
             <td>
                 {% embed '@NinesMedia/link/partial/list.html.twig' with {

@@ -3,16 +3,20 @@
 declare(strict_types=1);
 
 /*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
 
 namespace App\Form;
 
+use App\Entity\Archdeaconry;
+use App\Entity\Diocese;
 use App\Entity\Injunction;
 
 use App\Entity\Monarch;
+use App\Entity\Nation;
+use App\Entity\Province;
 use App\Form\Partial\NotesType;
 use Nines\MediaBundle\Form\LinkableType;
 use Nines\MediaBundle\Form\Mapper\LinkableMapper;
@@ -119,6 +123,50 @@ class InjunctionType extends AbstractType {
             'attr' => [
                 'help_block' => 'Provide a modern English equivalent of the manuscript entry',
                 'class' => 'tinymce',
+            ],
+        ]);
+        $builder->add('nation', Select2EntityType::class, [
+            'label' => 'Nation',
+            'required' => false,
+            'class' => Nation::class,
+            'remote_route' => 'nation_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'nation_new_popup',
+                'add_label' => 'Add Nation',
+            ],
+        ]);
+        $builder->add('province', Select2EntityType::class, [
+            'label' => 'Province',
+            'required' => false,
+            'class' => Province::class,
+            'remote_route' => 'province_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'province_new_popup',
+                'add_label' => 'Add Province',
+            ],
+        ]);
+        $builder->add('diocese', Select2EntityType::class, [
+            'label' => 'Diocese',
+            'required' => false,
+            'class' => Diocese::class,
+            'remote_route' => 'diocese_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'diocese_new_popup',
+                'add_label' => 'Add Diocese',
+            ],
+        ]);
+        $builder->add('archdeaconry', Select2EntityType::class, [
+            'label' => 'Archdeaconry',
+            'required' => false,
+            'class' => Archdeaconry::class,
+            'remote_route' => 'archdeaconry_typeahead',
+            'attr' => [
+                'help_block' => '',
+                'add_path' => 'archdeaconry_new_popup',
+                'add_label' => 'Add Archdeaconry',
             ],
         ]);
 

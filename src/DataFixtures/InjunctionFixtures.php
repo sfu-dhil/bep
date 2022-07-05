@@ -40,6 +40,7 @@ class InjunctionFixtures extends Fixture implements FixtureGroupInterface, Depen
             $fixture->setEstc('Estc ' . $i);
 
             $fixture->setMonarch($this->getReference('monarch.' . $i));
+
             $manager->persist($fixture);
             $this->setReference('injunction.' . $i, $fixture);
         }

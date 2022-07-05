@@ -163,6 +163,10 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[modernTranscription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
+        $this->overrideField($form, 'injunction[nation]', 2);
+        $this->overrideField($form, 'injunction[diocese]', 2);
+        $this->overrideField($form, 'injunction[province]', 2);
+        $this->overrideField($form, 'injunction[archdeaconry]', 2);
         $this->overrideField($form, 'injunction[monarch]', 2);
 
         $this->client->submit($form);
@@ -210,6 +214,10 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[modernTranscription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
+        $this->overrideField($form, 'injunction[nation]', 2);
+        $this->overrideField($form, 'injunction[diocese]', 2);
+        $this->overrideField($form, 'injunction[province]', 2);
+        $this->overrideField($form, 'injunction[archdeaconry]', 2);
         $this->overrideField($form, 'injunction[monarch]', 2);
 
         $this->client->submit($form);
@@ -235,6 +243,10 @@ class InjunctionTest extends ControllerTestCase {
             'injunction[modernTranscription]' => '<p>Updated Text</p>',
             'injunction[estc]' => 'Updated Estc',
         ]);
+        $this->overrideField($form, 'injunction[nation]', 2);
+        $this->overrideField($form, 'injunction[diocese]', 2);
+        $this->overrideField($form, 'injunction[province]', 2);
+        $this->overrideField($form, 'injunction[archdeaconry]', 2);
         $this->overrideField($form, 'injunction[monarch]', 2);
 
         $this->client->submit($form);

@@ -32,6 +32,21 @@
                 {% endif %}
             </td>
         </tr>
+        <tr>
+            <th>Injunctions</th>
+            <td>
+                {% if nation.injunctions|length > 0 %}
+                    <ul>
+                        {% for injunction in nation.injunctions %}
+                            <li>
+                                <a href='{{ path('injunction_show', {'id': injunction.id}) }}'>
+                                    {{ injunction }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
     {% endblock %}
 {% endembed %}
-
