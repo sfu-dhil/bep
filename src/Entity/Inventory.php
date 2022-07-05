@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -209,13 +209,11 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
         return $this;
     }
 
-    public function getInjunction(): ?Injunction
-    {
+    public function getInjunction() : ?Injunction {
         return $this->injunction;
     }
 
-    public function setInjunction(?Injunction $injunction): self
-    {
+    public function setInjunction(?Injunction $injunction) : self {
         $this->injunction = $injunction;
 
         return $this;
