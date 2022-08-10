@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -28,7 +28,7 @@ class InjunctionFixtures extends Fixture implements FixtureGroupInterface, Depen
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Injunction();
             $fixture->setTitle("Title {$i}");
-            $fixture->setUniformTitle("Uniform TItle {$i}");
+            $fixture->setUniformTitle("Uniform Title {$i}");
             $fixture->setVariantTitles(['VariantTitles ' . $i]);
             $fixture->setAuthor('Author ' . $i);
             $fixture->setImprint("<p>This is paragraph {$i}</p>");
