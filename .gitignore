@@ -40,3 +40,5 @@
 /public/images/blog
 /public/js/jquery.collection.js
 /data
+
+.DS_Store
