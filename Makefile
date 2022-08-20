@@ -1,7 +1,7 @@
 # Silence output slightly
 # .SILENT:
 
-DB := dhil_bep
+DB := bep
 PROJECT := bep
 
 include etc/Makefile
