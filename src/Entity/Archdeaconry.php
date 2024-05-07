@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\ArchdeaconryRepository;
@@ -18,32 +12,21 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=ArchdeaconryRepository::class)
- */
+#[ORM\Entity(repositoryClass: ArchdeaconryRepository::class)]
 class Archdeaconry extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
-    /**
-     * @var Diocese
-     * @ORM\ManyToOne(targetEntity="Diocese", inversedBy="archdeaconries")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $diocese;
+    #[ORM\ManyToOne(targetEntity: Diocese::class, inversedBy: 'archdeaconries')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private ?Diocese $diocese = null;
 
-    /**
-     * @var Collection|Parish[]
-     * @ORM\OneToMany(targetEntity="Parish", mappedBy="archdeaconry")
-     */
-    private $parishes;
+    #[ORM\OneToMany(targetEntity: Parish::class, mappedBy: 'archdeaconry')]
+    private Collection $parishes;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Injunction", mappedBy="archdeaconry")
-     */
-    private $injunctions;
+    #[ORM\OneToMany(targetEntity: Injunction::class, mappedBy: 'archdeaconry')]
+    private Collection $injunctions;
 
     public function __construct() {
         parent::__construct();
@@ -90,7 +73,7 @@ class Archdeaconry extends AbstractTerm implements LinkableInterface {
     }
 
     /**
-     * @return Collection<int, Injunction>
+     * @return Collection<int,Injunction>
      */
     public function getInjunctions() : Collection {
         return $this->injunctions;

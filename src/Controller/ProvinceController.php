@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Province;
 use App\Form\ProvinceType;
 use App\Repository\ProvinceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/province")
- */
+#[Route(path: '/province')]
 class ProvinceController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="province_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'province_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, ProvinceRepository $provinceRepository) : array {
-        $query = $provinceRepository->indexQuery();
-        $pageSize = $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'provinces' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="province_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, ProvinceRepository $provinceRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $provinceRepository->searchQuery($q);
-            $provinces = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $provinces = [];
-        }
+        $query = $q ? $provinceRepository->searchQuery($q) : $provinceRepository->indexQuery();
 
         return [
-            'provinces' => $provinces,
+            'provinces' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="province_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, ProvinceRepository $provinceRepository) {
+    #[Route(path: '/typeahead', name: 'province_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, ProvinceRepository $provinceRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="province_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'province_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $province = new Province();
         $form = $this->createForm(ProvinceType::class, $province);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($province);
             $entityManager->flush();
 
@@ -116,43 +75,23 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="province_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="province_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(Province $province) {
+    #[Route(path: '/{id}', name: 'province_show', methods: ['GET'])]
+    #[Template]
+    public function show(Province $province) : array {
         return [
             'province' => $province,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="province_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Province $province) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'province_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Province $province) : array|RedirectResponse {
         $form = $this->createForm(ProvinceType::class, $province);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated province has been saved.');
 
             return $this->redirectToRoute('province_show', ['id' => $province->getId()]);
@@ -164,15 +103,10 @@ class ProvinceController extends AbstractController implements PaginatorAwareInt
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="province_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Province $province) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'province_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Province $province) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $province->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($province);
             $entityManager->flush();
             $this->addFlash('success', 'The province has been deleted.');

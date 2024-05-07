@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Book;
@@ -82,40 +76,35 @@ class TransactionType extends AbstractType {
         $builder->add('copies', NumberType::class, [
             'label' => 'Copies',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
 
         $builder->add('location', TextType::class, [
             'label' => 'Location',
             'required' => false,
-            'attr' => [
-                'help_block' => 'Enter the location or parish if it is different from the parish you are working on. For example, if a book was purchased in Oxford for a London parish, enter “Oxford” or “Oxford, All Saints.”',
-            ],
+            'help' => 'Enter the location or parish if it is different from the parish you are working on. For example, if a book was purchased in Oxford for a London parish, enter “Oxford” or “Oxford, All Saints.”',
         ]);
 
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcription',
             'required' => false,
+            'help' => 'Provide a semi-diplomatic transcript of the manuscript entry',
             'attr' => [
-                'help_block' => 'Provide a semi-diplomatic transcript of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
         $builder->add('modernTranscription', TextareaType::class, [
             'label' => 'Modern English',
             'required' => false,
+            'help' => 'Provide a modern English equivalent of the manuscript entry',
             'attr' => [
-                'help_block' => 'Provide a modern English equivalent of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
         $builder->add('publicNotes', TextareaType::class, [
             'label' => 'Public Notes',
             'required' => false,
+            'help' => 'Provide any contextual or descriptive notes about the physical appearance of the entry',
             'attr' => [
-                'help_block' => 'Provide any contextual or descriptive notes about the physical appearance of the entry',
                 'class' => 'tinymce',
             ],
         ]);
@@ -129,8 +118,7 @@ class TransactionType extends AbstractType {
             'page_limit' => 10,
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'book_new_popup',
+                'add_path' => 'book_new',
                 'add_label' => 'Add Book',
             ],
         ]);
@@ -142,8 +130,7 @@ class TransactionType extends AbstractType {
             'allow_clear' => false,
             'required' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'parish_new_popup',
+                'add_path' => 'parish_new',
                 'add_label' => 'Add Parish',
             ],
         ]);
@@ -155,8 +142,7 @@ class TransactionType extends AbstractType {
             'allow_clear' => true,
             'required' => false,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'manuscript_source_new_popup',
+                'add_path' => 'manuscript_source_new',
                 'add_label' => 'Add MS Source',
             ],
         ]);
@@ -167,17 +153,14 @@ class TransactionType extends AbstractType {
             'class' => PrintSource::class,
             'remote_route' => 'print_source_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'print_source_new_popup',
+                'add_path' => 'print_source_new',
                 'add_label' => 'Add Print Source',
             ],
         ]);
         $builder->add('page', TextType::class, [
             'label' => 'Page',
             'required' => false,
-            'attr' => [
-                'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
-            ],
+            'help' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
         ]);
 
         $builder->add('transactionCategories', EntityType::class, [
@@ -187,9 +170,9 @@ class TransactionType extends AbstractType {
             'class' => TransactionCategory::class,
             'choice_label' => 'label',
             'query_builder' => fn (EntityRepository $r) => $r->createQueryBuilder('c')->orderBy('c.label'),
-
             'attr' => [
-                'help_block' => 'Select categories by holding the Ctrl, Command, or Shift keys depending on your operating system.',
+                'class' => 'select2-simple',
+                'data-theme' => 'bootstrap-5',
             ],
         ]);
 
@@ -199,8 +182,7 @@ class TransactionType extends AbstractType {
             'remote_route' => 'injunction_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'injunction_new_popup',
+                'add_path' => 'injunction_new',
                 'add_label' => 'Add Injunction',
             ],
         ]);
@@ -211,8 +193,7 @@ class TransactionType extends AbstractType {
             'class' => Monarch::class,
             'remote_route' => 'monarch_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'monarch_new_popup',
+                'add_path' => 'monarch_new',
                 'add_label' => 'Add Monarch',
             ],
         ]);

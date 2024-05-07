@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\County;
@@ -23,7 +17,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * County form.
  */
 class CountyType extends TermType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -36,20 +32,12 @@ class CountyType extends TermType {
             'remote_route' => 'nation_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'nation_new_popup',
+                'add_path' => 'nation_new',
                 'add_label' => 'Add Nation',
             ],
         ]);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 
     /**

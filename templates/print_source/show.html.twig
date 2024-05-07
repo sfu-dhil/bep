@@ -6,25 +6,70 @@
      <h1>Print Source Details</h1>
  {% endblock %}
 
-{% block body %}
-
+ {% block action_buttons %}
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('print_source_edit', {'id': print_source.id }) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-edit"></span> Edit </a>
-            </div>
-            <div class='btn-group'>
-                <form class='delete-form' method="post" action="{{ path('print_source_delete', {'id': print_source.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ print_source.id) }}">
-                    <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-                </form>
-            </div>
-        </div>
+        <a href="{{ path('print_source_edit', {'id': print_source.id }) }}" class="btn btn-light">
+            <span class="bi bi-pencil-square"></span> Edit
+        </a>
+        <form class="d-inline-block delete-form" method="post" action="{{ path('print_source_delete', {'id': print_source.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ print_source.id) }}">
+            <button class="btn btn-danger w-100"><i class="bi bi-trash" aria-hidden="true"></i> Delete</button>
+        </form>
     {% endif %}
+{% endblock %}
 
-    {% embed 'print_source/partial/detail.html.twig' %}
-    {% endembed %}
+{% block body %}
+    <table class='table table-bordered table-condensed table-hover table-striped'>
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>
+                    {{ print_source.title }}
+                </td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>
+                    {{ print_source.author }}
+                </td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>
+                    {{ print_source.date }}
+                </td>
+            </tr>
+            <tr>
+                <th>Publisher</th>
+                <td>
+                    {{ print_source.publisher }}
+                </td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>
+                    {{ print_source.notes|raw }}
+                </td>
+            </tr>
+
+            <tr>
+                <th>Source Category</th>
+                <td>
+                    {% if print_source.sourceCategory %}
+                        <a href='{{ path("source_category_show", {"id": print_source.sourceCategory.id}) }}'>{{ print_source.sourceCategory }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ print_source.created|date }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ print_source.updated|date }}</td>
+            </tr>
+        </tbody>
+    </table>
 
 {% endblock %}

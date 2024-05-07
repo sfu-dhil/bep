@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\TransactionRepository;
@@ -16,12 +10,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=TransactionRepository::class)
- * @ORM\Table(name="transact", indexes={
- *     @ORM\Index(name="transaction_ft", columns={"transcription", "modern_transcription", "notes"}, flags={"fulltext"})
- * })
- */
+#[ORM\Table(name: 'transact')]
+#[ORM\Index(name: 'transaction_ft', columns: ['transcription', 'modern_transcription', 'notes'], flags: ['fulltext'])]
+#[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction extends AbstractEntity {
     use DatedTrait;
     use NotesTrait;
@@ -32,100 +23,62 @@ class Transaction extends AbstractEntity {
      * £2. 3s. 6d. (two pounds, three shillings and six pence) is recorded as
      *
      * 2 * 240 + 3 * 12 + 6 = 522
-     *
-     * @var int
-     * @ORM\Column(type="integer", nullable=true)
      */
-    private $value;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $value = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $shipping = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $copies = null;
+
+    #[ORM\Column(type: 'string', length: 160, nullable: true)]
+    private ?string $location = null;
+
+    #[ORM\Column(type: 'string', length: 24, nullable: true)]
+    private ?string $page = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $transcription = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $modernTranscription = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $publicNotes = null;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer", nullable=true)
+     * @var Collection<int,Book>
      */
-    private $shipping;
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'transactions')]
+    private Collection $books;
+
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Parish::class, inversedBy: 'transactions')]
+    private ?Parish $parish = null;
+
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: ManuscriptSource::class, inversedBy: 'transactions')]
+    private ?ManuscriptSource $manuscriptSource = null;
+
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: PrintSource::class, inversedBy: 'transactions')]
+    private ?PrintSource $printSource = null;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer", nullable=true)
+     * @var Collection<int,TransactionCategory>
      */
-    private $copies;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: TransactionCategory::class, inversedBy: 'transactions')]
+    private Collection $transactionCategories;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=160, nullable=true)
-     */
-    private $location;
+    #[ORM\ManyToOne(targetEntity: Injunction::class, inversedBy: 'transactions')]
+    private ?Injunction $injunction = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=24, nullable=true)
-     */
-    private $page;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $transcription;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $modernTranscription;
-
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $publicNotes;
-
-    /**
-     * @var Book[]|Collection
-     * @ORM\ManyToMany(targetEntity="Book", inversedBy="transactions")
-     */
-    private $books;
-
-    /**
-     * @var Parish
-     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $parish;
-
-    /**
-     * @var ManuscriptSource
-     * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $manuscriptSource;
-
-    /**
-     * @var PrintSource
-     * @ORM\ManyToOne(targetEntity="PrintSource", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $printSource;
-
-    /**
-     * @var Collection|TransactionCategory[]
-     * @ORM\ManyToMany(targetEntity="TransactionCategory", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $transactionCategories;
-
-    /**
-     * @var Injunction
-     * @ORM\ManyToOne(targetEntity="Injunction", inversedBy="transactions")
-     */
-    private $injunction;
-
-    /**
-     * @var Monarch
-     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $monarch;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Monarch::class, inversedBy: 'transactions')]
+    private ?Monarch $monarch = null;
 
     public function __construct() {
         parent::__construct();
@@ -134,9 +87,6 @@ class Transaction extends AbstractEntity {
         $this->transactionCategories = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string {
         return sprintf('%05d', $this->id);
     }
@@ -343,9 +293,6 @@ class Transaction extends AbstractEntity {
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPublicNotes() : ?string {
         return $this->publicNotes;
     }

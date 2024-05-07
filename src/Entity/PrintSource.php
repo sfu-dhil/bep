@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\PrintSourceRepository;
@@ -18,58 +12,34 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=PrintSourceRepository::class)
- * @ORM\Table(indexes={
- *     @ORM\Index(name="print_source_ft", columns={"title", "author", "publisher"}, flags={"fulltext"})
- * })
- */
+#[ORM\Table]
+#[ORM\Index(name: 'print_source_ft', columns: ['title', 'author', 'publisher'], flags: ['fulltext'])]
+#[ORM\Entity(repositoryClass: PrintSourceRepository::class)]
 class PrintSource extends AbstractEntity implements LinkableInterface {
     use NotesTrait;
     use LinkableTrait {__construct as linkable_constructor; }
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=200, nullable=false)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 200, nullable: false)]
+    private string $title = '';
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=200, nullable=true)
-     */
-    private $author;
+    #[ORM\Column(type: 'string', length: 200, nullable: true)]
+    private ?string $author = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=16, nullable=true)
-     */
-    private $date;
+    #[ORM\Column(type: 'string', length: 16, nullable: true)]
+    private ?string $date = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=200, nullable=true)
-     */
-    private $publisher;
+    #[ORM\Column(type: 'string', length: 200, nullable: true)]
+    private ?string $publisher = null;
 
-    /**
-     * @var SourceCategory
-     * @ORM\ManyToOne(targetEntity="SourceCategory", inversedBy="printSources")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $sourceCategory;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: SourceCategory::class, inversedBy: 'printSources')]
+    private ?SourceCategory $sourceCategory = null;
 
-    /**
-     * @var Collection|Transaction[]
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="printSource")
-     */
-    private $transactions;
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'printSource')]
+    private Collection $transactions;
 
-    /**
-     * @var Collection|Inventory[]
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="printSource")
-     */
-    private $inventories;
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'printSource')]
+    private Collection $inventories;
 
     public function __construct() {
         parent::__construct();
@@ -78,9 +48,6 @@ class PrintSource extends AbstractEntity implements LinkableInterface {
         $this->linkable_constructor();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString() : string {
         return $this->title;
     }
@@ -136,7 +103,7 @@ class PrintSource extends AbstractEntity implements LinkableInterface {
     }
 
     /**
-     * @return Collection<int, Transaction>
+     * @return Collection<int,Transaction>
      */
     public function getTransactions() : Collection {
         return $this->transactions;
@@ -163,7 +130,7 @@ class PrintSource extends AbstractEntity implements LinkableInterface {
     }
 
     /**
-     * @return Collection<int, Inventory>
+     * @return Collection<int,Inventory>
      */
     public function getInventories() : Collection {
         return $this->inventories;

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Archdeaconry;
@@ -26,7 +20,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Parish form.
  */
 class ParishType extends TermType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -41,7 +37,6 @@ class ParishType extends TermType {
             'scale' => 8,
             'required' => false,
             'attr' => [
-                'help_block' => '',
                 'step' => 'any',
             ],
         ]);
@@ -52,7 +47,6 @@ class ParishType extends TermType {
             'scale' => 8,
             'required' => false,
             'attr' => [
-                'help_block' => '',
                 'step' => 'any',
             ],
         ]);
@@ -60,9 +54,7 @@ class ParishType extends TermType {
         $builder->add('address', TextareaType::class, [
             'label' => 'Address',
             'required' => false,
-            'attr' => [
-                'help_block' => 'Enter a street address of the parish church, if known',
-            ],
+            'help' => 'Enter a street address of the parish church, if known',
         ]);
 
         $builder->add('archdeaconry', Select2EntityType::class, [
@@ -71,8 +63,7 @@ class ParishType extends TermType {
             'remote_route' => 'archdeaconry_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'archdeaconry_new_popup',
+                'add_path' => 'archdeaconry_new',
                 'add_label' => 'Add Archdeaconry',
             ],
         ]);
@@ -83,21 +74,14 @@ class ParishType extends TermType {
             'remote_route' => 'town_typeahead',
             'allow_clear' => true,
             'required' => false,
+            'help' => 'Town or Ward if in London or blank for a rural parish',
             'attr' => [
-                'help_block' => 'Town or Ward if in London or blank for a rural parish',
-                'add_path' => 'town_new_popup',
+                'add_path' => 'town_new',
                 'add_label' => 'Add Town',
             ],
         ]);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 
     /**

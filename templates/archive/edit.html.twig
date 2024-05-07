@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-    {% block title %}Edit Archive {% endblock %}
+{% block title %}Edit Archive {% endblock %}
 
-    {% block body %}
-        <h1>Edit Archive</h1>
+{% block body %}
+    <h1>Edit Archive</h1>
 
-        {% embed 'archive/partial/form.html.twig' %}
-        {% endembed %}
+    {% embed 'archive/partial/form.html.twig' %}
+    {% endembed %}
 
-    {% endblock %}
+{% endblock %}
 
-    {% block javascripts %}
-        {% include '@NinesEditor/editor/widget.html.twig' %}
-    {% endblock %}
+{% block javascripts %}
+    {% include '@NinesEditor/editor/widget.html.twig' %}
+{% endblock %}

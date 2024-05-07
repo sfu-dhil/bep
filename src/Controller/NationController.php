@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Nation;
 use App\Form\NationType;
 use App\Repository\NationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/nation")
- */
+#[Route(path: '/nation')]
 class NationController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="nation_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'nation_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, NationRepository $nationRepository) : array {
-        $query = $nationRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'nations' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="nation_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, NationRepository $nationRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $nationRepository->searchQuery($q);
-            $nations = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $nations = [];
-        }
+        $query = $q ? $nationRepository->searchQuery($q) : $nationRepository->indexQuery();
 
         return [
-            'nations' => $nations,
+            'nations' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="nation_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, NationRepository $nationRepository) {
+    #[Route(path: '/typeahead', name: 'nation_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, NationRepository $nationRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class NationController extends AbstractController implements PaginatorAwareInter
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="nation_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'nation_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $nation = new Nation();
         $form = $this->createForm(NationType::class, $nation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($nation);
             $entityManager->flush();
             $this->addFlash('success', 'The new nation has been saved.');
@@ -115,43 +74,23 @@ class NationController extends AbstractController implements PaginatorAwareInter
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="nation_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="nation_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(Nation $nation) {
+    #[Route(path: '/{id}', name: 'nation_show', methods: ['GET'])]
+    #[Template]
+    public function show(Nation $nation) : array {
         return [
             'nation' => $nation,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="nation_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Nation $nation) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'nation_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Nation $nation) : array|RedirectResponse {
         $form = $this->createForm(NationType::class, $nation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated nation has been saved.');
 
             return $this->redirectToRoute('nation_show', ['id' => $nation->getId()]);
@@ -163,15 +102,10 @@ class NationController extends AbstractController implements PaginatorAwareInter
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="nation_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Nation $nation) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'nation_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Nation $nation) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $nation->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($nation);
             $entityManager->flush();
             $this->addFlash('success', 'The nation has been deleted.');

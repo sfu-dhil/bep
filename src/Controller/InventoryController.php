@@ -2,19 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Inventory;
 use App\Form\InventoryType;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
@@ -27,64 +20,32 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/inventory")
- */
+#[Route(path: '/inventory')]
 class InventoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
     use ImageControllerTrait;
 
-    /**
-     * @Route("/", name="inventory_index", methods={"GET"})
-     *
-     * @Template(template="inventory/index.html.twig")
-     */
+    #[Route(path: '/', name: 'inventory_index', methods: ['GET'])]
+    #[Template('inventory/index.html.twig')]
     public function index(Request $request, InventoryRepository $inventoryRepository) : array {
-        $query = $inventoryRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'inventories' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="inventory_search", methods={"GET"})
-     *
-     * @Template(template="inventory/search.html.twig")
-     *
-     * @return array
-     */
-    public function search(Request $request, InventoryRepository $inventoryRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $inventoryRepository->searchQuery($q);
-            $inventories = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $inventories = [];
-        }
+        $query = $q ? $inventoryRepository->searchQuery($q) : $inventoryRepository->indexQuery();
 
         return [
-            'inventories' => $inventories,
+            'inventories' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/new", name="inventory_new", methods={"GET", "POST"})
-     * @Template(template="inventory/new.html.twig")
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'inventory_new', methods: ['GET', 'POST'])]
+    #[Template('inventory/new.html.twig')]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $inventory = new Inventory();
         $form = $this->createForm(InventoryType::class, $inventory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($inventory);
             $entityManager->flush();
             $this->addFlash('success', 'The new inventory has been saved.');
@@ -98,43 +59,23 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="inventory_new_popup", methods={"GET", "POST"})
-     * @Template(template="inventory/new_popup.html.twig")
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="inventory_show", methods={"GET"})
-     * @Template(template="inventory/show.html.twig")
-     *
-     * @return array
-     */
-    public function show(Inventory $inventory) {
+    #[Route(path: '/{id}', name: 'inventory_show', methods: ['GET'])]
+    #[Template('inventory/show.html.twig')]
+    public function show(Inventory $inventory) : ?array {
         return [
             'inventory' => $inventory,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="inventory_edit", methods={"GET", "POST"})
-     *
-     * @Template(template="inventory/edit.html.twig")
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Inventory $inventory) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'inventory_edit', methods: ['GET', 'POST'])]
+    #[Template('inventory/edit.html.twig')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Inventory $inventory) : array|RedirectResponse {
         $form = $this->createForm(InventoryType::class, $inventory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated inventory has been saved.');
 
             return $this->redirectToRoute('inventory_show', ['id' => $inventory->getId()]);
@@ -146,15 +87,10 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="inventory_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Inventory $inventory) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'inventory_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Inventory $inventory) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $inventory->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($inventory);
             $entityManager->flush();
             $this->addFlash('success', 'The inventory has been deleted.');
@@ -163,45 +99,25 @@ class InventoryController extends AbstractController implements PaginatorAwareIn
         return $this->redirectToRoute('inventory_index');
     }
 
-    /**
-     * @Route("/{id}/new_image", name="inventory_new_image", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @throws Exception
-     *
-     * @return array<string,mixed>|RedirectResponse
-     *
-     * @Template(template="@NinesMedia/image/new.html.twig")
-     */
-    public function newImage(Request $request, EntityManagerInterface $em, Inventory $inventory) {
-        return $this->newImageAction($request, $em, $inventory, 'inventory_show');
+    #[Route(path: '/{id}/image/new', name: 'inventory_image_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template('inventory/image_new.html.twig')]
+    public function newImage(Request $request, EntityManagerInterface $em, Inventory $inventory) : array|RedirectResponse {
+        return $this->newImageAction($request, $em, $inventory, 'inventory_show', ['id' => $inventory->getId()]);
     }
 
-    /**
-     * @Route("/{id}/edit_image/{image_id}", name="inventory_edit_image", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @ParamConverter("image", options={"id": "image_id"})
-     *
-     * @throws Exception
-     *
-     * @return array<string,mixed>|RedirectResponse
-     *
-     * @Template(template="@NinesMedia/image/edit.html.twig")
-     */
-    public function editImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) {
-        return $this->editImageAction($request, $em, $inventory, $image, 'inventory_show');
+    #[Route(path: '/{id}/image/{image_id}/edit', name: 'inventory_image_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template('inventory/image_edit.html.twig')]
+    #[ParamConverter('image', options: ['id' => 'image_id'])]
+    public function editImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) : array|RedirectResponse {
+        return $this->editImageAction($request, $em, $inventory, $image, 'inventory_show', ['id' => $inventory->getId()]);
     }
 
-    /**
-     * @Route("/{id}/delete_image/{image_id}", name="inventory_delete_image", methods={"DELETE"})
-     * @ParamConverter("image", options={"id": "image_id"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @throws Exception
-     *
-     * @return RedirectResponse
-     */
-    public function deleteImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) {
-        return $this->deleteImageAction($request, $em, $inventory, $image, 'inventory_show');
+    #[Route(path: '/{id}/image/{image_id}', name: 'inventory_image_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[ParamConverter('image', options: ['id' => 'image_id'])]
+    public function deleteImage(Request $request, EntityManagerInterface $em, Inventory $inventory, Image $image) : RedirectResponse {
+        return $this->deleteImageAction($request, $em, $inventory, $image, 'inventory_show', ['id' => $inventory->getId()]);
     }
 }

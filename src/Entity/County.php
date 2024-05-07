@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\CountyRepository;
@@ -18,26 +12,18 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=CountyRepository::class)
- */
+#[ORM\Entity(repositoryClass: CountyRepository::class)]
 class County extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
-    /**
-     * @var Nation
-     * @ORM\ManyToOne(targetEntity="Nation", inversedBy="counties")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $nation;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Nation::class, inversedBy: 'counties')]
+    private ?Nation $nation = null;
 
-    /**
-     * @var Collection|Town[]
-     * @ORM\OneToMany(targetEntity="Town", mappedBy="county")
-     */
-    private $towns;
+    #[ORM\OneToMany(targetEntity: Town::class, mappedBy: 'county')]
+    private Collection $towns;
 
     public function __construct() {
         parent::__construct();

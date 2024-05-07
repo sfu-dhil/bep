@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\BookRepository;
@@ -18,121 +12,69 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=BookRepository::class)
- * @ORM\Table(indexes={
- *     @ORM\Index(name="book_ft", columns={"title", "uniform_title", "variant_titles", "description", "author", "imprint", "variant_imprint", "notes"}, flags={"fulltext"})
- * })
- */
+#[ORM\Table]
+#[ORM\Index(name: 'book_ft', columns: ['title', 'uniform_title', 'variant_titles', 'description', 'author', 'imprint', 'variant_imprint', 'notes'], flags: ['fulltext'])]
+#[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
     use NotesTrait;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $title;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $title = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $uniformTitle;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $uniformTitle = null;
 
-    /**
-     * @var string[]
-     * @ORM\Column(type="array")
-     */
-    private $variantTitles;
+    #[ORM\Column(type: 'array')]
+    private ?array $variantTitles = [];
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=160, nullable=true)
-     */
-    private $author;
+    #[ORM\Column(type: 'string', length: 160, nullable: true)]
+    private ?string $author = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $imprint;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $imprint = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $variantImprint;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $variantImprint = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $estc;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $estc = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=12, nullable=true)
-     */
-    private $date;
+    #[ORM\Column(type: 'string', length: 12, nullable: true)]
+    private ?string $date = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $physicalDescription;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $physicalDescription = null;
 
-    /**
-     * @var Format
-     * @ORM\ManyToOne(targetEntity="Format", inversedBy="books")
-     */
-    private $format;
+    #[ORM\ManyToOne(targetEntity: Format::class, inversedBy: 'books')]
+    private ?Format $format = null;
 
-    /**
-     * @var Monarch
-     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="books")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $monarch;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Monarch::class, inversedBy: 'books')]
+    private ?Monarch $monarch = null;
 
-    /**
-     * @var Collection|Transaction[]
-     * @ORM\ManyToMany(targetEntity="Transaction", mappedBy="books")
-     */
-    private $transactions;
+    #[ORM\ManyToMany(targetEntity: Transaction::class, mappedBy: 'books')]
+    private Collection $transactions;
 
-    /**
-     * @var Collection|Inventory[]
-     * @ORM\ManyToMany(targetEntity="Inventory", mappedBy="books")
-     */
-    private $inventories;
+    #[ORM\ManyToMany(targetEntity: Inventory::class, mappedBy: 'books')]
+    private Collection $inventories;
 
-    /**
-     * @var Collection|Holding[]
-     * @ORM\ManyToMany(targetEntity="Holding", mappedBy="books")
-     */
-    private $holdings;
+    #[ORM\ManyToMany(targetEntity: Holding::class, mappedBy: 'books')]
+    private Collection $holdings;
 
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
         $this->transactions = new ArrayCollection();
-        $this->variantTitles = [];
         $this->inventories = new ArrayCollection();
         $this->holdings = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string {
         if ($this->uniformTitle) {
             return $this->uniformTitle;

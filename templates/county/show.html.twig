@@ -6,25 +6,49 @@
      <h1>County Details</h1>
  {% endblock %}
 
-{% block body %}
-
+ {% block action_buttons %}
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('county_edit', {'id': county.id }) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-edit"></span> Edit </a>
-            </div>
-            <div class='btn-group'>
-                <form class='delete-form' method="post" action="{{ path('county_delete', {'id': county.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ county.id) }}">
-                    <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-                </form>
-            </div>
-        </div>
+        <a href="{{ path('county_edit', {'id': county.id }) }}" class="btn btn-light">
+            <span class="bi bi-pencil-square"></span> Edit
+        </a>
+        <form class="d-inline-block delete-form" method="post" action="{{ path('county_delete', {'id': county.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ county.id) }}">
+            <button class="btn btn-danger w-100"><i class="bi bi-trash" aria-hidden="true"></i> Delete</button>
+        </form>
     {% endif %}
+{% endblock %}
 
-    {% embed 'county/partial/detail.html.twig' %}
+{% block body %}
+    {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': county} %}
+        {% block callback %}
+            <tr>
+                <th>Towns</th>
+                <td>
+                    {% if county.towns|length > 0 %}
+                        <ul>
+                            {% for town in county.towns %}
+                                <li>
+                                    <a href='{{ path("town_show", {"id":town.id }) }}'>
+                                        {{ town }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Links</th>
+                <td>
+                    {% embed '@NinesMedia/link/partial/list.html.twig'
+                        with {
+                        'entity': county
+                    } %}
+                    {% endembed %}
+                </td>
+            </tr>
+        {% endblock %}
     {% endembed %}
 
 {% endblock %}

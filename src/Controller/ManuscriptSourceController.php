@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\ManuscriptSource;
 use App\Form\ManuscriptSourceType;
 use App\Repository\ManuscriptSourceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/manuscript_source")
- */
+#[Route(path: '/manuscript_source')]
 class ManuscriptSourceController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="manuscript_source_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'manuscript_source_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, ManuscriptSourceRepository $manuscriptSourceRepository) : array {
-        $query = $manuscriptSourceRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'sources' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="manuscript_source_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, ManuscriptSourceRepository $manuscriptSourceRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $manuscriptSourceRepository->searchQuery($q);
-            $manuscriptSources = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $manuscriptSources = [];
-        }
+        $query = $q ? $manuscriptSourceRepository->searchQuery($q) : $manuscriptSourceRepository->indexQuery();
 
         return [
-            'sources' => $manuscriptSources,
+            'sources' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="manuscript_source_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, ManuscriptSourceRepository $manuscriptSourceRepository) {
+    #[Route(path: '/typeahead', name: 'manuscript_source_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, ManuscriptSourceRepository $manuscriptSourceRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class ManuscriptSourceController extends AbstractController implements Paginator
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="manuscript_source_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'manuscript_source_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $manuscriptSource = new ManuscriptSource();
         $form = $this->createForm(ManuscriptSourceType::class, $manuscriptSource);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($manuscriptSource);
             $entityManager->flush();
 
@@ -116,43 +75,23 @@ class ManuscriptSourceController extends AbstractController implements Paginator
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="manuscript_source_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="manuscript_source_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(ManuscriptSource $manuscriptSource) {
+    #[Route(path: '/{id}', name: 'manuscript_source_show', methods: ['GET'])]
+    #[Template]
+    public function show(ManuscriptSource $manuscriptSource) : array {
         return [
             'source' => $manuscriptSource,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="manuscript_source_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, ManuscriptSource $manuscriptSource) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'manuscript_source_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, ManuscriptSource $manuscriptSource) : array|RedirectResponse {
         $form = $this->createForm(ManuscriptSourceType::class, $manuscriptSource);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated source has been saved.');
 
             return $this->redirectToRoute('manuscript_source_show', ['id' => $manuscriptSource->getId()]);
@@ -164,15 +103,10 @@ class ManuscriptSourceController extends AbstractController implements Paginator
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="manuscript_source_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, ManuscriptSource $manuscriptSource) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'manuscript_source_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, ManuscriptSource $manuscriptSource) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $manuscriptSource->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($manuscriptSource);
             $entityManager->flush();
             $this->addFlash('success', 'The source has been deleted.');

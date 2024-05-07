@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\InventoryRepository;
@@ -18,12 +12,9 @@ use Nines\MediaBundle\Entity\ImageContainerInterface;
 use Nines\MediaBundle\Entity\ImageContainerTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=InventoryRepository::class)
- * @ORM\Table(indexes={
- *     @ORM\Index(name="inventory_ft", columns={"transcription", "modifications", "description", "notes"}, flags={"fulltext"})
- * })
- */
+#[ORM\Table]
+#[ORM\Index(name: 'inventory_ft', columns: ['transcription', 'modifications', 'description', 'notes'], flags: ['fulltext'])]
+#[ORM\Entity(repositoryClass: InventoryRepository::class)]
 class Inventory extends AbstractEntity implements ImageContainerInterface {
     use DatedTrait;
     use NotesTrait;
@@ -31,69 +22,39 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
         ImageContainerTrait::__construct as protected trait_constructor;
     }
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $pageNumber;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $pageNumber = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $transcription;
+    #[ORM\Column(type: 'text')]
+    private ?string $transcription = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $modifications;
+    #[ORM\Column(type: 'text')]
+    private ?string $modifications = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var ManuscriptSource
-     * @ORM\ManyToOne(targetEntity="ManuscriptSource", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $manuscriptSource;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: ManuscriptSource::class, inversedBy: 'inventories')]
+    private ?ManuscriptSource $manuscriptSource = null;
 
-    /**
-     * @var PrintSource
-     * @ORM\ManyToOne(targetEntity="PrintSource", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $printSource;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: PrintSource::class, inversedBy: 'inventories')]
+    private ?PrintSource $printSource = null;
 
-    /**
-     * @var Parish
-     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $parish;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Parish::class, inversedBy: 'inventories')]
+    private ?Parish $parish = null;
 
-    /**
-     * @var Monarch
-     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $monarch;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Monarch::class, inversedBy: 'inventories')]
+    private ?Monarch $monarch = null;
 
-    /**
-     * @var Injunction
-     * @ORM\ManyToOne(targetEntity="Injunction", inversedBy="inventories")
-     */
-    private $injunction;
+    #[ORM\ManyToOne(targetEntity: Injunction::class, inversedBy: 'inventories')]
+    private ?Injunction $injunction = null;
 
-    /**
-     * @var Book[]|Collection
-     * @ORM\ManyToMany(targetEntity="Book", inversedBy="inventories")
-     */
-    private $books;
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'inventories')]
+    private Collection $books;
 
     public function __construct() {
         parent::__construct();
@@ -101,9 +62,6 @@ class Inventory extends AbstractEntity implements ImageContainerInterface {
         $this->books = new ArrayCollection();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString() : string {
         return mb_substr(strip_tags($this->transcription), 0, 50);
     }

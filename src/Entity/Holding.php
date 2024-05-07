@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\HoldingRepository;
@@ -18,9 +12,7 @@ use Nines\MediaBundle\Entity\ImageContainerInterface;
 use Nines\MediaBundle\Entity\ImageContainerTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=HoldingRepository::class)
- */
+#[ORM\Entity(repositoryClass: HoldingRepository::class)]
 class Holding extends AbstractEntity implements ImageContainerInterface {
     use ImageContainerTrait {
         ImageContainerTrait::__construct as protected trait_constructor;
@@ -28,30 +20,18 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
     use DatedTrait;
     use NotesTrait;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var Parish
-     * @ORM\ManyToOne(targetEntity="Parish", inversedBy="holdings")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $parish;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Parish::class, inversedBy: 'holdings')]
+    private ?Parish $parish = null;
 
-    /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="Book", inversedBy="holdings")
-     */
-    private $books;
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'holdings')]
+    private Collection $books;
 
-    /**
-     * @var Archive
-     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="holdings")
-     */
-    private $archive;
+    #[ORM\ManyToOne(targetEntity: Archive::class, inversedBy: 'holdings')]
+    private ?Archive $archive = null;
 
     public function __construct() {
         parent::__construct();
@@ -59,9 +39,6 @@ class Holding extends AbstractEntity implements ImageContainerInterface {
         $this->books = new ArrayCollection();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString() : string {
         return implode(', ', $this->books->toArray()) . ' ' . $this->parish;
     }

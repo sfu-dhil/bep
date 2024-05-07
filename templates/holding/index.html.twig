@@ -9,17 +9,15 @@
     </p>
 {% endblock %}
 
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('holding_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('holding_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New </a>
-            {% endif %}
-        </div>
-    </div>
-
     {% embed 'holding/partial/table.html.twig' %}
     {% endembed %}
 

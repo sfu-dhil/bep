@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form\Partial;
 
 use App\Entity\Archdeaconry;
@@ -24,10 +18,10 @@ class NotesType extends TermType {
      */
     public static function add(FormBuilderInterface $builder, array $options) : void {
         $builder->add('notes', TextareaType::class, [
-            'label' => 'Notes',
+            'label' => 'Private Notes',
             'required' => false,
+            'help' => 'Private notes about the item. Never shown to the public.',
             'attr' => [
-                'help_block' => 'Private notes about the item. Never shown to the public.',
                 'class' => 'tinymce',
             ],
         ]);

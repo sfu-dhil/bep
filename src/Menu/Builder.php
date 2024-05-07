@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Menu;
 
 use Knp\Menu\ItemInterface;
@@ -17,60 +11,153 @@ use Nines\UtilBundle\Menu\AbstractBuilder;
  * Class to build some menus for navigation.
  */
 class Builder extends AbstractBuilder {
-    /**
-     * Build a menu for navigation.
-     *
-     * @return ItemInterface
-     */
-    public function mainMenu(array $options) {
-        $menu = $this->dropdown('Browse');
-        $menu->addChild('Archdeaconries & Courts', ['route' => 'archdeaconry_index']);
-        $menu->addChild('Archives', ['route' => 'archive_index']);
-        $menu->addChild('Books', ['route' => 'book_index']);
-        $menu->addChild('Counties', ['route' => 'county_index']);
-        $menu->addChild('Dioceses', ['route' => 'diocese_index']);
-        $menu->addChild('Injunctions', ['route' => 'injunction_index']);
-        $menu->addChild('Inventories', ['route' => 'inventory_index']);
-        $menu->addChild('Manuscript Sources', ['route' => 'manuscript_source_index']);
-        $menu->addChild('Monarchs', ['route' => 'monarch_index']);
-        $menu->addChild('Nations', ['route' => 'nation_index']);
-        $menu->addChild('Parishes', ['route' => 'parish_index']);
-        $menu->addChild('Print Sources', ['route' => 'print_source_index']);
-        $menu->addChild('Provinces', ['route' => 'province_index']);
-        $menu->addChild('Towns', ['route' => 'town_index']);
-        $menu->addChild('Transactions', ['route' => 'transaction_index']);
-        $menu->addChild('Surviving Texts', ['route' => 'holding_index']);
-
-        if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
-            $this->addDivider($menu);
-            $menu->addChild('Formats', ['route' => 'format_index']);
-            $menu->addChild('Source Categories', ['route' => 'source_category_index']);
-            $menu->addChild('Transaction Categories', ['route' => 'transaction_category_index']);
-        }
-
-        return $menu->getParent();
-    }
-
-    /**
-     * Build a menu for navigation.
-     *
-     * @return ItemInterface
-     */
-    public function footerMenu(array $options) {
+    public function mainMenu(array $options) : ItemInterface {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes([
             'class' => 'nav navbar-nav',
         ]);
 
-        $menu->addChild('Home', [
-            'route' => 'homepage',
+        $browse = $menu->addChild('Browse', [
+            'uri' => '#',
+            'label' => 'Browse',
+            'attributes' => [
+                'class' => 'nav-item dropdown',
+            ],
+            'linkAttributes' => [
+                'class' => 'nav-link dropdown-toggle',
+                'role' => 'button',
+                'data-bs-toggle' => 'dropdown',
+                'id' => 'browse-dropdown',
+            ],
+            'childrenAttributes' => [
+                'class' => 'dropdown-menu text-small shadow dropdown-menu-end',
+                'aria-labelledby' => 'browse-dropdown',
+            ],
         ]);
-        $menu->addChild('Privacy', [
-            'route' => 'privacy',
+        $browse->addChild('Archdeaconries & Courts', [
+            'route' => 'archdeaconry_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
         ]);
-        $menu->addChild('GitHub', [
-            'uri' => 'https://github.com/sfu-dhil/bep',
+        $browse->addChild('Archives', [
+            'route' => 'archive_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
         ]);
+        $browse->addChild('Books', [
+            'route' => 'book_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Counties', [
+            'route' => 'county_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Dioceses', [
+            'route' => 'diocese_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Injunctions', [
+            'route' => 'injunction_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Inventories', [
+            'route' => 'inventory_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Manuscript Sources', [
+            'route' => 'manuscript_source_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Monarchs', [
+            'route' => 'monarch_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Nations', [
+            'route' => 'nation_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Parishes', [
+            'route' => 'parish_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Print Sources', [
+            'route' => 'print_source_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Provinces', [
+            'route' => 'province_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Towns', [
+            'route' => 'town_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Transactions', [
+            'route' => 'transaction_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+        $browse->addChild('Surviving Texts', [
+            'route' => 'holding_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item link-dark',
+            ],
+        ]);
+
+        if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
+            $browse->addChild('divider1', [
+                'label' => '',
+                'attributes' => [
+                    'role' => 'separator',
+                    'class' => 'divider',
+                ],
+            ]);
+            $browse->addChild('Formats', [
+                'route' => 'format_index',
+                'linkAttributes' => [
+                    'class' => 'dropdown-item link-dark',
+                ],
+            ]);
+            $browse->addChild('Source Categories', [
+                'route' => 'source_category_index',
+                'linkAttributes' => [
+                    'class' => 'dropdown-item link-dark',
+                ],
+            ]);
+            $browse->addChild('Transaction Categories', [
+                'route' => 'transaction_category_index',
+                'linkAttributes' => [
+                    'class' => 'dropdown-item link-dark',
+                ],
+            ]);
+        }
 
         return $menu;
     }

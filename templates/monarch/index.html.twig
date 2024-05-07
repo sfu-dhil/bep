@@ -9,25 +9,16 @@
     </p>
 {% endblock %}
 
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('monarch_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('monarch_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New </a>
-            {% endif %}
-
-            <a href="{{ path('monarch_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search </a>
-        </div>
-    </div>
-
-    {% embed 'monarch/partial/table.html.twig' %}
+    {% embed '@NinesUtil/term/partial/index.html.twig'
+        with {'terms': monarchs, 'path': 'monarch_show' } %}
     {% endembed %}
-
-    <div class="navigation">
-        {{ knp_pagination_render(monarchs) }}
-    </div>
-
 {% endblock %}

@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Archive;
 use App\Form\ArchiveType;
 use App\Repository\ArchiveRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/archive")
- */
+#[Route(path: '/archive')]
 class ArchiveController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="archive_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'archive_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, ArchiveRepository $archiveRepository) : array {
-        $query = $archiveRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'archives' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="archive_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, ArchiveRepository $archiveRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $archiveRepository->searchQuery($q);
-            $archives = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $archives = [];
-        }
+        $query = $q ? $archiveRepository->searchQuery($q) : $archiveRepository->indexQuery();
 
         return [
-            'archives' => $archives,
+            'archives' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="archive_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, ArchiveRepository $archiveRepository) {
+    #[Route(path: '/typeahead', name: 'archive_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, ArchiveRepository $archiveRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="archive_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'archive_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $archive = new Archive();
         $form = $this->createForm(ArchiveType::class, $archive);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($archive);
             $entityManager->flush();
 
@@ -116,43 +75,23 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="archive_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="archive_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(Archive $archive) {
+    #[Route(path: '/{id}', name: 'archive_show', methods: ['GET'])]
+    #[Template]
+    public function show(Archive $archive) : array {
         return [
             'archive' => $archive,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="archive_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Archive $archive) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'archive_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Archive $archive) : array|RedirectResponse {
         $form = $this->createForm(ArchiveType::class, $archive);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated archive has been saved.');
 
             return $this->redirectToRoute('archive_show', ['id' => $archive->getId()]);
@@ -164,15 +103,10 @@ class ArchiveController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="archive_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Archive $archive) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'archive_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Archive $archive) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $archive->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($archive);
             $entityManager->flush();
             $this->addFlash('success', 'The archive has been deleted.');

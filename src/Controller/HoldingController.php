@@ -2,19 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Holding;
 use App\Form\HoldingType;
 use App\Repository\HoldingRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\MediaBundle\Controller\ImageControllerTrait;
 use Nines\MediaBundle\Entity\Image;
@@ -27,42 +20,30 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/holding")
- */
+#[Route(path: '/holding')]
 class HoldingController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
     use ImageControllerTrait;
 
-    /**
-     * @Route("/", name="holding_index", methods={"GET"})
-     *
-     * @Template(template="holding/index.html.twig")
-     */
+    #[Route(path: '/', name: 'holding_index', methods: ['GET'])]
+    #[Template('holding/index.html.twig')]
     public function index(Request $request, HoldingRepository $holdingRepository) : array {
         $query = $holdingRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
 
         return [
-            'holdings' => $this->paginator->paginate($query, $page, $pageSize),
+            'holdings' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
         ];
     }
 
-    /**
-     * @Route("/new", name="holding_new", methods={"GET", "POST"})
-     * @Template(template="holding/new.html.twig")
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'holding_new', methods: ['GET', 'POST'])]
+    #[Template('holding/new.html.twig')]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $holding = new Holding();
         $form = $this->createForm(HoldingType::class, $holding);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($holding);
             $entityManager->flush();
             $this->addFlash('success', 'The new surviving text has been saved.');
@@ -76,43 +57,23 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="holding_new_popup", methods={"GET", "POST"})
-     * @Template(template="holding/new_popup.html.twig")
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="holding_show", methods={"GET"})
-     * @Template(template="holding/show.html.twig")
-     *
-     * @return array
-     */
-    public function show(Holding $holding) {
+    #[Route(path: '/{id}', name: 'holding_show', methods: ['GET'])]
+    #[Template('holding/show.html.twig')]
+    public function show(Holding $holding) : array {
         return [
             'holding' => $holding,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="holding_edit", methods={"GET", "POST"})
-     *
-     * @Template(template="holding/edit.html.twig")
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Holding $holding) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'holding_edit', methods: ['GET', 'POST'])]
+    #[Template('holding/edit.html.twig')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Holding $holding) : array|RedirectResponse {
         $form = $this->createForm(HoldingType::class, $holding);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated surviving text has been saved.');
 
             return $this->redirectToRoute('holding_show', ['id' => $holding->getId()]);
@@ -124,15 +85,10 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="holding_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Holding $holding) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'holding_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Holding $holding) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $holding->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($holding);
             $entityManager->flush();
             $this->addFlash('success', 'The surviving text has been deleted.');
@@ -141,43 +97,25 @@ class HoldingController extends AbstractController implements PaginatorAwareInte
         return $this->redirectToRoute('holding_index');
     }
 
-    /**
-     * @Route("/{id}/new_image", name="holding_new_image", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @throws Exception
-     *
-     * @return array<string,mixed>|RedirectResponse
-     *
-     * @Template("holding/new_image.html.twig")
-     */
-    public function newImage(Request $request, EntityManagerInterface $em, holding $holding) {
-        return $this->newImageAction($request, $em, $holding, 'holding_show');
+    #[Route(path: '/{id}/image/new', name: 'holding_image_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template('holding/image_new.html.twig')]
+    public function newImage(Request $request, EntityManagerInterface $em, Holding $holding) : array|RedirectResponse {
+        return $this->newImageAction($request, $em, $holding, 'holding_show', ['id' => $holding->getId()]);
     }
 
-    /**
-     * @Route("/{id}/edit_image/{image_id}", name="holding_edit_image", methods={"GET", "POST"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @ParamConverter("image", options={"id": "image_id"})
-     *
-     * @throws Exception
-     *
-     * @return array<string,mixed>|RedirectResponse
-     *
-     * @Template("holding/edit_image.html.twig")
-     */
-    public function editImage(Request $request, EntityManagerInterface $em, holding $holding, Image $image) {
-        return $this->editImageAction($request, $em, $holding, $image, 'holding_show');
+    #[Route(path: '/{id}/image/{image_id}/edit', name: 'holding_image_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Template('holding/image_edit.html.twig')]
+    #[ParamConverter('image', options: ['id' => 'image_id'])]
+    public function editImage(Request $request, EntityManagerInterface $em, Holding $holding, Image $image) : array|RedirectResponse {
+        return $this->editImageAction($request, $em, $holding, $image, 'holding_show', ['id' => $holding->getId()]);
     }
 
-    /**
-     * @Route("/{id}/delete_image/{image_id}", name="holding_delete_image", methods={"DELETE"})
-     * @ParamConverter("image", options={"id": "image_id"})
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return RedirectResponse
-     */
-    public function deleteImage(Request $request, EntityManagerInterface $em, holding $holding, Image $image) {
-        return $this->deleteImageAction($request, $em, $holding, $image, 'holding_show');
+    #[Route(path: '/{id}/image/{image_id}', name: 'holding_image_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[ParamConverter('image', options: ['id' => 'image_id'])]
+    public function deleteImage(Request $request, EntityManagerInterface $em, Holding $holding, Image $image) : RedirectResponse {
+        return $this->deleteImageAction($request, $em, $holding, $image, 'holding_show', ['id' => $holding->getId()]);
     }
 }

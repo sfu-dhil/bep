@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\TransactionCategory;
 use App\Form\TransactionCategoryType;
 use App\Repository\TransactionCategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/transaction_category")
- */
+#[Route(path: '/transaction_category')]
 class TransactionCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="transaction_category_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'transaction_category_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, TransactionCategoryRepository $transactionCategoryRepository) : array {
-        $query = $transactionCategoryRepository->indexQuery();
-        $pageSize = $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'transaction_categories' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="transaction_category_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, TransactionCategoryRepository $transactionCategoryRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $transactionCategoryRepository->searchQuery($q);
-            $transactionCategories = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $transactionCategories = [];
-        }
+        $query = $q ? $transactionCategoryRepository->searchQuery($q) : $transactionCategoryRepository->indexQuery();
 
         return [
-            'transaction_categories' => $transactionCategories,
+            'transaction_categories' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="transaction_category_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, TransactionCategoryRepository $transactionCategoryRepository) {
+    #[Route(path: '/typeahead', name: 'transaction_category_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, TransactionCategoryRepository $transactionCategoryRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class TransactionCategoryController extends AbstractController implements Pagina
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="transaction_category_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'transaction_category_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $transactionCategory = new TransactionCategory();
         $form = $this->createForm(TransactionCategoryType::class, $transactionCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($transactionCategory);
             $entityManager->flush();
             $this->addFlash('success', 'The new transactionCategory has been saved.');
@@ -115,43 +74,23 @@ class TransactionCategoryController extends AbstractController implements Pagina
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="transaction_category_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="transaction_category_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(TransactionCategory $transactionCategory) {
+    #[Route(path: '/{id}', name: 'transaction_category_show', methods: ['GET'])]
+    #[Template]
+    public function show(TransactionCategory $transactionCategory) : array {
         return [
             'transaction_category' => $transactionCategory,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="transaction_category_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, TransactionCategory $transactionCategory) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'transaction_category_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, TransactionCategory $transactionCategory) : array|RedirectResponse {
         $form = $this->createForm(TransactionCategoryType::class, $transactionCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated transactionCategory has been saved.');
 
             return $this->redirectToRoute('transaction_category_show', ['id' => $transactionCategory->getId()]);
@@ -163,15 +102,10 @@ class TransactionCategoryController extends AbstractController implements Pagina
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="transaction_category_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, TransactionCategory $transactionCategory) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'transaction_category_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, TransactionCategory $transactionCategory) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $transactionCategory->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($transactionCategory);
             $entityManager->flush();
             $this->addFlash('success', 'The transactionCategory has been deleted.');

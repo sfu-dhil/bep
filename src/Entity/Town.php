@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\TownRepository;
@@ -18,37 +12,28 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=TownRepository::class)
- */
+#[ORM\Entity(repositoryClass: TownRepository::class)]
 class Town extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
-    /**
-     * @var boolean;
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $inLondon;
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $inLondon = false;
+
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: County::class, inversedBy: 'towns')]
+    private ?County $county = null;
 
     /**
-     * @var County
-     * @ORM\ManyToOne(targetEntity="County", inversedBy="towns")
-     * @ORM\JoinColumn(nullable=false)
+     * @var Collection<int,Parish>
      */
-    private $county;
-
-    /**
-     * @var Collection|Parish[]
-     * @ORM\OneToMany(targetEntity="Parish", mappedBy="town")
-     */
-    private $parishes;
+    #[ORM\OneToMany(targetEntity: Parish::class, mappedBy: 'town')]
+    private Collection $parishes;
 
     public function __construct() {
         parent::__construct();
         $this->linkable_construct();
-        $this->inLondon = false;
         $this->parishes = new ArrayCollection();
     }
 

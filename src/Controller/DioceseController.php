@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Diocese;
 use App\Form\DioceseType;
 use App\Repository\DioceseRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/diocese")
- */
+#[Route(path: '/diocese')]
 class DioceseController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="diocese_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'diocese_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, DioceseRepository $dioceseRepository) : array {
-        $query = $dioceseRepository->indexQuery();
-        $pageSize = $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'dioceses' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="diocese_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, DioceseRepository $dioceseRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $dioceseRepository->searchQuery($q);
-            $dioceses = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $dioceses = [];
-        }
+        $query = $q ? $dioceseRepository->searchQuery($q) : $dioceseRepository->indexQuery();
 
         return [
-            'dioceses' => $dioceses,
+            'dioceses' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="diocese_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, DioceseRepository $dioceseRepository) {
+    #[Route(path: '/typeahead', name: 'diocese_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, DioceseRepository $dioceseRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="diocese_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'diocese_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $diocese = new Diocese();
         $form = $this->createForm(DioceseType::class, $diocese);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($diocese);
             $entityManager->flush();
 
@@ -116,43 +75,23 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="diocese_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="diocese_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(Diocese $diocese) {
+    #[Route(path: '/{id}', name: 'diocese_show', methods: ['GET'])]
+    #[Template]
+    public function show(Diocese $diocese) : array {
         return [
             'diocese' => $diocese,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="diocese_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Diocese $diocese) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'diocese_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Diocese $diocese) : array|RedirectResponse {
         $form = $this->createForm(DioceseType::class, $diocese);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated diocese has been saved.');
 
             return $this->redirectToRoute('diocese_show', ['id' => $diocese->getId()]);
@@ -164,15 +103,10 @@ class DioceseController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="diocese_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Diocese $diocese) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'diocese_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Diocese $diocese) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $diocese->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($diocese);
             $entityManager->flush();
             $this->addFlash('success', 'The diocese has been deleted.');

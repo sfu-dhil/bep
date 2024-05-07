@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Book;
@@ -40,40 +34,35 @@ class InventoryType extends AbstractType {
             'class' => Parish::class,
             'remote_route' => 'parish_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'parish_new_popup',
+                'add_path' => 'parish_new',
                 'add_label' => 'Add Parish',
             ],
         ]);
         $builder->add('manuscriptSource', Select2EntityType::class, [
-            'label' => 'Source',
+            'label' => 'Manuscript Source',
             'required' => false,
             'class' => ManuscriptSource::class,
             'remote_route' => 'manuscript_source_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'manuscript_source_new_popup',
-                'add_label' => 'Add Source',
+                'add_path' => 'manuscript_source_new',
+                'add_label' => 'Add Manuscript Source',
             ],
         ]);
         $builder->add('printSource', Select2EntityType::class, [
-            'label' => 'Source',
+            'label' => 'Print Source',
             'required' => false,
             'class' => PrintSource::class,
             'remote_route' => 'print_source_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'print_source_new_popup',
-                'add_label' => 'Add Source',
+                'add_path' => 'print_source_new',
+                'add_label' => 'Add Print Source',
             ],
         ]);
 
         $builder->add('pageNumber', TextType::class, [
             'label' => 'Page',
             'required' => false,
-            'attr' => [
-                'help_block' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
-            ],
+            'help' => 'Enter a page number (p. 5) or folio location (fo. 2 verso).',
         ]);
 
         $builder->add('injunction', Select2EntityType::class, [
@@ -82,8 +71,7 @@ class InventoryType extends AbstractType {
             'remote_route' => 'injunction_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'injunction_new_popup',
+                'add_path' => 'injunction_new',
                 'add_label' => 'Add Injunction',
             ],
         ]);
@@ -94,8 +82,7 @@ class InventoryType extends AbstractType {
             'class' => Monarch::class,
             'remote_route' => 'monarch_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'monarch_new_popup',
+                'add_path' => 'monarch_new',
                 'add_label' => 'Add Monarch',
             ],
         ]);
@@ -108,8 +95,7 @@ class InventoryType extends AbstractType {
             'page_limit' => 10,
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'book_new_popup',
+                'add_path' => 'book_new',
                 'add_label' => 'Add Book',
             ],
         ]);
@@ -119,22 +105,20 @@ class InventoryType extends AbstractType {
             'label' => 'Transcription',
             'required' => true,
             'attr' => [
-                'help_block' => '',
                 'class' => 'tinymce',
             ],
         ]);
         $builder->add('modifications', TextareaType::class, [
             'label' => 'Modern English',
             'attr' => [
-                'help_block' => '',
                 'class' => 'tinymce',
             ],
         ]);
         $builder->add('description', TextareaType::class, [
-            'label' => 'Notes',
+            'label' => 'Description',
             'required' => false,
+            'help' => 'Public notes about the item.',
             'attr' => [
-                'help_block' => 'Public notes about the item.',
                 'class' => 'tinymce',
             ],
         ]);

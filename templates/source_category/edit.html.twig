@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-    {% block title %}Edit Source Category {% endblock %}
+{% block title %}Edit Source Category {% endblock %}
 
-    {% block body %}
-        <h1>Edit Source Category</h1>
+{% block body %}
+    <h1>Edit Source Category</h1>
 
-        {% embed 'source_category/partial/form.html.twig' %}
-        {% endembed %}
+    {% embed 'source_category/partial/form.html.twig' %}
+    {% endembed %}
 
-    {% endblock %}
+{% endblock %}
 
-    {% block javascripts %}
-        {% include '@NinesEditor/editor/widget.html.twig' %}
-    {% endblock %}
+{% block javascripts %}
+    {% include '@NinesEditor/editor/widget.html.twig' %}
+{% endblock %}

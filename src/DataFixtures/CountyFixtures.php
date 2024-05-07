@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\DataFixtures;
 
 use App\Entity\County;
@@ -22,9 +16,6 @@ class CountyFixtures extends Fixture implements FixtureGroupInterface, Dependent
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new County();
@@ -46,11 +37,6 @@ class CountyFixtures extends Fixture implements FixtureGroupInterface, Dependent
         }
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return array<string>
-     */
     public function getDependencies() : array {
         return [
             NationFixtures::class,

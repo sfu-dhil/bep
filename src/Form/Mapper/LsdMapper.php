@@ -2,23 +2,17 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form\Mapper;
 
 use App\Entity\Transaction;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
+use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 use Symfony\Component\Form\FormInterface;
 use Traversable;
 
-class LsdMapper extends PropertyPathMapper implements DataMapperInterface {
-    public function mapDataToForms($viewData, $forms) : void {
+class LsdMapper extends DataMapper implements DataMapperInterface {
+    public function mapDataToForms(mixed $viewData, Traversable $forms) : void {
         if (null === $viewData) {
             return;
         }
@@ -42,11 +36,7 @@ class LsdMapper extends PropertyPathMapper implements DataMapperInterface {
         $formData['sd']->setData($sd);
     }
 
-    /**
-     * @param FormInterface[]|Traversable $forms
-     * @param Transaction $viewData
-     */
-    public function mapFormsToData($forms, &$viewData) : void {
+    public function mapFormsToData(Traversable $forms, mixed &$viewData) : void {
         parent::mapFormsToData($forms, $viewData);
 
         /** @var FormInterface[] $formData */

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Book;
@@ -28,7 +22,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Book form.
  */
 class BookType extends AbstractType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -37,8 +33,8 @@ class BookType extends AbstractType {
         $builder->add('title', TextareaType::class, [
             'label' => 'Title',
             'required' => false,
+            'help' => 'As it appears in the ESTC',
             'attr' => [
-                'help_block' => 'As it appears in the ESTC',
                 'class' => '',
             ],
         ]);
@@ -46,7 +42,6 @@ class BookType extends AbstractType {
             'label' => 'Uniform Title',
             'required' => false,
             'attr' => [
-                'help_block' => '',
                 'class' => '',
             ],
         ]);
@@ -60,47 +55,33 @@ class BookType extends AbstractType {
             'entry_options' => [
                 'label' => false,
             ],
-
+            'help' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
             'attr' => [
                 'class' => 'collection collection-simple',
-                'help_block' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
             ],
         ]);
         $builder->add('author', TextType::class, [
             'label' => 'Author',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('imprint', TextareaType::class, [
             'label' => 'Imprint',
             'required' => false,
-            'attr' => [
-                'help_block' => 'Imprint as noted on the ESTC',
-            ],
+            'help' => 'Imprint as noted on the ESTC',
         ]);
         $builder->add('variantImprint', TextareaType::class, [
             'label' => 'Imprint, Modern English”',
             'required' => false,
-            'attr' => [
-                'help_block' => 'Original spelling imprint and any variations of it',
-            ],
+            'help' => 'Original spelling imprint and any variations of it',
         ]);
         $builder->add('date', TextType::class, [
             'label' => 'Date',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
 
         $builder->add('estc', TextType::class, [
             'label' => 'Estc',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
 
         $builder->add('monarch', Select2EntityType::class, [
@@ -109,8 +90,7 @@ class BookType extends AbstractType {
             'class' => Monarch::class,
             'remote_route' => 'monarch_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'monarch_new_popup',
+                'add_path' => 'monarch_new',
                 'add_label' => 'Add Monarch',
             ],
         ]);
@@ -118,8 +98,8 @@ class BookType extends AbstractType {
         $builder->add('physicalDescription', TextareaType::class, [
             'label' => 'Physical Description',
             'required' => false,
+            'help' => 'Public description of the physicality of the item.',
             'attr' => [
-                'help_block' => 'Public description of the physicality of the item.',
                 'class' => 'tinymce',
             ],
         ]);
@@ -127,8 +107,8 @@ class BookType extends AbstractType {
         $builder->add('description', TextareaType::class, [
             'label' => 'Description',
             'required' => false,
+            'help' => 'Public description of the item.',
             'attr' => [
-                'help_block' => 'Public description of the item.',
                 'class' => 'tinymce',
             ],
         ]);
@@ -140,20 +120,12 @@ class BookType extends AbstractType {
             'remote_route' => 'format_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'format_new_popup',
+                'add_path' => 'format_new',
                 'add_label' => 'Add Format',
             ],
         ]);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 
     /**

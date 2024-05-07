@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\ArchiveRepository;
@@ -18,25 +12,17 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=ArchiveRepository::class)
- */
+#[ORM\Entity(repositoryClass: ArchiveRepository::class)]
 class Archive extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
     }
 
-    /**
-     * @var Collection|ManuscriptSource[]
-     * @ORM\OneToMany(targetEntity="ManuscriptSource", mappedBy="archive")
-     */
-    private $manuscriptSources;
+    #[ORM\OneToMany(targetEntity: ManuscriptSource::class, mappedBy: 'archive')]
+    private Collection $manuscriptSources;
 
-    /**
-     * @var Collection|Holding[]
-     * @ORM\OneToMany(targetEntity="Holding", mappedBy="archive")
-     */
-    private $holdings;
+    #[ORM\OneToMany(targetEntity: Holding::class, mappedBy: 'archive')]
+    private Collection $holdings;
 
     public function __construct() {
         parent::__construct();

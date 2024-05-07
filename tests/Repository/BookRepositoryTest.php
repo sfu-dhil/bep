@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Tests\Repository;
 
 use App\Repository\BookRepository;
@@ -39,6 +33,6 @@ class BookRepositoryTest extends ServiceTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->repo = self::$container->get(BookRepository::class);
+        $this->repo = self::getContainer()->get(BookRepository::class);
     }
 }

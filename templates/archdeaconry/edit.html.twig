@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
-    {% block title %}Edit Archdeaconry or  Peculiar Court {% endblock %}
+{% block title %}Edit Archdeaconry or Peculiar Court {% endblock %}
 
-    {% block body %}
-        <h1>Edit Archdeaconry or Peculiar Court </h1>
+{% block body %}
+    <h1>Edit Archdeaconry or Peculiar Court </h1>
 
-        {% embed 'archdeaconry/partial/form.html.twig' %}
-        {% endembed %}
+    {% embed 'archdeaconry/partial/form.html.twig' %}
+    {% endembed %}
+{% endblock %}
 
-    {% endblock %}
-
-    {% block javascripts %}
-        {% include '@NinesEditor/editor/widget.html.twig' %}
-    {% endblock %}
+{% block javascripts %}
+    {% include '@NinesEditor/editor/widget.html.twig' %}
+{% endblock %}

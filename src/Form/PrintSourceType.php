@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\PrintSource;
@@ -26,7 +20,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * PrintSource form.
  */
 class PrintSourceType extends AbstractType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -37,9 +33,6 @@ class PrintSourceType extends AbstractType {
         $builder->add('title', TextType::class, [
             'label' => 'Title',
             'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('sourceCategory', Select2EntityType::class, [
             'label' => 'SourceCategory',
@@ -47,31 +40,21 @@ class PrintSourceType extends AbstractType {
             'remote_route' => 'source_category_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'source_category_new_popup',
+                'add_path' => 'source_category_new',
                 'add_label' => 'Add SourceCategory',
             ],
         ]);
         $builder->add('author', TextType::class, [
             'label' => 'Author',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('date', TextType::class, [
             'label' => 'Date',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('publisher', TextType::class, [
             'label' => 'Publisher',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         NotesType::add($builder, $options);
         LinkableType::add($builder, $options);
@@ -88,12 +71,5 @@ class PrintSourceType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => PrintSource::class,
         ]);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 }

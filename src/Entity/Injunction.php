@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\InjunctionRepository;
@@ -18,142 +12,81 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=InjunctionRepository::class)
- * @ORM\Table(indexes={
- *     @ORM\Index(name="injunction_ft", columns={"title", "uniform_title", "variant_titles", "transcription", "modern_transcription", "author", "imprint", "variant_imprint"}, flags={"fulltext"})
- * })
- */
+#[ORM\Table]
+#[ORM\Index(name: 'injunction_ft', columns: ['title', 'uniform_title', 'variant_titles', 'transcription', 'modern_transcription', 'author', 'imprint', 'variant_imprint'], flags: ['fulltext'])]
+#[ORM\Entity(repositoryClass: InjunctionRepository::class)]
 class Injunction extends AbstractEntity implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_constructor;
     }
     use NotesTrait;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    private $title;
+    #[ORM\Column(type: 'text')]
+    private ?string $title = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $uniformTitle;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $uniformTitle = null;
 
-    /**
-     * @var array
-     * @ORM\Column(type="array")
-     */
-    private $variantTitles;
+    #[ORM\Column(type: 'array')]
+    private ?array $variantTitles = [];
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=160, nullable=true)
-     */
-    private $author;
+    #[ORM\Column(type: 'string', length: 160, nullable: true)]
+    private ?string $author = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $imprint;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $imprint = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $variantImprint;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $variantImprint = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=12, nullable=true)
-     */
-    private $date;
+    #[ORM\Column(type: 'string', length: 12, nullable: true)]
+    private ?string $date = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $physicalDescription;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $physicalDescription = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $transcription;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $transcription = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $modernTranscription;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $modernTranscription = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $estc;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $estc = null;
 
-    /**
-     * @var Nation
-     * @ORM\ManyToOne(targetEntity="Nation", inversedBy="injunctions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $nation;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Nation::class, inversedBy: 'injunctions')]
+    private ?Nation $nation = null;
 
-    /**
-     * @var Diocese
-     * @ORM\ManyToOne(targetEntity="Diocese", inversedBy="injunctions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $diocese;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Diocese::class, inversedBy: 'injunctions')]
+    private ?Diocese $diocese = null;
 
-    /**
-     * @var Province
-     * @ORM\ManyToOne(targetEntity="Province", inversedBy="injunctions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $province;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Province::class, inversedBy: 'injunctions')]
+    private ?Province $province = null;
 
-    /**
-     * @var Archdeaconry
-     * @ORM\ManyToOne(targetEntity="Archdeaconry", inversedBy="injunctions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $archdeaconry;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Archdeaconry::class, inversedBy: 'injunctions')]
+    private ?Archdeaconry $archdeaconry = null;
 
-    /**
-     * @var Monarch
-     * @ORM\ManyToOne(targetEntity="Monarch", inversedBy="injunctions")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $monarch;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Monarch::class, inversedBy: 'injunctions')]
+    private ?Monarch $monarch = null;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="injunction")
-     */
-    private $transactions;
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'injunction')]
+    private Collection $transactions;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="injunction")
-     */
-    private $inventories;
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'injunction')]
+    private Collection $inventories;
 
     public function __construct() {
         parent::__construct();
         $this->linkable_constructor();
         $this->transactions = new ArrayCollection();
-        $this->variantTitles = [];
         $this->inventories = new ArrayCollection();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString() : string {
         return $this->title;
     }
@@ -306,7 +239,7 @@ class Injunction extends AbstractEntity implements LinkableInterface {
     }
 
     /**
-     * @return Collection<int, Inventory>
+     * @return Collection<int,Inventory>
      */
     public function getInventories() : Collection {
         return $this->inventories;

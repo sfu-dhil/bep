@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\SourceCategory;
 use App\Form\SourceCategoryType;
 use App\Repository\SourceCategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/source_category")
- */
+#[Route(path: '/source_category')]
 class SourceCategoryController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="source_category_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'source_category_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, SourceCategoryRepository $sourceCategoryRepository) : array {
-        $query = $sourceCategoryRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'source_categories' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="source_category_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, SourceCategoryRepository $sourceCategoryRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $sourceCategoryRepository->searchQuery($q);
-            $sourceCategories = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $sourceCategories = [];
-        }
+        $query = $q ? $sourceCategoryRepository->searchQuery($q) : $sourceCategoryRepository->indexQuery();
 
         return [
-            'source_categories' => $sourceCategories,
+            'source_categories' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="source_category_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, SourceCategoryRepository $sourceCategoryRepository) {
+    #[Route(path: '/typeahead', name: 'source_category_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, SourceCategoryRepository $sourceCategoryRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +52,15 @@ class SourceCategoryController extends AbstractController implements PaginatorAw
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="source_category_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'source_category_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $sourceCategory = new SourceCategory();
         $form = $this->createForm(SourceCategoryType::class, $sourceCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($sourceCategory);
             $entityManager->flush();
             $this->addFlash('success', 'The new sourceCategory has been saved.');
@@ -115,43 +74,23 @@ class SourceCategoryController extends AbstractController implements PaginatorAw
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="source_category_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="source_category_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(SourceCategory $sourceCategory) {
+    #[Route(path: '/{id}', name: 'source_category_show', methods: ['GET'])]
+    #[Template]
+    public function show(SourceCategory $sourceCategory) : array {
         return [
             'source_category' => $sourceCategory,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="source_category_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, SourceCategory $sourceCategory) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'source_category_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, SourceCategory $sourceCategory) : array|RedirectResponse {
         $form = $this->createForm(SourceCategoryType::class, $sourceCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated sourceCategory has been saved.');
 
             return $this->redirectToRoute('source_category_show', ['id' => $sourceCategory->getId()]);
@@ -163,15 +102,10 @@ class SourceCategoryController extends AbstractController implements PaginatorAw
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="source_category_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, SourceCategory $sourceCategory) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'source_category_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, SourceCategory $sourceCategory) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $sourceCategory->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($sourceCategory);
             $entityManager->flush();
             $this->addFlash('success', 'The sourceCategory has been deleted.');

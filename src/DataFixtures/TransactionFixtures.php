@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\DataFixtures;
 
 use App\Entity\Transaction;
@@ -21,9 +15,6 @@ class TransactionFixtures extends Fixture implements FixtureGroupInterface, Depe
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Transaction();
@@ -50,11 +41,6 @@ class TransactionFixtures extends Fixture implements FixtureGroupInterface, Depe
         $manager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return array<string>
-     */
     public function getDependencies() : array {
         return [
             ParishFixtures::class,

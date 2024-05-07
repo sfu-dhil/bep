@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\MonarchRepository;
@@ -17,47 +11,27 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=MonarchRepository::class)
- */
+#[ORM\Entity(repositoryClass: MonarchRepository::class)]
 class Monarch extends AbstractTerm {
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=10, nullable=true)
-     * @Assert\Date(message="{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.")
-     */
-    private $startDate;
+    #[Assert\Date(message: '{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.')]
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    private ?string $startDate = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=10, nullable=true)
-     * @Assert\Date(message="{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.")
-     */
-    private $endDate;
+    #[Assert\Date(message: '{{ value }} is not a valid value. It must be formatted as yyyy-mm-dd and be a valid date.')]
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    private ?string $endDate = null;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="monarch")
-     */
-    private $transactions;
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'monarch')]
+    private Collection $transactions;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Injunction", mappedBy="monarch")
-     */
-    private $injunctions;
+    #[ORM\OneToMany(targetEntity: Injunction::class, mappedBy: 'monarch')]
+    private Collection $injunctions;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="monarch")
-     */
-    private $inventories;
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'monarch')]
+    private Collection $inventories;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Book", mappedBy="monarch")
-     */
-    private $books;
+    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'monarch')]
+    private Collection $books;
 
     public function __construct() {
         parent::__construct();

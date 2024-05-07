@@ -2,18 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Archive;
 use App\Entity\Book;
-    use App\Entity\Holding;
-    use App\Entity\Parish;
+use App\Entity\Holding;
+use App\Entity\Parish;
 use App\Form\Partial\DatedType;
 use App\Form\Partial\NotesType;
 use Symfony\Component\Form\AbstractType;
@@ -36,8 +30,7 @@ class HoldingType extends AbstractType {
             'class' => Parish::class,
             'remote_route' => 'parish_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'parish_new_popup',
+                'add_path' => 'parish_new',
                 'add_label' => 'Add Parish',
             ],
         ]);
@@ -47,8 +40,7 @@ class HoldingType extends AbstractType {
             'class' => Archive::class,
             'remote_route' => 'archive_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'archive_new_popup',
+                'add_path' => 'archive_new',
                 'add_label' => 'Add Archive',
             ],
         ]);
@@ -61,8 +53,7 @@ class HoldingType extends AbstractType {
             'allow_clear' => true,
             'multiple' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'book_new_popup',
+                'add_path' => 'book_new',
                 'add_label' => 'Add Book',
             ],
         ]);
@@ -70,7 +61,6 @@ class HoldingType extends AbstractType {
             'label' => 'Description',
             'required' => true,
             'attr' => [
-                'help_block' => '',
                 'class' => 'tinymce',
             ],
         ]);

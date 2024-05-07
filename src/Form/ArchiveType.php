@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Archive;
@@ -21,7 +15,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Archive form.
  */
 class ArchiveType extends TermType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -31,13 +27,6 @@ class ArchiveType extends TermType {
         LinkableType::add($builder, $options);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 
     /**

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Tests\Controller;
 
 use Nines\UserBundle\DataFixtures\UserFixtures;
@@ -23,41 +17,41 @@ class ArchiveTest extends ControllerTestCase {
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/archive/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
-        $this->assertSame(0, $crawler->selectLink('New')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('New')->count());
     }
 
     public function testUserIndex() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/archive/');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(0, $crawler->selectLink('New')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('New')->count());
     }
 
     public function testAdminIndex() : void {
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/archive/');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(1, $crawler->selectLink('New')->count());
+        $this->assertSame(1, $crawler->filter('.page-actions')->selectLink('New')->count());
     }
 
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/archive/1');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
-        $this->assertSame(0, $crawler->selectLink('Edit')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('Edit')->count());
     }
 
     public function testUserShow() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/archive/1');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(0, $crawler->selectLink('Edit')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('Edit')->count());
     }
 
     public function testAdminShow() : void {
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/archive/1');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(1, $crawler->selectLink('Edit')->count());
+        $this->assertSame(1, $crawler->filter('.page-actions')->selectLink('Edit')->count());
     }
 
     public function testAnonTypeahead() : void {
@@ -94,7 +88,7 @@ class ArchiveTest extends ControllerTestCase {
     }
 
     public function testAnonSearch() : void {
-        $crawler = $this->client->request('GET', '/archive/search');
+        $crawler = $this->client->request('GET', '/archive/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
@@ -106,12 +100,12 @@ class ArchiveTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testUserSearch() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/archive/search');
+        $crawler = $this->client->request('GET', '/archive/');
         $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
@@ -119,12 +113,12 @@ class ArchiveTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminSearch() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/archive/search');
+        $crawler = $this->client->request('GET', '/archive/');
         $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
@@ -132,18 +126,18 @@ class ArchiveTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAnonEdit() : void {
         $crawler = $this->client->request('GET', '/archive/1/edit');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserEdit() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/archive/1/edit');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminEdit() : void {
@@ -164,24 +158,13 @@ class ArchiveTest extends ControllerTestCase {
 
     public function testAnonNew() : void {
         $crawler = $this->client->request('GET', '/archive/new');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
-    }
-
-    public function testAnonNewPopup() : void {
-        $crawler = $this->client->request('GET', '/archive/new_popup');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserNew() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/archive/new');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testUserNewPopup() : void {
-        $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/archive/new_popup');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminNew() : void {
@@ -196,22 +179,6 @@ class ArchiveTest extends ControllerTestCase {
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/archive/6', Response::HTTP_FOUND);
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertResponseIsSuccessful();
-    }
-
-    public function testAdminNewPopup() : void {
-        $this->login(UserFixtures::ADMIN);
-        $formCrawler = $this->client->request('GET', '/archive/new');
-        $this->assertResponseIsSuccessful();
-
-        $form = $formCrawler->selectButton('Save')->form([
-            'archive[label]' => 'Updated Label',
-            'archive[description]' => '<p>Updated Text</p>',
-        ]);
-
-        $this->client->submit($form);
-        $this->assertResponseRedirects('/archive/7', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
     }

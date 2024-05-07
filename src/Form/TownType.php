@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\County;
@@ -24,7 +18,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Town form.
  */
 class TownType extends TermType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -41,9 +37,7 @@ class TownType extends TermType {
                 'No' => false,
             ],
             'required' => true,
-            'attr' => [
-                'help_block' => 'Yes if this is a Ward in the City of London',
-            ],
+            'help' => 'Yes if this is a Ward in the City of London',
         ]);
 
         $builder->add('county', Select2EntityType::class, [
@@ -52,20 +46,12 @@ class TownType extends TermType {
             'remote_route' => 'county_typeahead',
             'allow_clear' => true,
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'county_new_popup',
+                'add_path' => 'county_new',
                 'add_label' => 'Add County',
             ],
         ]);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 
     /**

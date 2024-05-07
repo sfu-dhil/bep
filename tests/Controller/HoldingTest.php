@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Tests\Controller;
 
 use Nines\MediaBundle\Repository\ImageRepository;
@@ -23,68 +17,52 @@ class HoldingTest extends ControllerTestCase {
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/holding/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
-        $this->assertSame(0, $crawler->selectLink('New')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('New')->count());
     }
 
     public function testUserIndex() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/holding/');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(0, $crawler->selectLink('New')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('New')->count());
     }
 
     public function testAdminIndex() : void {
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/holding/');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(1, $crawler->selectLink('New')->count());
+        $this->assertSame(1, $crawler->filter('.page-actions')->selectLink('New')->count());
     }
 
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/holding/1');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
-        $this->assertSame(0, $crawler->selectLink('Edit')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('Edit')->count());
     }
 
     public function testUserShow() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/holding/1');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(0, $crawler->selectLink('Edit')->count());
+        $this->assertSame(0, $crawler->filter('.page-actions')->selectLink('Edit')->count());
     }
 
     public function testAdminShow() : void {
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/holding/1');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(1, $crawler->selectLink('Edit')->count());
-    }
-
-    public function testAnonSearch() : void {
-        $crawler = $this->client->request('GET', '/holding/search');
-        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
-        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
-            // If authentication is required stop here.
-            return;
-        }
-
-        $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'holding',
-        ]);
-
-        $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(1, $crawler->filter('.page-actions')->selectLink('Edit')->count());
     }
 
     public function testAnonEdit() : void {
         $crawler = $this->client->request('GET', '/holding/1/edit');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserEdit() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/holding/1/edit');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminEdit() : void {
@@ -99,8 +77,8 @@ class HoldingTest extends ControllerTestCase {
             'holding[writtenDate]' => 'Updated WrittenDate',
             'holding[notes]' => '<p>Updated Text</p>',
         ]);
-        $this->overrideField($form, 'holding[parish]', 2);
-        $this->overrideField($form, 'holding[archive]', 2);
+        $this->overrideField($form, 'holding[parish]', '2');
+        $this->overrideField($form, 'holding[archive]', '2');
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/1', Response::HTTP_FOUND);
@@ -110,24 +88,13 @@ class HoldingTest extends ControllerTestCase {
 
     public function testAnonNew() : void {
         $crawler = $this->client->request('GET', '/holding/new');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
-    }
-
-    public function testAnonNewPopup() : void {
-        $crawler = $this->client->request('GET', '/holding/new_popup');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserNew() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/holding/new');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testUserNewPopup() : void {
-        $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/holding/new_popup');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminNew() : void {
@@ -142,8 +109,8 @@ class HoldingTest extends ControllerTestCase {
             'holding[writtenDate]' => 'Updated WrittenDate',
             'holding[notes]' => '<p>Updated Text</p>',
         ]);
-        $this->overrideField($form, 'holding[parish]', 2);
-        $this->overrideField($form, 'holding[archive]', 2);
+        $this->overrideField($form, 'holding[parish]', '2');
+        $this->overrideField($form, 'holding[archive]', '2');
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/6', Response::HTTP_FOUND);
@@ -151,48 +118,26 @@ class HoldingTest extends ControllerTestCase {
         $this->assertResponseIsSuccessful();
     }
 
-    public function testAdminNewPopup() : void {
-        $this->login(UserFixtures::ADMIN);
-        $formCrawler = $this->client->request('GET', '/holding/new');
-        $this->assertResponseIsSuccessful();
-
-        $form = $formCrawler->selectButton('Save')->form([
-            'holding[description]' => '<p>Updated Text</p>',
-            'holding[startDate]' => '1200-01-01',
-            'holding[endDate]' => '1250-12-25',
-            'holding[writtenDate]' => 'Updated WrittenDate',
-            'holding[notes]' => '<p>Updated Text</p>',
-        ]);
-        $this->overrideField($form, 'holding[parish]', 2);
-        $this->overrideField($form, 'holding[archive]', 2);
-
-        $this->client->submit($form);
-        $this->assertResponseRedirects('/holding/7', Response::HTTP_FOUND);
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertResponseIsSuccessful();
-    }
-
     public function testAnonNewImage() : void {
-        $crawler = $this->client->request('GET', '/holding/1/new_image');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $crawler = $this->client->request('GET', '/holding/1/image/new');
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserNewImage() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/holding/1/new_image');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', '/holding/1/image/new');
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminNewImage() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/holding/1/new_image');
+        $crawler = $this->client->request('GET', '/holding/1/image/new');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(ImageManager::class);
+        $manager = self::getContainer()->get(ImageManager::class);
         $manager->setCopy(true);
 
-        $form = $crawler->selectButton('Create')->form([
-            'image[public]' => 1,
+        $form = $crawler->selectButton('Save')->form([
             'image[description]' => 'Description',
             'image[license]' => 'License',
         ]);
@@ -206,30 +151,29 @@ class HoldingTest extends ControllerTestCase {
     }
 
     public function testAnonEditImage() : void {
-        $crawler = $this->client->request('GET', '/holding/1/edit_image/11');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $crawler = $this->client->request('GET', '/holding/1/image/11/edit');
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserEditImage() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/holding/1/edit_image/11');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', '/holding/1/image/11/edit');
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminEditImage() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/holding/1/edit_image/11');
+        $crawler = $this->client->request('GET', '/holding/1/image/11/edit');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(ImageManager::class);
+        $manager = self::getContainer()->get(ImageManager::class);
         $manager->setCopy(true);
 
-        $form = $crawler->selectButton('Update')->form([
-            'image[public]' => 0,
+        $form = $crawler->selectButton('Save')->form([
             'image[description]' => 'Updated Description',
             'image[license]' => 'Updated License',
         ]);
-        $form['image[newFile]']->upload(dirname(__FILE__, 2) . '/data/image/3632486652_b432f7b283_c.jpg');
+        $form['image[file]']->upload(dirname(__FILE__, 2) . '/data/image/3632486652_b432f7b283_c.jpg');
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/1');
         $responseCrawler = $this->client->followRedirect();
@@ -239,25 +183,25 @@ class HoldingTest extends ControllerTestCase {
     }
 
     public function testAnonDeleteImage() : void {
-        $crawler = $this->client->request('DELETE', '/holding/1/delete_image/11');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $crawler = $this->client->request('DELETE', '/holding/1/image/11');
+        $this->assertResponseRedirects('http://localhost/login', Response::HTTP_FOUND);
     }
 
     public function testUserDeleteImage() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('DELETE', '/holding/1/delete_image/11');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('DELETE', '/holding/1/image/11');
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), $this->client->getResponse()->getContent());
     }
 
     public function testAdminDeleteImage() : void {
-        $repo = self::$container->get(ImageRepository::class);
+        $repo = self::getContainer()->get(ImageRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/holding/4');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->filter('form.delete-form[action="/holding/4/delete_image/14"]')->form();
+        $form = $crawler->filter('form[action="/holding/4/image/14"]')->form();
         $this->client->submit($form);
         $this->assertResponseRedirects('/holding/4');
         $responseCrawler = $this->client->followRedirect();
@@ -269,14 +213,14 @@ class HoldingTest extends ControllerTestCase {
     }
 
     public function testAdminDeleteImageWrongToken() : void {
-        $repo = self::$container->get(ImageRepository::class);
+        $repo = self::getContainer()->get(ImageRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/holding/4');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->filter('form.delete-form[action="/holding/4/delete_image/14"]')->form([
+        $form = $crawler->filter('form[action="/holding/4/image/14"]')->form([
             '_token' => 'abc123',
         ]);
 

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\ParishRepository;
@@ -18,68 +12,40 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=ParishRepository::class)
- */
+#[ORM\Entity(repositoryClass: ParishRepository::class)]
 class Parish extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
-     */
-    private $latitude;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 7, nullable: true)]
+    private ?string $latitude = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
-     */
-    private $longitude;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 7, nullable: true)]
+    private ?string $longitude = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $address;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $address = null;
 
-    /**
-     * @var Archdeaconry
-     * @ORM\ManyToOne(targetEntity="Archdeaconry", inversedBy="parishes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $archdeaconry;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Archdeaconry::class, inversedBy: 'parishes')]
+    private ?Archdeaconry $archdeaconry = null;
 
     /**
      * A county outside City of London, or a ward inside London.
-     *
-     * @var Town
-     * @ORM\ManyToOne(targetEntity="Town", inversedBy="parishes")
-     * @ORM\JoinColumn(nullable=true)
      */
-    private $town;
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Town::class, inversedBy: 'parishes')]
+    private ?Town $town = null;
 
-    /**
-     * @var Collection|Transaction[]
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="parish")
-     */
-    private $transactions;
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'parish')]
+    private Collection $transactions;
 
-    /**
-     * @var Collection|Inventory[]
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="parish")
-     */
-    private $inventories;
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'parish')]
+    private Collection $inventories;
 
-    /**
-     * @var Collection|Holding[]
-     * @ORM\OneToMany(targetEntity="Holding", mappedBy="parish")
-     */
-    private $holdings;
+    #[ORM\OneToMany(targetEntity: Holding::class, mappedBy: 'parish')]
+    private Collection $holdings;
 
     public function __construct() {
         parent::__construct();

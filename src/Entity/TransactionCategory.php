@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\TransactionCategoryRepository;
@@ -16,15 +10,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=TransactionCategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: TransactionCategoryRepository::class)]
 class TransactionCategory extends AbstractTerm {
-    /**
-     * @var Collection|Transaction[]
-     * @ORM\ManyToMany(targetEntity="Transaction", mappedBy="transactionCategories")
-     */
-    private $transactions;
+    #[ORM\ManyToMany(targetEntity: Transaction::class, mappedBy: 'transactionCategories')]
+    private Collection $transactions;
 
     public function __construct() {
         parent::__construct();

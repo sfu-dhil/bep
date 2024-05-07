@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\DataFixtures;
 
 use App\Entity\Inventory;
@@ -34,9 +28,6 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         $this->imageManager->setCopy(true);
         for ($i = 1; $i <= 5; $i++) {
@@ -60,7 +51,6 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
             $upload = new UploadedFile(dirname(__FILE__, 3) . '/tests/data/image/' . $imageFile, $imageFile, 'image/jpeg', null, true);
             $image = new Image();
             $image->setFile($upload);
-            $image->setPublic(0 === $i % 2);
             $image->setOriginalName($imageFile);
             $image->setDescription("<p>This is paragraph {$i}</p>");
             $image->setLicense("<p>This is paragraph {$i}</p>");
@@ -73,18 +63,11 @@ class InventoryFixtures extends Fixture implements FixtureGroupInterface, Depend
         $this->imageManager->setCopy(false);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setImageManager(ImageManager $imageManager) : void {
         $this->imageManager = $imageManager;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return array<string>
-     */
     public function getDependencies() : array {
         return [
             ManuscriptSourceFixtures::class,

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\ManuscriptSourceRepository;
@@ -18,45 +12,28 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=ManuscriptSourceRepository::class)
- */
+#[ORM\Entity(repositoryClass: ManuscriptSourceRepository::class)]
 class ManuscriptSource extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $callNumber;
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private ?string $callNumber = null;
 
-    /**
-     * @var SourceCategory
-     * @ORM\ManyToOne(targetEntity="SourceCategory", inversedBy="manuscriptSources")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $sourceCategory;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: SourceCategory::class, inversedBy: 'manuscriptSources')]
+    private ?SourceCategory $sourceCategory = null;
 
-    /**
-     * @var Archive
-     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="manuscriptSources")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $archive;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Archive::class, inversedBy: 'manuscriptSources')]
+    private ?Archive $archive = null;
 
-    /**
-     * @var Collection|Transaction[]
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="manuscriptSource")
-     */
-    private $transactions;
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'manuscriptSource')]
+    private Collection $transactions;
 
-    /**
-     * @var Collection|Inventory[]
-     * @ORM\OneToMany(targetEntity="Inventory", mappedBy="manuscriptSource")
-     */
-    private $inventories;
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'manuscriptSource')]
+    private Collection $inventories;
 
     public function __construct() {
         parent::__construct();

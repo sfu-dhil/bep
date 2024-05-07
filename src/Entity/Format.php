@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\FormatRepository;
@@ -16,15 +10,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=FormatRepository::class)
- */
+#[ORM\Entity(repositoryClass: FormatRepository::class)]
 class Format extends AbstractTerm {
-    /**
-     * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="Book", mappedBy="format")
-     */
-    private $books;
+    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'format')]
+    private Collection $books;
 
     public function __construct() {
         parent::__construct();

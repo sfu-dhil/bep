@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\NationRepository;
@@ -16,27 +10,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=NationRepository::class)
- */
+#[ORM\Entity(repositoryClass: NationRepository::class)]
 class Nation extends AbstractTerm {
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Province", mappedBy="nation")
-     */
-    private $provinces;
+    #[ORM\OneToMany(targetEntity: Province::class, mappedBy: 'nation')]
+    private Collection $provinces;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="County", mappedBy="nation")
-     */
-    private $counties;
+    #[ORM\OneToMany(targetEntity: County::class, mappedBy: 'nation')]
+    private Collection $counties;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Injunction", mappedBy="nation")
-     */
-    private $injunctions;
+    #[ORM\OneToMany(targetEntity: Injunction::class, mappedBy: 'nation')]
+    private Collection $injunctions;
 
     public function __construct() {
         parent::__construct();
@@ -100,7 +83,7 @@ class Nation extends AbstractTerm {
     }
 
     /**
-     * @return Collection<int, Injunction>
+     * @return Collection<int,Injunction>
      */
     public function getInjunctions() : Collection {
         return $this->injunctions;

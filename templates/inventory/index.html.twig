@@ -9,18 +9,26 @@
     </p>
 {% endblock %}
 
-{% block body %}
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('inventory_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+{% endblock %}
 
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('inventory_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New </a>
-            {% endif %}
-            <a href="{{ path('inventory_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search </a>
+{% block body %}
+    <form class="my-3" method="get" role="search">
+        <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="popover" data-bs-title="Full text searching options" data-bs-content="<ul class='list-group list-group-flush'><li class='list-group-item'><code>shakespeare</code> - shakespeare should be present, but might not be</li><li class='list-group-item'><code>shakes*</code> - words starting with shakes should be present</li><li class='list-group-item'><code>+agnes</code> - agnes must be present</li><li class='list-group-item'><code>-fisher</code> - fisher must not be present</li><li class='list-group-item'>Combinations are OK: <code>+agnes -fisher</code> finds Anges who isn't a Fisher</li><li class='list-group-item'>Phrases are OK: <code>&quot;nee agnes&quot;</code> finds rows that contain the literal phrase.</ul>">
+                <i class="bi bi-question-circle" aria-hidden="true"></i><span class="visually-hidden">Search Help</span>
+            </button>
+            <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="q" id="q" value="{{ q }}" />
+            <button class="btn btn-primary" type="submit" id="btn-search">
+                <i class="bi bi-search" aria-hidden="true"></i> Search
+            </button>
         </div>
-    </div>
+    </form>
 
     {% embed 'inventory/partial/table.html.twig' %}
     {% endembed %}

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\ProvinceRepository;
@@ -18,32 +12,21 @@ use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Entity\LinkableTrait;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=ProvinceRepository::class)
- */
+#[ORM\Entity(repositoryClass: ProvinceRepository::class)]
 class Province extends AbstractTerm implements LinkableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as linkable_construct;
     }
 
-    /**
-     * @var Nation
-     * @ORM\ManyToOne(targetEntity="Nation", inversedBy="provinces")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $nation;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Nation::class, inversedBy: 'provinces')]
+    private ?Nation $nation = null;
 
-    /**
-     * @var Collection|Diocese[]
-     * @ORM\OneToMany(targetEntity="Diocese", mappedBy="province")
-     */
-    private $dioceses;
+    #[ORM\OneToMany(targetEntity: Diocese::class, mappedBy: 'province')]
+    private Collection $dioceses;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="Injunction", mappedBy="province")
-     */
-    private $injunctions;
+    #[ORM\OneToMany(targetEntity: Injunction::class, mappedBy: 'province')]
+    private Collection $injunctions;
 
     public function __construct() {
         parent::__construct();
@@ -90,7 +73,7 @@ class Province extends AbstractTerm implements LinkableInterface {
     }
 
     /**
-     * @return Collection<int, Injunction>
+     * @return Collection<int,Injunction>
      */
     public function getInjunctions() : Collection {
         return $this->injunctions;

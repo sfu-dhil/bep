@@ -2,18 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Controller;
 
 use App\Entity\Monarch;
 use App\Form\MonarchType;
 use App\Repository\MonarchRepository;
-
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,55 +18,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/monarch")
- */
+#[Route(path: '/monarch')]
 class MonarchController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="monarch_index", methods={"GET"})
-     *
-     * @Template
-     */
+    #[Route(path: '/', name: 'monarch_index', methods: ['GET'])]
+    #[Template]
     public function index(Request $request, MonarchRepository $monarchRepository) : array {
-        $query = $monarchRepository->indexQuery();
-        $pageSize = (int) $this->getParameter('page_size');
-        $page = $request->query->getint('page', 1);
-
-        return [
-            'monarchs' => $this->paginator->paginate($query, $page, $pageSize),
-        ];
-    }
-
-    /**
-     * @Route("/search", name="monarch_search", methods={"GET"})
-     *
-     * @Template
-     *
-     * @return array
-     */
-    public function search(Request $request, MonarchRepository $monarchRepository) {
         $q = $request->query->get('q');
-        if ($q) {
-            $query = $monarchRepository->searchQuery($q);
-            $monarchs = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
-        } else {
-            $monarchs = [];
-        }
+        $query = $q ? $monarchRepository->searchQuery($q) : $monarchRepository->indexQuery();
 
         return [
-            'monarchs' => $monarchs,
+            'monarchs' => $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]),
             'q' => $q,
         ];
     }
 
-    /**
-     * @Route("/typeahead", name="monarch_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function typeahead(Request $request, MonarchRepository $monarchRepository) {
+    #[Route(path: '/typeahead', name: 'monarch_typeahead', methods: ['GET'])]
+    public function typeahead(Request $request, MonarchRepository $monarchRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
@@ -88,20 +51,15 @@ class MonarchController extends AbstractController implements PaginatorAwareInte
         return new JsonResponse($data);
     }
 
-    /**
-     * @Route("/new", name="monarch_new", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new(Request $request) {
+    #[Route(path: '/new', name: 'monarch_new', methods: ['GET', 'POST'])]
+    #[Template]
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : array|RedirectResponse {
         $monarch = new Monarch();
         $form = $this->createForm(MonarchType::class, $monarch);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($monarch);
             $entityManager->flush();
             $this->addFlash('success', 'The new monarch has been saved.');
@@ -115,43 +73,23 @@ class MonarchController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @Route("/new_popup", name="monarch_new_popup", methods={"GET", "POST"})
-     * @Template
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     *
-     * @return array|RedirectResponse
-     */
-    public function new_popup(Request $request) {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="monarch_show", methods={"GET"})
-     * @Template
-     *
-     * @return array
-     */
-    public function show(Monarch $monarch) {
+    #[Route(path: '/{id}', name: 'monarch_show', methods: ['GET'])]
+    #[Template]
+    public function show(Monarch $monarch) : array {
         return [
             'monarch' => $monarch,
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="monarch_edit", methods={"GET", "POST"})
-     *
-     * @Template
-     *
-     * @return array|RedirectResponse
-     */
-    public function edit(Request $request, Monarch $monarch) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'monarch_edit', methods: ['GET', 'POST'])]
+    #[Template]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Monarch $monarch) : array|RedirectResponse {
         $form = $this->createForm(MonarchType::class, $monarch);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated monarch has been saved.');
 
             return $this->redirectToRoute('monarch_show', ['id' => $monarch->getId()]);
@@ -163,15 +101,10 @@ class MonarchController extends AbstractController implements PaginatorAwareInte
         ];
     }
 
-    /**
-     * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}", name="monarch_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Request $request, Monarch $monarch) {
+    #[IsGranted('ROLE_CONTENT_ADMIN')]
+    #[Route(path: '/{id}', name: 'monarch_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Monarch $monarch) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $monarch->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($monarch);
             $entityManager->flush();
             $this->addFlash('success', 'The monarch has been deleted.');

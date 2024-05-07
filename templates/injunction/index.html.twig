@@ -9,22 +9,64 @@
     </p>
 {% endblock %}
 
+{% block action_buttons %}
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <a href="{{ path('injunction_new') }}" class="btn btn-light">
+            <span class="bi bi-plus-lg"></span> New
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('injunction_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New </a>
-            {% endif %}
-
-            <a href="{{ path('injunction_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search </a>
+    <form class="my-3" method="get" role="search">
+        <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="popover" data-bs-title="Full text searching options" data-bs-content="<ul class='list-group list-group-flush'><li class='list-group-item'><code>shakespeare</code> - shakespeare should be present, but might not be</li><li class='list-group-item'><code>shakes*</code> - words starting with shakes should be present</li><li class='list-group-item'><code>+agnes</code> - agnes must be present</li><li class='list-group-item'><code>-fisher</code> - fisher must not be present</li><li class='list-group-item'>Combinations are OK: <code>+agnes -fisher</code> finds Anges who isn't a Fisher</li><li class='list-group-item'>Phrases are OK: <code>&quot;nee agnes&quot;</code> finds rows that contain the literal phrase.</ul>">
+                <i class="bi bi-question-circle" aria-hidden="true"></i><span class="visually-hidden">Search Help</span>
+            </button>
+            <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="q" id="q" value="{{ q }}" />
+            <button class="btn btn-primary" type="submit" id="btn-search">
+                <i class="bi bi-search" aria-hidden="true"></i> Search
+            </button>
         </div>
-    </div>
+    </form>
 
-    {% embed 'injunction/partial/table.html.twig' %}
-    {% endembed %}
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Monarch</th>
+                <th>Transcription</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for injunction in injunctions %}
+                <tr>
+                    <td>
+                        <p>
+                            <a href="{{ path('injunction_show', { 'id': injunction.id }) }}">
+                                {{ injunction.title }}
+                            </a>
+                        </p>
+                        {% if injunction.estc %}
+                            <p>ESTC: {{ injunction.estc }}</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ injunction.date }}
+                    </td>
+                    <td>
+                        {% if injunction.monarch %}
+                            <a href='{{ path('monarch_show', {'id': injunction.monarch.id}) }}'>{{ injunction.monarch }}</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ injunction.transcription|raw }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <div class="navigation">
         {{ knp_pagination_render(injunctions) }}

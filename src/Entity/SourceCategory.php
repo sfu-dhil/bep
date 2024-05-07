@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Entity;
 
 use App\Repository\SourceCategoryRepository;
@@ -16,21 +10,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * @ORM\Entity(repositoryClass=SourceCategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: SourceCategoryRepository::class)]
 class SourceCategory extends AbstractTerm {
-    /**
-     * @var Collection|ManuscriptSource[]
-     * @ORM\OneToMany(targetEntity="ManuscriptSource", mappedBy="sourceCategory")
-     */
-    private $manuscriptSources;
+    #[ORM\OneToMany(targetEntity: ManuscriptSource::class, mappedBy: 'sourceCategory')]
+    private Collection $manuscriptSources;
 
-    /**
-     * @var Collection|PrintSource[]
-     * @ORM\OneToMany(targetEntity="PrintSource", mappedBy="sourceCategory")
-     */
-    private $printSources;
+    #[ORM\OneToMany(targetEntity: PrintSource::class, mappedBy: 'sourceCategory')]
+    private Collection $printSources;
 
     public function __construct() {
         parent::__construct();
@@ -77,7 +63,7 @@ class SourceCategory extends AbstractTerm {
     }
 
     /**
-     * @return Collection<int, PrintSource>
+     * @return Collection<int,PrintSource>
      */
     public function getPrintSources() : Collection {
         return $this->printSources;

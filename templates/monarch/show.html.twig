@@ -6,25 +6,91 @@
      <h1>Monarch Details</h1>
  {% endblock %}
 
-{% block body %}
-
+ {% block action_buttons %}
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('monarch_edit', {'id': monarch.id }) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-edit"></span> Edit </a>
-            </div>
-            <div class='btn-group'>
-                <form class='delete-form' method="post" action="{{ path('monarch_delete', {'id': monarch.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ monarch.id) }}">
-                    <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-                </form>
-            </div>
-        </div>
+        <a href="{{ path('monarch_edit', {'id': monarch.id }) }}" class="btn btn-light">
+            <span class="bi bi-pencil-square"></span> Edit
+        </a>
+        <form class="d-inline-block delete-form" method="post" action="{{ path('monarch_delete', {'id': monarch.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ monarch.id) }}">
+            <button class="btn btn-danger w-100"><i class="bi bi-trash" aria-hidden="true"></i> Delete</button>
+        </form>
     {% endif %}
+{% endblock %}
 
-    {% embed 'monarch/partial/detail.html.twig' %}
+{% block body %}
+    {% embed '@NinesUtil/term/partial/show.html.twig' with {'term': monarch} %}
+        {% block callback %}
+            <tr>
+                <th>Reign</th>
+                <td>{% if monarch.startDate or monarch.endDate %}{{ monarch.startDate }} - {{ monarch.endDate }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Inventories</th>
+                <td>
+                    {% if monarch.inventories|length > 0 %}
+                        <ul>
+                            {% for inventory in monarch.inventories %}
+                                <li>
+                                    <a href='{{ path("inventory_show", {"id":inventory.id }) }}'>
+                                        {{ inventory }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Injunctions</th>
+                <td>
+                    {% if monarch.injunctions|length > 0 %}
+                        <ul>
+                            {% for injunction in monarch.injunctions %}
+                                <li>
+                                    <a href='{{ path("injunction_show", {"id":injunction.id }) }}'>
+                                        {{ injunction }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Transactions</th>
+                <td>
+                    {% if monarch.transactions|length > 0 %}
+                        <ul>
+                            {% for transaction in monarch.transactions %}
+                                <li>
+                                    <a href='{{ path("transaction_show", {"id":transaction.id }) }}'>
+                                        {{ transaction }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Books</th>
+                <td>
+                    {% if monarch.books|length > 0 %}
+                        <ul>
+                            {% for book in monarch.books %}
+                                <li>
+                                    <a href='{{ path("book_show", {"id":book.id }) }}'>
+                                        {{ book }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endblock %}
     {% endembed %}
 
 {% endblock %}

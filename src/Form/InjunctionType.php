@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Form;
 
 use App\Entity\Archdeaconry;
@@ -32,7 +26,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Injunction form.
  */
 class InjunctionType extends AbstractType {
-    private ?LinkableMapper $mapper = null;
+    public function __construct(
+        private LinkableMapper $mapper,
+    ) {}
 
     /**
      * Add form fields to $builder.
@@ -41,15 +37,12 @@ class InjunctionType extends AbstractType {
         $builder->add('title', TextType::class, [
             'label' => 'Title',
             'required' => true,
-            'attr' => [
-                'help_block' => 'As it appears in the ESTC',
-            ],
+            'help' => 'As it appears in the ESTC',
         ]);
         $builder->add('uniformTitle', TextareaType::class, [
             'label' => 'Uniform Title',
             'required' => false,
             'attr' => [
-                'help_block' => '',
                 'class' => 'tinymce',
             ],
         ]);
@@ -64,46 +57,40 @@ class InjunctionType extends AbstractType {
                 'label' => false,
             ],
             'by_reference' => false,
+            'help' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
             'attr' => [
                 'class' => 'collection collection-simple',
-                'help_block' => "Year, followed by the title in modern English. Eg. '1631, A thanksgiving, and prayer for the safe child bearing of the queen's majesty'. Also add any other variant titles listed in the ESTC.",
             ],
         ]);
         $builder->add('author', TextType::class, [
             'label' => 'Author',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('imprint', TextareaType::class, [
             'label' => 'Imprint',
             'required' => false,
+            'help' => 'Imprint as noted on the ESTC',
             'attr' => [
                 'class' => 'tinymce',
-                'help_block' => 'Imprint as noted on the ESTC',
             ],
         ]);
         $builder->add('variantImprint', TextareaType::class, [
             'label' => 'Imprint, Modern English',
             'required' => false,
+            'help' => 'Original spelling imprint and any variations of it',
             'attr' => [
-                'help_block' => 'Original spelling imprint and any variations of it',
                 'class' => 'tinymce',
             ],
         ]);
         $builder->add('date', TextType::class, [
             'label' => 'Date',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('physicalDescription', TextareaType::class, [
             'label' => 'Physical Description',
             'required' => false,
+            'help' => 'Public description of the physicality of the item.',
             'attr' => [
-                'help_block' => 'Public description of the physicality of the item.',
                 'class' => 'tinymce',
             ],
         ]);
@@ -111,8 +98,8 @@ class InjunctionType extends AbstractType {
         $builder->add('transcription', TextareaType::class, [
             'label' => 'Transcribed Excerpt',
             'required' => true,
+            'help' => 'Public transcription of the item.',
             'attr' => [
-                'help_block' => 'Public transcription of the item.',
                 'class' => 'tinymce',
             ],
         ]);
@@ -120,8 +107,8 @@ class InjunctionType extends AbstractType {
         $builder->add('modernTranscription', TextareaType::class, [
             'label' => 'Modern English',
             'required' => false,
+            'help' => 'Provide a modern English equivalent of the manuscript entry',
             'attr' => [
-                'help_block' => 'Provide a modern English equivalent of the manuscript entry',
                 'class' => 'tinymce',
             ],
         ]);
@@ -131,8 +118,7 @@ class InjunctionType extends AbstractType {
             'class' => Nation::class,
             'remote_route' => 'nation_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'nation_new_popup',
+                'add_path' => 'nation_new',
                 'add_label' => 'Add Nation',
             ],
         ]);
@@ -142,8 +128,7 @@ class InjunctionType extends AbstractType {
             'class' => Province::class,
             'remote_route' => 'province_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'province_new_popup',
+                'add_path' => 'province_new',
                 'add_label' => 'Add Province',
             ],
         ]);
@@ -153,8 +138,7 @@ class InjunctionType extends AbstractType {
             'class' => Diocese::class,
             'remote_route' => 'diocese_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'diocese_new_popup',
+                'add_path' => 'diocese_new',
                 'add_label' => 'Add Diocese',
             ],
         ]);
@@ -164,8 +148,7 @@ class InjunctionType extends AbstractType {
             'class' => Archdeaconry::class,
             'remote_route' => 'archdeaconry_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'archdeaconry_new_popup',
+                'add_path' => 'archdeaconry_new',
                 'add_label' => 'Add Archdeaconry',
             ],
         ]);
@@ -176,28 +159,17 @@ class InjunctionType extends AbstractType {
             'class' => Monarch::class,
             'remote_route' => 'monarch_typeahead',
             'attr' => [
-                'help_block' => '',
-                'add_path' => 'monarch_new_popup',
+                'add_path' => 'monarch_new',
                 'add_label' => 'Add Monarch',
             ],
         ]);
         $builder->add('estc', TextType::class, [
             'label' => 'ESTC',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         NotesType::add($builder, $options);
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
-    }
-
-    /**
-     * @required
-     */
-    public function setMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 
     /**

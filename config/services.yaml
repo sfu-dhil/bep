@@ -19,8 +19,6 @@ parameters:
     dhil.piwik_siteid: ~
     dhil.piwik_domain: ~
 
-    nines.editor.upload_dir: public/images/blog
-
     page_size: 25
 
 services:
@@ -33,7 +31,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Extension,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -44,4 +42,3 @@ services:
     App\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
-            - { name: knp_menu.menu_builder, method: footerMenu, alias: footer}
