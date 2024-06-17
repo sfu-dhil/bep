@@ -36,6 +36,11 @@ class InventoryRepository extends ServiceEntityRepository {
         $qb->orderBy('score', 'DESC');
         $qb->setParameter('q', $q);
 
+        if (is_numeric($q)) {
+            $qb->orHaving('inventory.id = :id');
+            $qb->setParameter('id', intval($q));
+        }
+
         return $qb->getQuery();
     }
 }
