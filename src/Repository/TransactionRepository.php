@@ -38,6 +38,11 @@ class TransactionRepository extends ServiceEntityRepository {
         $qb->orderBy('score', 'DESC');
         $qb->setParameter('q', $q);
 
+        if (is_numeric($q)) {
+            $qb->orHaving('transaction.id = :id');
+            $qb->setParameter('id', intval($q));
+        }
+
         return $qb->getQuery();
     }
 }
