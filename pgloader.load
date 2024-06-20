@@ -1,0 +1,11 @@
+LOAD DATABASE
+    FROM mysql://bep:password@127.0.0.1:13306/bep
+    INTO postgresql://bep:password@127.0.0.1:15432/bep
+
+-- WITH include no drop, no truncate, create no tables, create no indexes, reset sequences, no foreign keys, drop indexes
+WITH data only
+
+ALTER SCHEMA 'bep' RENAME TO 'public'
+
+INCLUDING ONLY TABLE NAMES MATCHING ~/bep.*/, 'auth_user'
+;

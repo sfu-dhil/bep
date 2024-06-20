@@ -70,7 +70,7 @@ class BookType extends AbstractType {
             'help' => 'Imprint as noted on the ESTC',
         ]);
         $builder->add('variantImprint', TextareaType::class, [
-            'label' => 'Imprint, Modern English”',
+            'label' => 'Imprint, Modern English',
             'required' => false,
             'help' => 'Original spelling imprint and any variations of it',
         ]);

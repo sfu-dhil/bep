@@ -81,7 +81,7 @@ Through a database management tool:
 
 Migrate up to latest
 
-    docker exec -it bep_app make migrate
+    docker exec -it bep_app_old make migrate
 
 ## Updating Application Dependencies
 

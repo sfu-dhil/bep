@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    container_name: bep_db
+    container_name: bep_db_old
     image: mariadb:10.11
     ports:
       - "13306:3306"
@@ -22,13 +22,13 @@ services:
       retries: 120
 
   app:
-    container_name: bep_app
+    container_name: bep_app_old
     # image: dhil/bep
     build:
       context: .
       target: bep
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       # code for development
       - .:/var/www/html
@@ -52,8 +52,8 @@ services:
       db:
         condition: service_healthy
 
-  mail:
-    container_name: bep_mail
-    image: jcalonso/mailhog:v1.0.1
-    ports:
-      - "8025:8025"
+  # mail:
+  #   container_name: bep_mail
+  #   image: jcalonso/mailhog:v1.0.1
+  #   ports:
+  #     - "8025:8025"
