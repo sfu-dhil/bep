@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\MediaBundle\Entity\LinkableInterface;
-use Nines\MediaBundle\Entity\LinkableTrait;
-use Nines\UtilBundle\Entity\AbstractTerm;
+
+
 
 #[ORM\Entity(repositoryClass: ParishRepository::class)]
 class Parish extends AbstractTerm implements LinkableInterface {
