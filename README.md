@@ -1,3 +1,5 @@
+Books in English Parishes has migrated from Symfony to Django and this repo should not be used anymore. Please see [bep-django](https://github.com/sfu-dhil/bep-django) for the most up to date version of the bep project's codebase.
+
 # Books in English Parishes
 
 [Books in English Parishes][https://dhil.lib.sfu.ca/bep] (affectionately known as BEP) is a PHP application written using the
